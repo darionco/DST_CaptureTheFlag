@@ -100,6 +100,21 @@ function CTFTeam:registerPlayer(player)
     player:AddTag(self.teamTag);
     table.insert(self.players, player);
 
+    if player.components.playercontroller then
+        local OldGetActionButtonAction = player.components.playercontroller.GetActionButtonAction;
+        local teamTag = self.teamTag;
+        player.components.playercontroller.GetActionButtonAction = function(force_target)
+            local result = OldGetActionButtonAction(force_target);
+            if result and result.target and result.target:HasTag('CTF_TEAM_FLAG') and result.target:HasTag(teamTag) then
+                local target = result.target;
+                target:AddTag('fire');
+                result = OldGetActionButtonAction(force_target)
+                target:RemoveTag('fire');
+            end
+            return result;
+        end
+    end
+
     self.playerCount = self.playerCount + 1;
     player:ListenForEvent('death', function()
         c_announce(player.name .. ' will revive in 15 seconds');

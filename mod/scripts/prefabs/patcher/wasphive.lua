@@ -4,8 +4,11 @@
 --- DateTime: 2021-01-17 1:11 p.m.
 ---
 
-AddPrefabPostInit('wasphive', function(inst)
+CTFPrefabPatcher:registerPrefabPatcher('wasphive', function(inst, data)
     if TheWorld.ismastersim then
         inst.components.lootdropper:SetLoot({'goldnugget', 'goldnugget', 'goldnugget', 'goldnugget'});
+        if data.ctf_team then
+            CTFTeamManager:registerTeamObject(inst, data);
+        end
     end
-end);
+end)

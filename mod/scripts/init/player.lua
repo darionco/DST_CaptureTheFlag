@@ -29,6 +29,9 @@ end);
 
 AddComponentPostInit('playervision', function(component)
     component.inst:DoTaskInTime(0, function(player)
+
+        player:AddComponent('itemtyperestrictions');
+
         if TheWorld.ismastersim then
             inventory.removeAllItems(player);
             inventory.initializeInventory(player);

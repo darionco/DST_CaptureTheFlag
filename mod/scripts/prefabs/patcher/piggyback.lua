@@ -9,7 +9,6 @@ modimport('scripts/teams/CTFTeamManager');
 
 CTFPrefabPatcher:registerPrefabPatcher('piggyback', function(inst, data)
     if TheWorld.ismastersim then
-        print('PIGYBACK ================================================================')
         inst.components.equippable.walkspeedmult = 0.45;
         CTFTeamManager:registerTeamObject(inst, data);
     end

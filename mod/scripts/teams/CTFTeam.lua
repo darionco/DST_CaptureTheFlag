@@ -22,7 +22,7 @@ local function TestWinState(inst, self)
     );
     if player ~= nil then
         local item = player.components.inventory:GetEquippedItem(GLOBAL.EQUIPSLOTS.BODY);
-        if item ~= nil and item.prefab == 'piggyback' and item ~= self.flag then
+        if item ~= nil and item:HasTag('CTF_TEAM_FLAG') and not item:HasTag(self.teamTag) then
             c_announce('Team ' .. self.id .. ' wins!');
             c_announce('Game restarting in 10 seconds!');
             if self.winTask then
@@ -38,6 +38,8 @@ end
 
 CTFTeam = Class(function(self, id)
     self.id = id;
+    self.teamTag = 'CTF_TEAM_' .. self.id;
+    self.noTeamTag = 'NO_' .. self.teamTag;
     self.flag = nil;
     self.winTask = nil;
     self.players = {};
@@ -54,12 +56,26 @@ function CTFTeam:getTeamColor(id)
 end
 
 function CTFTeam:registerObject(obj, data)
+    print('============================= REGISTERING TEAM OBJECT ' .. obj.prefab .. ' ==========================');
+    obj:AddTag(self.teamTag);
     if obj.prefab == 'piggyback' then
         self.flag = obj;
+        self.flag:AddTag('CTF_TEAM_FLAG');
+        self.flag:AddTag(self.noTeamTag);
 
         local x, y, z = obj.Transform:GetWorldPosition();
         self.basePosition = { x= x, y = y, z = z };
         self.winTask = self.flag:DoPeriodicTask(0.25, TestWinState, nil, self);
+    end
+
+    if obj.components and obj.components.playerprox then
+        local OldOnNear = obj.components.playerprox.onnear;
+        local teamTag = self.teamTag;
+        obj.components.playerprox:SetOnPlayerNear(function (inst, player)
+            if not player:HasTag(teamTag) then
+                OldOnNear(inst, player);
+            end
+        end);
     end
 end
 
@@ -78,6 +94,10 @@ function CTFTeam:teleportAllPlayersToBase(setStats)
 end
 
 function CTFTeam:registerPlayer(player)
+    player.components.itemtyperestrictions.ctfTeamTag = self.teamTag;
+    player.components.itemtyperestrictions.noCtfTeamTag = self.noTeamTag;
+
+    player:AddTag(self.teamTag);
     table.insert(self.players, player);
 
     self.playerCount = self.playerCount + 1;

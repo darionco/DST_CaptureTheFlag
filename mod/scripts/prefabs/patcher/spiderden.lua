@@ -4,20 +4,38 @@
 --- DateTime: 2021-01-17 1:43 p.m.
 ---
 
-AddPrefabPostInit('spiderden', function(inst)
+CTFPrefabPatcher:registerPrefabPatcher('spiderden', function(inst, data)
     if TheWorld.ismastersim then
-        inst.components.lootdropper:SetLoot({'goldnugget', 'goldnugget'});
-    end
-end);
+        local OldSetSmall = inst.SetSmall;
+        inst.SetSmall = function(den)
+            OldSetSmall(den);
+            den.components.lootdropper:SetLoot({'goldnugget', 'goldnugget'});
+        end
 
-AddPrefabPostInit('spiderden_2', function(inst)
-    if TheWorld.ismastersim then
-        inst.components.lootdropper:SetLoot({'goldnugget', 'goldnugget', 'goldnugget', 'goldnugget'});
-    end
-end);
+        local OldSetMedium = inst.SetMedium;
+        inst.SetMedium = function(den)
+            OldSetMedium(den);
+            den.components.lootdropper:SetLoot({'goldnugget', 'goldnugget', 'goldnugget', 'goldnugget'});
+        end
 
-AddPrefabPostInit('spiderden_3', function(inst)
-    if TheWorld.ismastersim then
-        inst.components.lootdropper:SetLoot({'goldnugget', 'goldnugget', 'goldnugget', 'goldnugget', 'goldnugget', 'goldnugget'});
+        local OldSetLarge = inst.SetLarge;
+        inst.SetLarge = function(den)
+            OldSetLarge(den);
+            den.components.lootdropper:SetLoot({'goldnugget', 'goldnugget', 'goldnugget', 'goldnugget', 'goldnugget', 'goldnugget'});
+        end
+
+        if inst.data then
+            if inst.data.stage == 1 then
+                inst.components.lootdropper:SetLoot({'goldnugget', 'goldnugget'});
+            elseif inst.data.stage == 2 then
+                inst.components.lootdropper:SetLoot({'goldnugget', 'goldnugget', 'goldnugget', 'goldnugget'});
+            elseif inst.data.stage == 3 then
+                inst.components.lootdropper:SetLoot({'goldnugget', 'goldnugget', 'goldnugget', 'goldnugget', 'goldnugget', 'goldnugget'});
+            end
+        end
+
+        if data.ctf_team then
+            CTFTeamManager:registerTeamObject(inst, data);
+        end
     end
 end);

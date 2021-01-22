@@ -4,13 +4,8 @@
 --- DateTime: 2021-01-16 4:51 p.m.
 ---
 
-local CTFTeamColors = {
-    { 0.666, 0.407, 0.784, 1 },
-    { 0.996, 1, 0.454, 1 },
-    { 0.403, 0.756, 0.764, 1 },
-    { 0.996, 0.674, 0.407, 1 },
-    { 1, 0, 1, 1 },
-}
+local require = GLOBAL.require;
+local CTF_CONSTANTS = require('teams/CTFTeamConstants');
 
 local function TestWinState(inst, self)
     local player = FindClosestPlayerInRange(
@@ -22,7 +17,7 @@ local function TestWinState(inst, self)
     );
     if player ~= nil then
         local item = player.components.inventory:GetEquippedItem(GLOBAL.EQUIPSLOTS.BODY);
-        if item ~= nil and item:HasTag('CTF_TEAM_FLAG') and not item:HasTag(self.teamTag) then
+        if item ~= nil and item:HasTag(CTF_CONSTANTS.CTF_TEAM_FLAG_TAG) and not item:HasTag(self.teamTag) then
             c_announce('Team ' .. self.id .. ' wins!');
             c_announce('Game restarting in 10 seconds!');
             if self.winTask then
@@ -38,8 +33,8 @@ end
 
 CTFTeam = Class(function(self, id)
     self.id = id;
-    self.teamTag = 'CTF_TEAM_' .. self.id;
-    self.noTeamTag = 'NO_' .. self.teamTag;
+    self.teamTag = CTF_CONSTANTS.CTF_TEAM_PLAYER_TAG .. self.id;
+    self.noTeamTag = CTF_CONSTANTS.CTF_EXCLUDE_PREFIX_TAG .. self.teamTag;
     self.flag = nil;
     self.winTask = nil;
     self.players = {};
@@ -52,7 +47,7 @@ CTFTeam = Class(function(self, id)
 end);
 
 function CTFTeam:getTeamColor(id)
-    return unpack(CTFTeamColors[math.min(id, 5)]);
+    return unpack(CTF_CONSTANTS.CTF_TEAM_COLORS[math.min(id, 5)]);
 end
 
 function CTFTeam:patchPlayerProx(obj)
@@ -71,19 +66,41 @@ function CTFTeam:patchChildSpawner(obj)
     if obj.components and obj.components.childspawner then
         local OldOnSpawned = obj.components.childspawner.onspawned;
         local teamTag = self.teamTag;
+        local team = self;
         obj.components.childspawner:SetSpawnedFn(function(inst, child)
+            child:AddTag(CTF_CONSTANTS.CTF_TEAM_MINION_TAG);
             child:AddTag(teamTag);
-            OldOnSpawned(inst, child);
+            team:registerObject(child, nil);
+            if OldOnSpawned then
+                OldOnSpawned(inst, child);
+            end
         end);
     end
 end
 
+function CTFTeam:patchCombat(obj)
+    if obj.components and obj.components.combat then
+        local OldIsValidTarget = obj.components.combat.IsValidTarget;
+        local teamTag = self.teamTag;
+        obj.components.combat.IsValidTarget = function(inst, target)
+            if target:HasTag(teamTag) then
+                return false;
+            elseif target:HasTag(CTF_CONSTANTS.CTF_TEAM_MINION_TAG) then
+                return true;
+            end
+            return OldIsValidTarget(inst, target);
+        end
+
+
+    end
+end
+
 function CTFTeam:registerObject(obj, data)
-    print('============================= REGISTERING TEAM OBJECT ' .. obj.prefab .. ' ==========================');
+    print('============================= REGISTERING TEAM OBJECT' .. obj.prefab .. ' ==========================');
     obj:AddTag(self.teamTag);
-    if obj.prefab == 'piggyback' then
+    if obj.prefab == CTF_CONSTANTS.CTF_TEAM_FLAG_PREFAB then
         self.flag = obj;
-        self.flag:AddTag('CTF_TEAM_FLAG');
+        self.flag:AddTag(CTF_CONSTANTS.CTF_TEAM_FLAG_TAG);
         self.flag:AddTag(self.noTeamTag);
 
         local x, y, z = obj.Transform:GetWorldPosition();
@@ -92,6 +109,8 @@ function CTFTeam:registerObject(obj, data)
     end
 
     self:patchPlayerProx(obj);
+    self:patchChildSpawner(obj);
+    self:patchCombat(obj);
 end
 
 function CTFTeam:teleportPlayerToBase(player, setStats)
@@ -112,18 +131,19 @@ function CTFTeam:registerPlayer(player)
     player.components.itemtyperestrictions.ctfTeamTag = self.teamTag;
     player.components.itemtyperestrictions.noCtfTeamTag = self.noTeamTag;
 
+    player:AddTag('')
     player:AddTag(self.teamTag);
     table.insert(self.players, player);
 
     if player.components.playercontroller then
         local OldGetActionButtonAction = player.components.playercontroller.GetActionButtonAction;
         local teamTag = self.teamTag;
-        player.components.playercontroller.GetActionButtonAction = function(force_target)
-            local result = OldGetActionButtonAction(force_target);
-            if result and result.target and result.target:HasTag('CTF_TEAM_FLAG') and result.target:HasTag(teamTag) then
+        player.components.playercontroller.GetActionButtonAction = function(inst, force_target)
+            local result = OldGetActionButtonAction(inst, force_target);
+            if result and result.target and result.target:HasTag(CTF_CONSTANTS.CTF_TEAM_FLAG_TAG) and result.target:HasTag(teamTag) then
                 local target = result.target;
                 target:AddTag('fire');
-                result = OldGetActionButtonAction(force_target)
+                result = OldGetActionButtonAction(inst, force_target)
                 target:RemoveTag('fire');
             end
             return result;

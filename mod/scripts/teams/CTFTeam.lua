@@ -55,6 +55,29 @@ function CTFTeam:getTeamColor(id)
     return unpack(CTFTeamColors[math.min(id, 5)]);
 end
 
+function CTFTeam:patchPlayerProx(obj)
+    if obj.components and obj.components.playerprox then
+        local OldOnNear = obj.components.playerprox.onnear;
+        local teamTag = self.teamTag;
+        obj.components.playerprox:SetOnPlayerNear(function (inst, player)
+            if not player:HasTag(teamTag) then
+                OldOnNear(inst, player);
+            end
+        end);
+    end
+end
+
+function CTFTeam:patchChildSpawner(obj)
+    if obj.components and obj.components.childspawner then
+        local OldOnSpawned = obj.components.childspawner.onspawned;
+        local teamTag = self.teamTag;
+        obj.components.childspawner:SetSpawnedFn(function(inst, child)
+            child:AddTag(teamTag);
+            OldOnSpawned(inst, child);
+        end);
+    end
+end
+
 function CTFTeam:registerObject(obj, data)
     print('============================= REGISTERING TEAM OBJECT ' .. obj.prefab .. ' ==========================');
     obj:AddTag(self.teamTag);
@@ -68,15 +91,7 @@ function CTFTeam:registerObject(obj, data)
         self.winTask = self.flag:DoPeriodicTask(0.25, TestWinState, nil, self);
     end
 
-    if obj.components and obj.components.playerprox then
-        local OldOnNear = obj.components.playerprox.onnear;
-        local teamTag = self.teamTag;
-        obj.components.playerprox:SetOnPlayerNear(function (inst, player)
-            if not player:HasTag(teamTag) then
-                OldOnNear(inst, player);
-            end
-        end);
-    end
+    self:patchPlayerProx(obj);
 end
 
 function CTFTeam:teleportPlayerToBase(player, setStats)

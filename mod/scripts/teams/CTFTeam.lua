@@ -6,8 +6,7 @@
 
 local require = GLOBAL.require;
 local CTF_CONSTANTS = require('teams/CTFTeamConstants');
-
-local RETARGET_ONEOF_TAGS = { CTF_CONSTANTS.CTF_TEAM_MINION_TAG, CTF_CONSTANTS.CTF_TEAM_PLAYER_TAG };
+local CTFTeamCombat = require('teams/CTFTeamCombat');
 
 local function TestWinState(inst, self)
     local player = FindClosestPlayerInRange(
@@ -59,14 +58,14 @@ function CTFTeam:patchPlayerProx(obj)
 
         obj.components.playerprox:SetTargetMode(function(inst, comp)
             if not comp.isclose then
-                local target = FindEntity(inst, comp.near, nil, { "_combat", "_health" }, { teamTag }, RETARGET_ONEOF_TAGS);
+                local target = CTFTeamCombat.findEnemy(inst, comp.near, teamTag);
                 if target ~= nil then
                     comp.isclose = true
                     if comp.onnear ~= nil then
                         comp.onnear(inst, target)
                     end
                 end
-            elseif not FindEntity(inst, comp.far, nil, { "_combat", "_health" }, { teamTag }, RETARGET_ONEOF_TAGS) then
+            elseif not CTFTeamCombat.findEnemy(inst, comp.far, teamTag) then
                 comp.isclose = false
                 if comp.onfar ~= nil then
                     comp.onfar(inst)

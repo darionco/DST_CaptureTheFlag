@@ -9,7 +9,7 @@ return {
   tilewidth = 64,
   tileheight = 64,
   nextlayerid = 3,
-  nextobjectid = 2063,
+  nextobjectid = 2067,
   properties = {},
   tilesets = {
     {
@@ -15667,6 +15667,32 @@ return {
           width = 0,
           height = 0,
           rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 2065,
+          name = "Lamp",
+          type = "mushroom_light",
+          shape = "point",
+          x = 1695.66,
+          y = 6278.58,
+          width = 0,
+          height = 0,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 2066,
+          name = "Lamp",
+          type = "mushroom_light",
+          shape = "point",
+          x = 1953,
+          y = 6351.91,
+          width = 0,
+          height = 0,
+          rotation = 180,
           visible = true,
           properties = {}
         }

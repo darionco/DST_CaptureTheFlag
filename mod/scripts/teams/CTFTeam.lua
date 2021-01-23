@@ -129,6 +129,20 @@ function CTFTeam:patchChildSpawner(obj)
     end
 end
 
+function CTFTeam:patchSpawner(obj)
+    if obj.components and obj.components.spawner then
+        local OldTakeOwnership = obj.components.spawner.TakeOwnership;
+        local team = self;
+        obj.components.spawner.TakeOwnership = function(inst, child)
+            if inst.child ~= child then
+                child:AddTag(CTF_CONSTANTS.CTF_TEAM_MINION_TAG);
+                team:registerObject(child, nil);
+                OldTakeOwnership(inst, child);
+            end
+        end
+    end
+end
+
 function CTFTeam:patchCombat(obj)
     if obj.components and obj.components.combat then
         local teamTag = self.teamTag;

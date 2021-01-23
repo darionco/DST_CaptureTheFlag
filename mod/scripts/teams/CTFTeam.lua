@@ -7,6 +7,8 @@
 local require = GLOBAL.require;
 local CTF_CONSTANTS = require('teams/CTFTeamConstants');
 
+local RETARGET_ONEOF_TAGS = { CTF_CONSTANTS.CTF_TEAM_MINION_TAG, CTF_CONSTANTS.CTF_TEAM_PLAYER_TAG };
+
 local function TestWinState(inst, self)
     local player = FindClosestPlayerInRange(
             self.basePosition.x,
@@ -33,7 +35,7 @@ end
 
 CTFTeam = Class(function(self, id)
     self.id = id;
-    self.teamTag = CTF_CONSTANTS.CTF_TEAM_PLAYER_TAG .. self.id;
+    self.teamTag = CTF_CONSTANTS.CTF_TEAM_PREFIX_TAG .. self.id;
     self.noTeamTag = CTF_CONSTANTS.CTF_EXCLUDE_PREFIX_TAG .. self.teamTag;
     self.flag = nil;
     self.winTask = nil;
@@ -54,6 +56,24 @@ function CTFTeam:patchPlayerProx(obj)
     if obj.components and obj.components.playerprox then
         local OldOnNear = obj.components.playerprox.onnear;
         local teamTag = self.teamTag;
+
+        obj.components.playerprox:SetTargetMode(function(inst, comp)
+            if not comp.isclose then
+                local target = FindEntity(inst, comp.near, nil, { "_combat", "_health" }, { teamTag }, RETARGET_ONEOF_TAGS);
+                if target ~= nil then
+                    comp.isclose = true
+                    if comp.onnear ~= nil then
+                        comp.onnear(inst, target)
+                    end
+                end
+            elseif not FindEntity(inst, comp.far, nil, { "_combat", "_health" }, { teamTag }, RETARGET_ONEOF_TAGS) then
+                comp.isclose = false
+                if comp.onfar ~= nil then
+                    comp.onfar(inst)
+                end
+            end
+        end);
+
         obj.components.playerprox:SetOnPlayerNear(function (inst, player)
             if not player:HasTag(teamTag) then
                 OldOnNear(inst, player);
@@ -69,7 +89,6 @@ function CTFTeam:patchChildSpawner(obj)
         local team = self;
         obj.components.childspawner:SetSpawnedFn(function(inst, child)
             child:AddTag(CTF_CONSTANTS.CTF_TEAM_MINION_TAG);
-            child:AddTag(teamTag);
             team:registerObject(child, nil);
             if OldOnSpawned then
                 OldOnSpawned(inst, child);
@@ -96,8 +115,17 @@ function CTFTeam:patchCombat(obj)
 end
 
 function CTFTeam:registerObject(obj, data)
-    print('============================= REGISTERING TEAM OBJECT' .. obj.prefab .. ' ==========================');
+    if obj:HasTag(self.teamTag) then
+        return;
+    end
+
+    print('============================= REGISTERING TEAM OBJECT:' .. obj.prefab .. ' ==========================');
+    if not obj.data then
+        obj.data = {};
+    end
+    obj.data.ctf_team_tag = self.teamTag;
     obj:AddTag(self.teamTag);
+
     if obj.prefab == CTF_CONSTANTS.CTF_TEAM_FLAG_PREFAB then
         self.flag = obj;
         self.flag:AddTag(CTF_CONSTANTS.CTF_TEAM_FLAG_TAG);
@@ -111,6 +139,10 @@ function CTFTeam:registerObject(obj, data)
     self:patchPlayerProx(obj);
     self:patchChildSpawner(obj);
     self:patchCombat(obj);
+
+    if obj.AnimState then
+        obj.AnimState:SetMultColour(self:getTeamColor(self.id));
+    end
 end
 
 function CTFTeam:teleportPlayerToBase(player, setStats)
@@ -131,7 +163,7 @@ function CTFTeam:registerPlayer(player)
     player.components.itemtyperestrictions.ctfTeamTag = self.teamTag;
     player.components.itemtyperestrictions.noCtfTeamTag = self.noTeamTag;
 
-    player:AddTag('')
+    player:AddTag(CTF_CONSTANTS.CTF_TEAM_PLAYER_TAG);
     player:AddTag(self.teamTag);
     table.insert(self.players, player);
 

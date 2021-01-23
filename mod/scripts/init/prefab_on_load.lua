@@ -15,6 +15,10 @@ modimport('scripts/prefabs/patcher/merm');
 modimport('scripts/prefabs/patcher/mushroom_light');
 modimport('scripts/prefabs/patcher/multiplayer_portal');
 modimport('scripts/prefabs/patcher/wall_ruins_2');
+modimport('scripts/prefabs/patcher/pigtorch');
+modimport('scripts/prefabs/patcher/bishop');
+modimport('scripts/prefabs/patcher/tallbird');
+modimport('scripts/prefabs/patcher/pigguard');
 
 --modimport('scripts/teams/CTFTeamManager');
 --

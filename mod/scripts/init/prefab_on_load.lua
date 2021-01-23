@@ -13,6 +13,7 @@ modimport('scripts/prefabs/patcher/spiderqueen');
 modimport('scripts/prefabs/patcher/spiderden');
 modimport('scripts/prefabs/patcher/merm');
 modimport('scripts/prefabs/patcher/mushroom_light');
+modimport('scripts/prefabs/patcher/multiplayer_portal');
 
 --modimport('scripts/teams/CTFTeamManager');
 --

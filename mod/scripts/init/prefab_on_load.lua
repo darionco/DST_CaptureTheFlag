@@ -14,6 +14,7 @@ modimport('scripts/prefabs/patcher/spiderden');
 modimport('scripts/prefabs/patcher/merm');
 modimport('scripts/prefabs/patcher/mushroom_light');
 modimport('scripts/prefabs/patcher/multiplayer_portal');
+modimport('scripts/prefabs/patcher/wall_ruins_2');
 
 --modimport('scripts/teams/CTFTeamManager');
 --

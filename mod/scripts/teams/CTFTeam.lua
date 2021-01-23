@@ -32,20 +32,34 @@ local function TestWinState(inst, self)
     self.flag.AnimState:SetMultColour(self:getTeamColor(self.id));
 end
 
+local function FindSpawnerTarget(inst, team)
+    local spawner = team.minionSpawners[inst.data.ctf_minion_spawner];
+    if spawner then
+        return spawner:GetPosition();
+    end
+    return team.basePosition;
+end
+
 local function SpawnMinions(inst, team)
     if CTFTeamManager.gameStarted then
+        if inst.components and inst.components.health and inst.components.health.currenthealth <= 0 then
+            return;
+        end
+
         for _, v in ipairs(CTFTeamManager.teams) do
             if v.id ~= team.id then
-                for _, p in ipairs(CTF_CONSTANTS.CTF_MINION_PREFABS) do
-                    local minion = inst.components.childspawner:DoSpawnChild(nil, p);
-                    if minion ~= nil then
-                        if minion.components.knownlocations then
-                            minion.components.knownlocations:RememberLocation("investigate", v.basePosition);
-                        end
+                local target = FindSpawnerTarget(inst, v);
+                local minionPrefab = CTF_CONSTANTS.CTF_MINION_PREFABS[(inst.data.ctf_minion_count % 4) + 1];
+                local minion = inst.components.childspawner:DoSpawnChild(nil, minionPrefab);
+                if minion ~= nil then
+                    inst.data.ctf_minion_count = inst.data.ctf_minion_count + 1;
+                    
+                    if minion.components.knownlocations then
+                        minion.components.knownlocations:RememberLocation("investigate", target);
+                    end
 
-                        if minion.components.sleeper then
-                            minion.components.sleeper:SetSleepTest(function() return false end);
-                        end
+                    if minion.components.sleeper then
+                        minion.components.sleeper:SetSleepTest(function() return false end);
                     end
                 end
             end
@@ -60,6 +74,7 @@ CTFTeam = Class(function(self, id)
     self.flag = nil;
     self.winTask = nil;
     self.players = {};
+    self.minionSpawners = {};
     self.playerCount = 0;
     self.basePosition = {
         x = 0,
@@ -79,7 +94,7 @@ function CTFTeam:makeMinionSpawner(obj)
         end
 
         obj:AddComponent('childspawner');
-        obj:DoPeriodicTask(30, SpawnMinions, nil, self);
+        obj:DoPeriodicTask(10, SpawnMinions, nil, self);
 
         obj:AddTag(CTF_CONSTANTS.CTF_TEAM_MINION_SPAWNER_TAG);
     end
@@ -195,7 +210,7 @@ function CTFTeam:registerObject(obj, data)
     if obj:HasTag(self.teamTag) then
         return;
     end
-    
+
     if not obj.data then
         obj.data = {};
     end
@@ -212,11 +227,15 @@ function CTFTeam:registerObject(obj, data)
     end
 
     if data and data.ctf_minion_spawner then
+        obj.data.ctf_minion_spawner = data.ctf_minion_spawner;
+        obj.data.ctf_minion_count = 0;
+        self.minionSpawners[data.ctf_minion_spawner] = obj;
         self:makeMinionSpawner(obj);
     end
 
     self:patchPlayerProx(obj);
     self:patchChildSpawner(obj);
+    self:patchSpawner(obj);
     self:patchCombat(obj);
 
     if obj.AnimState then

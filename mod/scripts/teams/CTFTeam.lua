@@ -50,10 +50,10 @@ local function SpawnMinions(inst, team)
             if v.id ~= team.id then
                 local target = FindSpawnerTarget(inst, v);
                 local minionPrefab = CTF_CONSTANTS.CTF_MINION_PREFABS[(inst.data.ctf_minion_count % 4) + 1];
-                local minion = inst.components.childspawner:DoSpawnChild(nil, minionPrefab);
+                local minion = inst.components.childspawner:DoSpawnChild(nil, minionPrefab, 5);
                 if minion ~= nil then
                     inst.data.ctf_minion_count = inst.data.ctf_minion_count + 1;
-                    
+
                     if minion.components.knownlocations then
                         minion.components.knownlocations:RememberLocation("investigate", target);
                     end

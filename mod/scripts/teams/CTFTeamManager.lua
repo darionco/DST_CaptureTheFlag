@@ -21,7 +21,7 @@ AddModRPCHandler(CTF_RPC, "ctf_register_player", registerPlayer);
 local function showWelcomeScreen(cb)
     GLOBAL.TheFrontEnd:PushScreen(CTFInstructionsPopup(
             'Welcome to Capture the Flag!',
-            'There are two teams in this game.\nThe goal of this game is to bring the opponent\'s piggyback to your base.\nYou can pick up your team\'s piggyback and hide it somewhere on the map.\nUse gold to craft weapons, armor and food.\nYou can get gold by defeating enemies (even other players!).\n\nHave fun!',
+            'The are two teams in this game, each team has a different hue.\nThe goal of the game is to bring the opponent\'s piggyback to your base.\nUse gold to craft weapons, armor and food.\nYou can get gold by defeating enemies.\nSome creatures are your friends, some aren\'t, either way, they all drop gold.\n\nGood luck!',
             {
                 {
                     -- Set Text

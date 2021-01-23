@@ -11,5 +11,8 @@ AddPrefabPostInit('mushroom_light', function(inst)
         inst.components.container:GiveItem(SpawnPrefab('lightbulb'));
         inst.components.container:GiveItem(SpawnPrefab('lightbulb'));
         inst.components.container:GiveItem(SpawnPrefab('lightbulb'));
+
+        -- they shouldn't be opened
+        inst.components.container.canbeopened = false;
     end
 end);

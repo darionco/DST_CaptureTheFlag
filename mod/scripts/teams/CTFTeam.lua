@@ -108,8 +108,6 @@ function CTFTeam:patchCombat(obj)
             end
             return OldIsValidTarget(inst, target);
         end
-
-
     end
 end
 
@@ -165,6 +163,8 @@ function CTFTeam:registerPlayer(player)
     player:AddTag(CTF_CONSTANTS.CTF_TEAM_PLAYER_TAG);
     player:AddTag(self.teamTag);
     table.insert(self.players, player);
+
+    self:patchCombat(player);
 
     if player.components.playercontroller then
         local OldGetActionButtonAction = player.components.playercontroller.GetActionButtonAction;

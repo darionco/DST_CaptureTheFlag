@@ -5,14 +5,17 @@
 ---
 
 local CTF_CONSTANTS = {
-    CTF_TEAM_FLAG_PREFAB = 'piggyback',
-
     CTF_EXCLUDE_PREFIX_TAG = 'CTF_EXCLUDE_',
+
+    CTF_MINION_PREFABS = { 'spider', 'spider', 'spider', 'spider_warrior' },
+
+    CTF_TEAM_FLAG_PREFAB = 'piggyback',
 
     CTF_TEAM_PREFIX_TAG = 'CTF_TEAM_',
     CTF_TEAM_FLAG_TAG = 'CTF_TEAM_FLAG',
     CTF_TEAM_PLAYER_TAG = 'CTF_TEAM_PLAYER',
     CTF_TEAM_MINION_TAG = 'CTF_TEAM_MINION',
+    CTF_TEAM_MINION_SPAWNER_TAG = 'CTF_TEAM_MINION_SPAWNER',
 
     CTF_TEAM_COLORS = {
         { 0.666, 0.407, 0.784, 1 },

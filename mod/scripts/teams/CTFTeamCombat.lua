@@ -6,7 +6,7 @@
 local require = _G.require;
 local CTF_CONSTANTS = require('teams/CTFTeamConstants');
 
-local RETARGET_ONEOF_TAGS = { CTF_CONSTANTS.CTF_TEAM_MINION_TAG, CTF_CONSTANTS.CTF_TEAM_PLAYER_TAG };
+local RETARGET_ONEOF_TAGS = { CTF_CONSTANTS.CTF_TEAM_MINION_TAG, CTF_CONSTANTS.CTF_TEAM_PLAYER_TAG, CTF_CONSTANTS.CTF_TEAM_MINION_SPAWNER_TAG };
 
 local findEnemy = function(inst, radius, teamTag)
     return FindEntity(inst, radius, nil, { "_combat", "_health" }, { teamTag, 'INLIMBO' }, RETARGET_ONEOF_TAGS);

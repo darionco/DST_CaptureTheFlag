@@ -9,6 +9,8 @@ modimport('scripts/teams/CTFTeamManager');
 
 CTFPrefabPatcher:registerPrefabPatcher('wall_ruins_2', function(inst, data)
     if TheWorld.ismastersim then
-        CTFTeamManager:registerTeamObject(inst, data);
+        if data.ctf_team then
+            CTFTeamManager:registerTeamObject(inst, data);
+        end
     end
 end)

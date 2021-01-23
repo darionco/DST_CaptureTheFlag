@@ -52,37 +52,37 @@ local function buildNewCrafting()
                 },
 				{
                     prefab = 'cookiecutterhat',
-                    ingredients = { Ingredient('goldnugget', 15) },
+                    ingredients = { Ingredient('goldnugget', 20) },
                     level = TECH.SCIENCE_ONE,
                     count = 1
                 },
 				{
                     prefab = 'footballhat',
-                    ingredients = { Ingredient('goldnugget', 15) },
+                    ingredients = { Ingredient('goldnugget', 20) },
                     level = TECH.SCIENCE_ONE,
                     count = 1
                 },
 				{
                     prefab = 'armorwood',
-                    ingredients = { Ingredient('goldnugget', 15) },
+                    ingredients = { Ingredient('goldnugget', 20) },
                     level = TECH.SCIENCE_ONE,
                     count = 1
                 },
 				{
                     prefab = 'tentaclespike',
-                    ingredients = { Ingredient('goldnugget', 15), Ingredient('spear', 1) },
+                    ingredients = { Ingredient('goldnugget', 10), Ingredient('spear', 1) },
                     level = TECH.SCIENCE_ONE,
                     count = 1
                 },
 				{
                     prefab = 'spear_wathgrithr',
-                    ingredients = { Ingredient('goldnugget', 15), Ingredient('spear', 1) },
+                    ingredients = { Ingredient('goldnugget', 10), Ingredient('spear', 1) },
                     level = TECH.SCIENCE_ONE,
                     count = 1
                 },
 				{
                     prefab = 'hambat',
-                    ingredients = { Ingredient('goldnugget', 20), Ingredient('spear_wathgrithr', 1) },
+                    ingredients = { Ingredient('goldnugget', 15), Ingredient('spear_wathgrithr', 1) },
                     level = TECH.SCIENCE_ONE,
                     count = 1
                 },
@@ -107,54 +107,54 @@ local function buildNewCrafting()
             recipes = {
                 {
                     prefab = 'jellybean',
-                    ingredients = { Ingredient('goldnugget', 2) },
+                    ingredients = { Ingredient('goldnugget', 4) },
                     count = 1
                 },
 				{
                     prefab = 'cookedmeat',
-                    ingredients = { Ingredient('goldnugget', 3) },
+                    ingredients = { Ingredient('goldnugget', 2) },
                     level = TECH.SCIENCE_ONE,
                     count = 1
                 },
 				{
                     prefab = 'bird_egg_cooked',
-                    ingredients = { Ingredient('goldnugget', 3) },
+                    ingredients = { Ingredient('goldnugget', 1) },
                     level = TECH.SCIENCE_ONE,
                     count = 1
                 },
 				{
                     prefab = 'dragonfruit_cooked',
-                    ingredients = { Ingredient('goldnugget', 3) },
+                    ingredients = { Ingredient('goldnugget', 1) },
                     level = TECH.SCIENCE_ONE,
                     count = 1
                 },
 				{
                     prefab = 'potato_cooked',
-                    ingredients = { Ingredient('goldnugget', 3) },
+                    ingredients = { Ingredient('goldnugget', 1) },
                     level = TECH.SCIENCE_ONE,
                     count = 1
                 },
 				{
                     prefab = 'garlic_cooked',
-                    ingredients = { Ingredient('goldnugget', 3) },
+                    ingredients = { Ingredient('goldnugget', 1) },
                     level = TECH.SCIENCE_ONE,
                     count = 1
                 },
 				{
                     prefab = 'carrot_cooked',
-                    ingredients = { Ingredient('goldnugget', 3) },
+                    ingredients = { Ingredient('goldnugget', 1) },
                     level = TECH.SCIENCE_ONE,
                     count = 1
                 },
 				{
                     prefab = 'butterflywings',
-                    ingredients = { Ingredient('goldnugget', 3) },
+                    ingredients = { Ingredient('goldnugget', 1) },
                     level = TECH.SCIENCE_ONE,
                     count = 1
                 },
 				{
                     prefab = 'honey',
-                    ingredients = { Ingredient('goldnugget', 3) },
+                    ingredients = { Ingredient('goldnugget', 1) },
                     level = TECH.SCIENCE_ONE,
                     count = 1
                 },

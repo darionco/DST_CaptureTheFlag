@@ -69,8 +69,8 @@ end
 
 CTFTeam = Class(function(self, id)
     self.id = id;
-    self.teamTag = CTF_CONSTANTS.CTF_TEAM_PREFIX_TAG .. self.id;
-    self.noTeamTag = CTF_CONSTANTS.CTF_EXCLUDE_PREFIX_TAG .. self.teamTag;
+    self.teamTag = self:makeTeamTag(self.id);
+    self.noTeamTag = self:makeExcludeTag(self.teamTag);
     self.flag = nil;
     self.winTask = nil;
     self.players = {};
@@ -82,6 +82,14 @@ CTFTeam = Class(function(self, id)
         z = 0,
     };
 end);
+
+function CTFTeam:makeTeamTag(id)
+    return CTF_CONSTANTS.CTF_TEAM_PREFIX_TAG .. id;
+end
+
+function CTFTeam:makeExcludeTag(teamTag)
+    return CTF_CONSTANTS.CTF_EXCLUDE_PREFIX_TAG .. teamTag;
+end
 
 function CTFTeam:getTeamColor(id)
     return unpack(CTF_CONSTANTS.CTF_TEAM_COLORS[math.min(id, 5)]);
@@ -158,17 +166,15 @@ function CTFTeam:patchSpawner(obj)
     end
 end
 
-function CTFTeam:patchCombat(obj)
+function CTFTeam:patchCombat(obj, teamTag)
     if obj.components and obj.components.combat then
-        local teamTag = self.teamTag;
-
         obj.components.combat.IsAlly = function(inst, target)
             return target:HasTag(teamTag);
         end
 
-        if obj.replica.combat then
-            local OldCanTarget = obj.replica.combat.CanTarget;
-            obj.replica.combat.CanTarget = function(inst, target)
+        if obj.components.combat then
+            local OldCanTarget = obj.components.combat.CanTarget;
+            obj.components.combat.CanTarget = function(inst, target)
                 if target and target:HasTag(teamTag) then
                     return false;
                 end
@@ -179,20 +185,31 @@ function CTFTeam:patchCombat(obj)
         
         local OldIsValidTarget = obj.components.combat.IsValidTarget;
         obj.components.combat.IsValidTarget = function(inst, target)
-            if target:HasTag(teamTag) then
-                return false;
-            elseif target:HasTag(CTF_CONSTANTS.CTF_TEAM_MINION_TAG) then
-                return true;
+            if target then
+                if target:HasTag(teamTag) then
+                    return false;
+                elseif target:HasTag(CTF_CONSTANTS.CTF_TEAM_MINION_TAG) then
+                    return true;
+                end
             end
             return OldIsValidTarget(inst, target);
         end
     end
+
+    if obj.replica and obj.replica.combat then
+        local OldCanTarget = obj.replica.combat.CanTarget;
+        obj.replica.combat.CanTarget = function(inst, target)
+            if target and target:HasTag(teamTag) then
+                return false;
+            end
+            return OldCanTarget(inst, target);
+        end
+    end
 end
 
-function CTFTeam:patchPlayerController(player)
+function CTFTeam:patchPlayerController(player, teamTag)
     if player.components.playercontroller then
         local OldGetActionButtonAction = player.components.playercontroller.GetActionButtonAction;
-        local teamTag = self.teamTag;
         player.components.playercontroller.GetActionButtonAction = function(inst, force_target)
             local result = OldGetActionButtonAction(inst, force_target);
             if result and result.target and result.target:HasTag(CTF_CONSTANTS.CTF_TEAM_FLAG_TAG) and result.target:HasTag(teamTag) then
@@ -236,7 +253,7 @@ function CTFTeam:registerObject(obj, data)
     self:patchPlayerProx(obj);
     self:patchChildSpawner(obj);
     self:patchSpawner(obj);
-    self:patchCombat(obj);
+    self:patchCombat(obj, self.teamTag);
 
     if obj.AnimState then
         obj.AnimState:SetMultColour(self:getTeamColor(self.id));
@@ -265,8 +282,8 @@ function CTFTeam:registerPlayer(player)
     player:AddTag(self.teamTag);
     table.insert(self.players, player);
 
-    self:patchCombat(player);
-    self:patchPlayerController(player);
+    self:patchCombat(player, self.teamTag);
+    self:patchPlayerController(player, self.teamTag);
 
     self.playerCount = self.playerCount + 1;
     player:ListenForEvent('death', function()
@@ -288,6 +305,10 @@ function CTFTeam:registerPlayer(player)
     --player:DoPeriodicTask(0.5, function()
         player.AnimState:SetMultColour(self:getTeamColor(self.id));
     --end);
+
+    if player.player_classified and player.player_classified.ctf_net_on_player_team_id then
+        player.player_classified.ctf_net_on_player_team_id:set(self.id);
+    end
 end
 
 function CTFTeam:hasPlayer(player)

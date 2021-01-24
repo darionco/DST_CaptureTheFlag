@@ -4,7 +4,7 @@ modimport('scripts/init/player');
 
 modimport('scripts/teams/CTFTeamManager');
 
-local function handlePlayerDisconnect(args)
+local function handlePlayerDisconnect(inst, args)
     CTFTeamManager:removePlayer(args.player);
 end
 

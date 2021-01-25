@@ -4,6 +4,9 @@
 --- DateTime: 2021-01-20 6:14 p.m.
 ---
 
+local require = _G.require;
+local CTF_CONSTANTS = require('teams/CTFTeamConstants');
+
 local ItemTypeRestrictions = Class(function(self, inst)
     self.player = inst.entity:GetParent();
     self.ctfTeamTag = 'none';
@@ -12,7 +15,7 @@ local ItemTypeRestrictions = Class(function(self, inst)
 end);
 
 function ItemTypeRestrictions:IsAllowed(target)
-    if target:HasTag('CTF_ONLY_TEAM') then
+    if target:HasTag(CTF_CONSTANTS.CTF_TEAM_ITEM_TAG) then
         if target:HasTag(self.ctfTeamTag) then
             return true;
         else
@@ -24,5 +27,5 @@ function ItemTypeRestrictions:IsAllowed(target)
     return true;
 end
 
-return ItemTypeRestrictions
+return ItemTypeRestrictions;
 

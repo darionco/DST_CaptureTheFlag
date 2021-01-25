@@ -166,6 +166,22 @@ function CTFTeam:patchSpawner(obj)
     end
 end
 
+function CTFTeam:patchBuilder(obj, teamTag)
+    if obj.components and obj.components.builder then
+        local OldOnBuild = obj.components.builder.onBuild;
+        obj.components.builder.onBuild = function(inst, prod)
+            if prod and (not prod.components or not prod.components.edible) then
+                prod:AddTag(CTF_CONSTANTS.CTF_TEAM_ITEM_TAG);
+                prod:AddTag(teamTag);
+            end
+
+            if OldOnBuild then
+                OldOnBuild(inst, prod);
+            end
+        end
+    end
+end
+
 function CTFTeam:patchCombat(obj, teamTag)
     if obj.components and obj.components.combat then
         obj.components.combat.IsAlly = function(inst, target)
@@ -212,7 +228,10 @@ function CTFTeam:patchPlayerController(player, teamTag)
         local OldGetActionButtonAction = player.components.playercontroller.GetActionButtonAction;
         player.components.playercontroller.GetActionButtonAction = function(inst, force_target)
             local result = OldGetActionButtonAction(inst, force_target);
-            if result and result.target and result.target:HasTag(CTF_CONSTANTS.CTF_TEAM_FLAG_TAG) and result.target:HasTag(teamTag) then
+            if result
+                    and result.target
+                    and ((result.target:HasTag(CTF_CONSTANTS.CTF_TEAM_FLAG_TAG) and result.target:HasTag(teamTag))
+                    or (result.target:HasTag(CTF_CONSTANTS.CTF_TEAM_ITEM_TAG) and not result.target:HasTag(teamTag))) then
                 local target = result.target;
                 target:AddTag('fire');
                 result = OldGetActionButtonAction(inst, force_target)
@@ -278,12 +297,18 @@ function CTFTeam:registerPlayer(player)
     player.components.itemtyperestrictions.ctfTeamTag = self.teamTag;
     player.components.itemtyperestrictions.noCtfTeamTag = self.noTeamTag;
 
-    player:AddTag(CTF_CONSTANTS.CTF_TEAM_PLAYER_TAG);
+    if not player.data then
+        player.data = {};
+    end
+    player.data.ctf_team_tag = self.teamTag;
     player:AddTag(self.teamTag);
+    player:AddTag(CTF_CONSTANTS.CTF_TEAM_PLAYER_TAG);
+
     table.insert(self.players, player);
 
     self:patchCombat(player, self.teamTag);
     self:patchPlayerController(player, self.teamTag);
+    self:patchBuilder(player, self.teamTag);
 
     self.playerCount = self.playerCount + 1;
     player:ListenForEvent('death', function()

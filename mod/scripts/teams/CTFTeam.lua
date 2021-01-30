@@ -43,6 +43,7 @@ local function SpawnMinions(inst, team)
             return;
         end
 
+        local instPosition = inst:GetPosition();
         for _, v in ipairs(CTFTeamManager.teams) do
             if v.id ~= team.id then
                 local target = FindSpawnerTarget(inst, v);
@@ -50,6 +51,19 @@ local function SpawnMinions(inst, team)
                 local minion = inst.components.childspawner:DoSpawnChild(nil, minionPrefab, 5);
                 if minion ~= nil then
                     inst.data.ctf_minion_count = inst.data.ctf_minion_count + 1;
+                    local targetVector = {
+                        x = target.x - instPosition.x,
+                        y = target.y - instPosition.y,
+                        z = target.z - instPosition.z,
+                    };
+                    local targetDistance = math.sqrt(math.pow(targetVector.x, 2) + math.pow(targetVector.y, 2) + math.pow(targetVector.z, 2));
+                    local targetNormal = {
+                        x = targetVector.x / targetDistance,
+                        y = targetVector.y / targetDistance,
+                        z = targetVector.z / targetDistance,
+                    };
+
+                    minion.Transform:SetPosition(instPosition.x + targetNormal.x * 3, instPosition.y + targetNormal.y * 3, instPosition.z + targetNormal.z * 3);
 
                     if minion.components.knownlocations then
                         minion.components.knownlocations:RememberLocation("investigate", target);
@@ -99,7 +113,10 @@ function CTFTeam:makeMinionSpawner(obj)
         end
 
         obj:AddComponent('childspawner');
-        obj:DoPeriodicTask(10, SpawnMinions, nil, self);
+        TheWorld:ListenForEvent(CTF_CONSTANTS.GAME_STARTED, function()
+            SpawnMinions(obj, self);
+            obj:DoPeriodicTask(10, SpawnMinions, nil, self);
+        end);
 
         obj:AddTag(CTF_CONSTANTS.TEAM_MINION_SPAWNER_TAG);
     end

@@ -18,7 +18,7 @@ local function TestWinState(inst, self)
     );
     if player ~= nil then
         local item = player.components.inventory:GetEquippedItem(GLOBAL.EQUIPSLOTS.BODY);
-        if item ~= nil and item:HasTag(CTF_CONSTANTS.CTF_TEAM_FLAG_TAG) and not item:HasTag(self.teamTag) then
+        if item ~= nil and item:HasTag(CTF_CONSTANTS.TEAM_FLAG_TAG) and not item:HasTag(self.teamTag) then
             c_announce('Team ' .. self.id .. ' wins!');
             c_announce('Game restarting in 10 seconds!');
             if self.winTask then
@@ -49,7 +49,7 @@ local function SpawnMinions(inst, team)
         for _, v in ipairs(CTFTeamManager.teams) do
             if v.id ~= team.id then
                 local target = FindSpawnerTarget(inst, v);
-                local minionPrefab = CTF_CONSTANTS.CTF_MINION_PREFABS[(inst.data.ctf_minion_count % 4) + 1];
+                local minionPrefab = CTF_CONSTANTS.MINION_PREFABS[(inst.data.ctf_minion_count % 4) + 1];
                 local minion = inst.components.childspawner:DoSpawnChild(nil, minionPrefab, 5);
                 if minion ~= nil then
                     inst.data.ctf_minion_count = inst.data.ctf_minion_count + 1;
@@ -84,15 +84,15 @@ CTFTeam = Class(function(self, id)
 end);
 
 function CTFTeam:makeTeamTag(id)
-    return CTF_CONSTANTS.CTF_TEAM_PREFIX_TAG .. id;
+    return CTF_CONSTANTS.TEAM_PREFIX_TAG .. id;
 end
 
 function CTFTeam:makeExcludeTag(teamTag)
-    return CTF_CONSTANTS.CTF_EXCLUDE_PREFIX_TAG .. teamTag;
+    return CTF_CONSTANTS.EXCLUDE_PREFIX_TAG .. teamTag;
 end
 
 function CTFTeam:getTeamColor(id)
-    return unpack(CTF_CONSTANTS.CTF_TEAM_COLORS[math.min(id, 5)]);
+    return unpack(CTF_CONSTANTS.TEAM_COLORS[math.min(id, 5)]);
 end
 
 function CTFTeam:makeMinionSpawner(obj)
@@ -104,7 +104,7 @@ function CTFTeam:makeMinionSpawner(obj)
         obj:AddComponent('childspawner');
         obj:DoPeriodicTask(10, SpawnMinions, nil, self);
 
-        obj:AddTag(CTF_CONSTANTS.CTF_TEAM_MINION_SPAWNER_TAG);
+        obj:AddTag(CTF_CONSTANTS.TEAM_MINION_SPAWNER_TAG);
     end
 end
 
@@ -143,7 +143,7 @@ function CTFTeam:patchChildSpawner(obj)
         local OldOnSpawned = obj.components.childspawner.onspawned;
         local team = self;
         obj.components.childspawner:SetSpawnedFn(function(inst, child)
-            child:AddTag(CTF_CONSTANTS.CTF_TEAM_MINION_TAG);
+            child:AddTag(CTF_CONSTANTS.TEAM_MINION_TAG);
             team:registerObject(child, nil);
             if OldOnSpawned then
                 OldOnSpawned(inst, child);
@@ -158,7 +158,7 @@ function CTFTeam:patchSpawner(obj)
         local team = self;
         obj.components.spawner.TakeOwnership = function(inst, child)
             if inst.child ~= child then
-                child:AddTag(CTF_CONSTANTS.CTF_TEAM_MINION_TAG);
+                child:AddTag(CTF_CONSTANTS.TEAM_MINION_TAG);
                 team:registerObject(child, nil);
                 OldTakeOwnership(inst, child);
             end
@@ -171,7 +171,7 @@ function CTFTeam:patchBuilder(obj, teamTag)
         local OldOnBuild = obj.components.builder.onBuild;
         obj.components.builder.onBuild = function(inst, prod)
             if prod and (not prod.components or not prod.components.edible) then
-                prod:AddTag(CTF_CONSTANTS.CTF_TEAM_ITEM_TAG);
+                prod:AddTag(CTF_CONSTANTS.TEAM_ITEM_TAG);
                 prod:AddTag(teamTag);
             end
 
@@ -204,7 +204,7 @@ function CTFTeam:patchCombat(obj, teamTag)
             if target then
                 if target:HasTag(teamTag) then
                     return false;
-                elseif target:HasTag(CTF_CONSTANTS.CTF_TEAM_MINION_TAG) then
+                elseif target:HasTag(CTF_CONSTANTS.TEAM_MINION_TAG) then
                     return true;
                 end
             end
@@ -230,8 +230,8 @@ function CTFTeam:patchPlayerController(player, teamTag)
             local result = OldGetActionButtonAction(inst, force_target);
             if result
                     and result.target
-                    and ((result.target:HasTag(CTF_CONSTANTS.CTF_TEAM_FLAG_TAG) and result.target:HasTag(teamTag))
-                    or (result.target:HasTag(CTF_CONSTANTS.CTF_TEAM_ITEM_TAG) and not result.target:HasTag(teamTag))) then
+                    and ((result.target:HasTag(CTF_CONSTANTS.TEAM_FLAG_TAG) and result.target:HasTag(teamTag))
+                    or (result.target:HasTag(CTF_CONSTANTS.TEAM_ITEM_TAG) and not result.target:HasTag(teamTag))) then
                 local target = result.target;
                 target:AddTag('fire');
                 result = OldGetActionButtonAction(inst, force_target)
@@ -253,9 +253,9 @@ function CTFTeam:registerObject(obj, data)
     obj.data.ctf_team_tag = self.teamTag;
     obj:AddTag(self.teamTag);
 
-    if obj.prefab == CTF_CONSTANTS.CTF_TEAM_FLAG_PREFAB then
+    if obj.prefab == CTF_CONSTANTS.TEAM_FLAG_PREFAB then
         self.flag = obj;
-        self.flag:AddTag(CTF_CONSTANTS.CTF_TEAM_FLAG_TAG);
+        self.flag:AddTag(CTF_CONSTANTS.TEAM_FLAG_TAG);
         self.flag:AddTag(self.noTeamTag);
 
         self.basePosition = obj:GetPosition();
@@ -302,7 +302,7 @@ function CTFTeam:registerPlayer(player)
     end
     player.data.ctf_team_tag = self.teamTag;
     player:AddTag(self.teamTag);
-    player:AddTag(CTF_CONSTANTS.CTF_TEAM_PLAYER_TAG);
+    player:AddTag(CTF_CONSTANTS.TEAM_PLAYER_TAG);
 
     table.insert(self.players, player);
 

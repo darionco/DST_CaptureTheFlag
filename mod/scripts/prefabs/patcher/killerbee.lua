@@ -14,7 +14,7 @@ AddPrefabPostInit('killerbee', function(inst)
 
         local OldRetargetFunction = inst.components.combat.targetfn;
         inst.components.combat:SetRetargetFunction(inst.components.combat.retargetperiod, function(self)
-            if self:HasTag(CTF_CONSTANTS.CTF_TEAM_MINION_TAG) then
+            if self:HasTag(CTF_CONSTANTS.TEAM_MINION_TAG) then
                 return CTFTeamCombat.findEnemy(self, SpringCombatMod(8), self.data.ctf_team_tag);
             end
             return OldRetargetFunction(self);

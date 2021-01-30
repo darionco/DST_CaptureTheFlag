@@ -15,7 +15,7 @@ local ItemTypeRestrictions = Class(function(self, inst)
 end);
 
 function ItemTypeRestrictions:IsAllowed(target)
-    if target:HasTag(CTF_CONSTANTS.CTF_TEAM_ITEM_TAG) then
+    if target:HasTag(CTF_CONSTANTS.TEAM_ITEM_TAG) then
         if target:HasTag(self.ctfTeamTag) then
             return true;
         else

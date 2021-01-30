@@ -134,9 +134,13 @@ end
 function CTFTeamManager:registerPlayer(player)
     if TheWorld.ismastersim then
         local team = self:getTeamWithLeastPlayers();
-        c_announce(player.name .. ' joins team ' .. team.id);
-        team:registerPlayer(player);
-        c_supergodmode(player);
+        if not team then
+            c_regenerateworld();
+        else
+            c_announce(player.name .. ' joins team ' .. team.id);
+            team:registerPlayer(player);
+            c_supergodmode(player);
+        end
     end
 
     -- try this again later, but it's not that important

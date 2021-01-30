@@ -9,7 +9,7 @@ return {
   tilewidth = 64,
   tileheight = 64,
   nextlayerid = 3,
-  nextobjectid = 2067,
+  nextobjectid = 2070,
   properties = {},
   tilesets = {
     {
@@ -15007,29 +15007,14 @@ return {
           name = "Bishop",
           type = "bishop",
           shape = "point",
-          x = 3496.97,
-          y = 863.636,
+          x = 3490.3,
+          y = 736.969,
           width = 0,
           height = 0,
           rotation = 0,
           visible = true,
           properties = {
             ["data.ctf_team"] = 2
-          }
-        },
-        {
-          id = 1956,
-          name = "Bishop",
-          type = "bishop",
-          shape = "point",
-          x = 160.606,
-          y = 869.697,
-          width = 0,
-          height = 0,
-          rotation = 0,
-          visible = true,
-          properties = {
-            ["data.ctf_team"] = 1
           }
         },
         {
@@ -15695,6 +15680,51 @@ return {
           rotation = 180,
           visible = true,
           properties = {}
+        },
+        {
+          id = 2067,
+          name = "Bishop",
+          type = "bishop",
+          shape = "point",
+          x = 158.667,
+          y = 720,
+          width = 0,
+          height = 0,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["data.ctf_team"] = 1
+          }
+        },
+        {
+          id = 2068,
+          name = "Bishop",
+          type = "bishop",
+          shape = "point",
+          x = 156,
+          y = 990.667,
+          width = 0,
+          height = 0,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["data.ctf_team"] = 1
+          }
+        },
+        {
+          id = 2069,
+          name = "Bishop",
+          type = "bishop",
+          shape = "point",
+          x = 3485.33,
+          y = 996,
+          width = 0,
+          height = 0,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["data.ctf_team"] = 2
+          }
         }
       }
     }

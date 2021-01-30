@@ -3,10 +3,10 @@
 --- Created by darionco.
 --- DateTime: 2021-01-16 4:45 p.m.
 ---
-
 modimport('scripts/teams/CTFTeam');
 
 local require = GLOBAL.require;
+local CTF_CONSTANTS = require('teams/CTFTeamConstants');
 local CTFInstructionsPopup = require "screens/CTFInstructionsPopup"
 
 local CTF_RPC = 'CTF::PLAYER';
@@ -105,6 +105,7 @@ function CTFTeamManager:startGame()
         for _, v in ipairs(self.teams) do
             v:teleportAllPlayersToBase(true);
         end
+        TheWorld:PushEvent(CTF_CONSTANTS.GAME_STARTED);
     end
 end
 

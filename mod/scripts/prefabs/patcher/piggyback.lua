@@ -3,6 +3,8 @@
 --- Created by darionco.
 --- DateTime: 2021-01-16 7:00 p.m.
 ---
+local require = _G.require;
+local CTF_CONSTANTS = require('teams/CTFTeamConstants');
 
 modimport('scripts/prefabs/patcher/CTFPrefabPatcher');
 modimport('scripts/teams/CTFTeamManager');
@@ -10,8 +12,10 @@ modimport('scripts/teams/CTFTeamManager');
 CTFPrefabPatcher:registerPrefabPatcher('piggyback', function(inst, data)
     if TheWorld.ismastersim then
         if data.ctf_team then
-            inst.components.equippable.walkspeedmult = 0.45;
-            CTFTeamManager:registerTeamObject(inst, data);
+            TheWorld:ListenForEvent(CTF_CONSTANTS.PLAYER_CONNECTED_EVENT, function()
+                inst.components.equippable.walkspeedmult = 0.45;
+                CTFTeamManager:registerTeamObject(inst, data);
+            end);
         end
     end
 end)

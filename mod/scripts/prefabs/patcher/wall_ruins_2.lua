@@ -3,6 +3,8 @@
 --- Created by darionco.
 --- DateTime: 2021-01-23 4:49 p.m.
 ---
+local require = _G.require;
+local CTF_CONSTANTS = require('teams/CTFTeamConstants');
 
 modimport('scripts/prefabs/patcher/CTFPrefabPatcher');
 modimport('scripts/teams/CTFTeamManager');
@@ -10,7 +12,9 @@ modimport('scripts/teams/CTFTeamManager');
 CTFPrefabPatcher:registerPrefabPatcher('wall_ruins_2', function(inst, data)
     if TheWorld.ismastersim then
         if data.ctf_team then
-            CTFTeamManager:registerTeamObject(inst, data);
+            TheWorld:ListenForEvent(CTF_CONSTANTS.PLAYER_CONNECTED_EVENT, function()
+                CTFTeamManager:registerTeamObject(inst, data);
+            end);
         end
     end
 end)

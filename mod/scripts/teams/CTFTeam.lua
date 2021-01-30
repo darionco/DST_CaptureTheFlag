@@ -21,11 +21,8 @@ local function TestWinState(inst, self)
         if item ~= nil and item:HasTag(CTF_CONSTANTS.TEAM_FLAG_TAG) and not item:HasTag(self.teamTag) then
             c_announce('Team ' .. self.id .. ' wins!');
             c_announce('Game restarting in 10 seconds!');
-            if self.winTask then
-                self.winTask:Cancel();
-                self.winTask = nil;
-                TheWorld:DoTaskInTime(10, c_regenerateworld);
-            end
+            TheWorld:DoTaskInTime(10, c_regenerateworld);
+            TheWorld:PushEvent(CTF_CONSTANTS.GAME_ENDED);
         end
     end
 
@@ -163,6 +160,10 @@ function CTFTeam:patchSpawner(obj)
                 OldTakeOwnership(inst, child);
             end
         end
+        if obj.components.spawner.child then
+            obj.components.spawner.child:AddTag(CTF_CONSTANTS.TEAM_MINION_TAG);
+            team:registerObject(obj.components.spawner.child, nil);
+        end
     end
 end
 
@@ -260,6 +261,12 @@ function CTFTeam:registerObject(obj, data)
 
         self.basePosition = obj:GetPosition();
         self.winTask = self.flag:DoPeriodicTask(0.25, TestWinState, nil, self);
+        TheWorld:ListenForEvent(CTF_CONSTANTS.GAME_ENDED, function()
+            if self.winTask then
+                self.winTask:Cancel();
+                self.winTask = nil;
+            end
+        end);
     end
 
     if data and data.ctf_minion_spawner then
@@ -334,6 +341,8 @@ function CTFTeam:registerPlayer(player)
     if player.player_classified and player.player_classified.ctf_net_on_player_team_id then
         player.player_classified.ctf_net_on_player_team_id:set(self.id);
     end
+
+    TheWorld:PushEvent(CTF_CONSTANTS.PLAYER_JOINED_TEAM_EVENT, player, team);
 end
 
 function CTFTeam:hasPlayer(player)
@@ -351,6 +360,7 @@ function CTFTeam:removePlayer(player)
             c_announce(player.name .. ' has left team ' .. self.id);
             table.remove(self.players, i);
             self.playerCount = self.playerCount - 1;
+            TheWorld:PushEvent(CTF_CONSTANTS.PLAYER_LEFT_TEAM_EVENT, player, team);
             return;
         end
     end

@@ -3,6 +3,8 @@
 --- Created by darionco.
 --- DateTime: 2021-01-17 1:43 p.m.
 ---
+local require = _G.require;
+local CTF_CONSTANTS = require('teams/CTFTeamConstants');
 
 local patchSetStageFunctions = function(inst)
     local OldSetSmall = inst.SetSmall;
@@ -41,7 +43,9 @@ CTFPrefabPatcher:registerPrefabPatcher('spiderden', function(inst, data)
         patchDefaultLoot(inst);
 
         if data.ctf_team then
-            CTFTeamManager:registerTeamObject(inst, data);
+            TheWorld:ListenForEvent(CTF_CONSTANTS.PLAYER_CONNECTED_EVENT, function()
+                CTFTeamManager:registerTeamObject(inst, data);
+            end);
         end
     end
 end);

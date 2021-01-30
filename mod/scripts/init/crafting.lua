@@ -124,13 +124,13 @@ local function buildNewCrafting()
                 },
 				{
                     prefab = 'dragonfruit_cooked',
-                    ingredients = { Ingredient('goldnugget', 1) },
+                    ingredients = { Ingredient('goldnugget', 3) },
                     level = TECH.SCIENCE_ONE,
                     count = 1
                 },
 				{
                     prefab = 'potato_cooked',
-                    ingredients = { Ingredient('goldnugget', 1) },
+                    ingredients = { Ingredient('goldnugget', 3) },
                     level = TECH.SCIENCE_ONE,
                     count = 1
                 },
@@ -148,7 +148,7 @@ local function buildNewCrafting()
                 },
 				{
                     prefab = 'butterflywings',
-                    ingredients = { Ingredient('goldnugget', 1) },
+                    ingredients = { Ingredient('goldnugget', 2) },
                     level = TECH.SCIENCE_ONE,
                     count = 1
                 },

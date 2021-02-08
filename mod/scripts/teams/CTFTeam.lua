@@ -278,6 +278,11 @@ function CTFTeam:registerObject(obj, data)
 
         self.basePosition = obj:GetPosition();
         self.winTask = self.flag:DoPeriodicTask(0.2, TestWinState, nil, self);
+
+        if obj.components and obj.components.hauntable then
+            obj:RemoveComponent("hauntable");
+        end
+
         TheWorld:ListenForEvent(CTF_CONSTANTS.GAME_ENDED, function()
             if self.winTask then
                 self.winTask:Cancel();

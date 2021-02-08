@@ -103,7 +103,7 @@ function CTFTeamManager:startGame()
     if self.gameStarted == false and self.gameStartCount == 0 then
         self.gameStarted = true;
         for _, v in ipairs(self.teams) do
-            v:teleportAllPlayersToBase(true);
+            v:teleportAllPlayersToBase();
         end
         TheWorld:PushEvent(CTF_CONSTANTS.GAME_STARTED);
     end
@@ -123,7 +123,7 @@ function CTFTeamManager:onWelcomeScreenClosed(player)
         if self.gameStarted then
             local team = self:getPlayerTeam(player);
             if team then
-                team:teleportPlayerToBase(player, true);
+                team:teleportPlayerToBase(player);
             end
         elseif self:shouldStartGame() then
             self:scheduleGameStart();
@@ -139,7 +139,7 @@ function CTFTeamManager:registerPlayer(player)
         else
             c_announce(player.name .. ' joins team ' .. team.id);
             team:registerPlayer(player);
-            c_supergodmode(player);
+            team:setPlayerInvincibility(player, true);
         end
     end
 

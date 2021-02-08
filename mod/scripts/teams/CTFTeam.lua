@@ -320,23 +320,88 @@ function CTFTeam:registerObject(obj, data)
     end
 end
 
-function CTFTeam:teleportPlayerToBase(player, setStats)
-    c_teleport(self.basePosition.x, self.basePosition.y, self.basePosition.z, player);
-    if setStats then
-        c_supergodmode(player);
-        c_maintainsanity(player, 1);
+function CTFTeam:setPlayerHealth(player, n)
+    if player ~= nil and player.components.health ~= nil and not player:HasTag("playerghost") then
+        player.components.health:SetPercent(n);
     end
 end
 
-function CTFTeam:teleportAllPlayersToBase(setStats)
+function CTFTeam:setPlayerSanity(player, n)
+    if player ~= nil and player.components.sanity ~= nil and not player:HasTag("playerghost") then
+        player.components.sanity:SetPercent(n);
+    end
+end
+
+function CTFTeam:setPlayerHunger(player, n)
+    if player ~= nil and player.components.hunger ~= nil and not player:HasTag("playerghost") then
+        player.components.hunger:SetPercent(n);
+    end
+end
+
+function CTFTeam:setPlayerMoisture(player, n)
+    if player ~= nil and player.components.moisture ~= nil and not player:HasTag("playerghost") then
+        player.components.moisture:SetPercent(n);
+    end
+end
+
+function CTFTeam:setPlayerTemperature(player, n)
+    if player ~= nil and player.components.temperature ~= nil and not player:HasTag("playerghost") then
+        player.components.temperature:SetTemperature(n);
+    end
+end
+
+function CTFTeam:resetPlayerStats(player)
+    self:setPlayerHealth(player,1);
+    self:setPlayerSanity(player,1);
+    self:setPlayerHunger(player, 1);
+    self:setPlayerTemperature(player, 25);
+    self:setPlayerMoisture(player, 0);
+end
+
+function CTFTeam:revivePlayer(player)
+    if player ~= nil then
+        if player:HasTag("playerghost") then
+            player:PushEvent("respawnfromghost")
+        elseif player:HasTag("corpse") then
+            player:PushEvent("respawnfromcorpse")
+        end
+    end
+end
+
+function CTFTeam:setPlayerInvincibility(player, invincible)
+    if invincible then
+        self:resetPlayerStats(player);
+    end
+
+    if player ~= nil and player.components and player.components.health then
+        player.components.health:SetInvincible(invincible);
+    end
+end
+
+function CTFTeam:teleportPlayerToBase(player)
+    c_teleport(self.basePosition.x, self.basePosition.y, self.basePosition.z, player);
+    self:setPlayerInvincibility(player, false);
+end
+
+function CTFTeam:teleportAllPlayersToBase()
     for _, v in ipairs(self.players) do
-        self:teleportPlayerToBase(v, setStats);
+        self:teleportPlayerToBase(v);
     end
 end
 
 function CTFTeam:registerPlayer(player)
-    player.components.itemtyperestrictions.ctfTeamTag = self.teamTag;
-    player.components.itemtyperestrictions.noCtfTeamTag = self.noTeamTag;
+    if player.components then
+        if player.components.itemtyperestrictions then
+            player.components.itemtyperestrictions.ctfTeamTag = self.teamTag;
+            player.components.itemtyperestrictions.noCtfTeamTag = self.noTeamTag;
+        end
+
+        if player.components.sanity then
+            player.components.sanity.redirect = function() return;  end;
+        end
+    end
+
+
 
     if not player.data then
         player.data = {};
@@ -355,17 +420,14 @@ function CTFTeam:registerPlayer(player)
     player:ListenForEvent('death', function()
         c_announce(player.name .. ' will revive in 15 seconds');
         player:DoTaskInTime(15, function ()
-            self:teleportPlayerToBase(player, false);
-            c_godmode(player);
+            self:teleportPlayerToBase(player);
+            self:revivePlayer(player);
         end);
     end);
 
+    local team = self;
     player:ListenForEvent("ms_respawnedfromghost", function ()
-        player.components.health:SetPercent(1);
-        player.components.sanity:SetPercent(1);
-        player.components.hunger:SetPercent(1);
-        player.components.moisture:SetPercent(0);
-        player.components.temperature:SetTemperature(25);
+        team:resetPlayerStats(player);
     end);
 
     --player:DoPeriodicTask(0.5, function()

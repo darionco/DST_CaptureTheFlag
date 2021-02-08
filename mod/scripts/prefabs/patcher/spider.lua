@@ -12,6 +12,8 @@ AddPrefabPostInit('spider', function(inst)
     if TheWorld.ismastersim then
         inst.components.lootdropper:SetLoot({'goldnugget'});
 
+        inst.entity:SetCanSleep(false);
+
         local OldRetargetFunction = inst.components.combat.targetfn;
         inst.components.combat:SetRetargetFunction(inst.components.combat.retargetperiod, function(self)
             if self:HasTag(CTF_CONSTANTS.TEAM_MINION_TAG) then

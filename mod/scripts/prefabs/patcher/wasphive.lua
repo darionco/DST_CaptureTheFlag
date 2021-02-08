@@ -6,6 +6,9 @@
 local require = _G.require;
 local CTF_CONSTANTS = require('teams/CTFTeamConstants');
 
+modimport('scripts/prefabs/patcher/CTFPrefabPatcher');
+modimport('scripts/teams/CTFTeamManager');
+
 CTFPrefabPatcher:registerPrefabPatcher('wasphive', function(inst, data)
     if TheWorld.ismastersim then
         inst.components.lootdropper:SetLoot({'goldnugget', 'goldnugget', 'goldnugget', 'goldnugget'});

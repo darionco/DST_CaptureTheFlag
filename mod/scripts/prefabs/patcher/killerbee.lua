@@ -8,9 +8,13 @@ local require = GLOBAL.require;
 local CTF_CONSTANTS = require('teams/CTFTeamConstants');
 local CTFTeamCombat = require('teams/CTFTeamCombat');
 
-AddPrefabPostInit('killerbee', function(inst)
+modimport('scripts/prefabs/patcher/CTFPrefabPatcher');
+
+CTFPrefabPatcher:registerPrefabPatcher('killerbee', function(inst, data)
     if TheWorld.ismastersim then
         inst.components.lootdropper:SetLoot({'goldnugget'});
+
+        CTFPrefabPatcher:patchStats(inst, data);
 
         local OldRetargetFunction = inst.components.combat.targetfn;
         inst.components.combat:SetRetargetFunction(inst.components.combat.retargetperiod, function(self)

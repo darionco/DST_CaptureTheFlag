@@ -277,7 +277,7 @@ function CTFTeam:registerObject(obj, data)
         self.flag:AddTag(self.noTeamTag);
 
         self.basePosition = obj:GetPosition();
-        self.winTask = self.flag:DoPeriodicTask(0.25, TestWinState, nil, self);
+        self.winTask = self.flag:DoPeriodicTask(0.2, TestWinState, nil, self);
         TheWorld:ListenForEvent(CTF_CONSTANTS.GAME_ENDED, function()
             if self.winTask then
                 self.winTask:Cancel();

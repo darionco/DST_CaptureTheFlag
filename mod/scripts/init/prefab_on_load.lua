@@ -9,15 +9,12 @@ modimport('scripts/prefabs/patcher/killerbee');
 modimport('scripts/prefabs/patcher/wasphive');
 modimport('scripts/prefabs/patcher/spider');
 modimport('scripts/prefabs/patcher/spider_warrior');
-modimport('scripts/prefabs/patcher/spiderqueen');
 modimport('scripts/prefabs/patcher/spiderden');
-modimport('scripts/prefabs/patcher/merm');
 modimport('scripts/prefabs/patcher/mushroom_light');
 modimport('scripts/prefabs/patcher/multiplayer_portal');
 modimport('scripts/prefabs/patcher/wall_ruins_2');
 modimport('scripts/prefabs/patcher/pigtorch');
 modimport('scripts/prefabs/patcher/bishop_nightmare');
-modimport('scripts/prefabs/patcher/tallbird');
 modimport('scripts/prefabs/patcher/pigguard');
 
 --modimport('scripts/teams/CTFTeamManager');

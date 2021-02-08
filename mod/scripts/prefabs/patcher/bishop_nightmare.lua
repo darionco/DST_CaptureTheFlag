@@ -11,9 +11,6 @@ modimport('scripts/teams/CTFTeamManager');
 
 CTFPrefabPatcher:registerPrefabPatcher('bishop_nightmare', function(inst, data)
     if TheWorld.ismastersim then
-        inst.components.lootdropper.chanceloottable = false;
-        inst.components.lootdropper:SetLoot({'goldnugget', 'goldnugget', 'goldnugget', 'goldnugget', 'goldnugget'});
-
         CTFPrefabPatcher:patchStats(inst, data);
 
         if data.ctf_team then

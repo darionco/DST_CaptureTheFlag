@@ -10,8 +10,6 @@ local CTFTeamCombat = require('teams/CTFTeamCombat');
 
 AddPrefabPostInit('spider', function(inst)
     if TheWorld.ismastersim then
-        inst.components.lootdropper:SetLoot({'goldnugget'});
-
         inst.entity:SetCanSleep(false);
 
         local OldRetargetFunction = inst.components.combat.targetfn;

@@ -11,7 +11,6 @@ modimport('scripts/teams/CTFTeamManager');
 
 CTFPrefabPatcher:registerPrefabPatcher('wasphive', function(inst, data)
     if TheWorld.ismastersim then
-        inst.components.lootdropper:SetLoot({'goldnugget', 'goldnugget', 'goldnugget', 'goldnugget'});
         if data.ctf_team then
             TheWorld:ListenForEvent(CTF_CONSTANTS.PLAYER_CONNECTED_EVENT, function()
                 CTFTeamManager:registerTeamObject(inst, data);

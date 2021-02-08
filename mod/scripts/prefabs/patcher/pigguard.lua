@@ -10,8 +10,6 @@ local CTFTeamCombat = require('teams/CTFTeamCombat');
 
 AddPrefabPostInit('pigguard', function(inst)
     if TheWorld.ismastersim then
-        inst.components.lootdropper:SetLoot({'goldnugget', 'goldnugget', 'goldnugget', 'goldnugget'});
-
         local OldRetargetFunction = inst.components.combat.targetfn;
         inst.components.combat:SetRetargetFunction(inst.components.combat.retargetperiod, function(self)
             if self:HasTag(CTF_CONSTANTS.TEAM_MINION_TAG) then

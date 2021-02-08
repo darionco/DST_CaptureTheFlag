@@ -8,11 +8,9 @@ local require = GLOBAL.require;
 local CTF_CONSTANTS = require('teams/CTFTeamConstants');
 local CTFTeamCombat = require('teams/CTFTeamCombat');
 
-CTFPrefabPatcher:registerPrefabPatcher('pigguard', function(inst, data)
+AddPrefabPostInit('pigguard', function(inst)
     if TheWorld.ismastersim then
         inst.components.lootdropper:SetLoot({'goldnugget', 'goldnugget', 'goldnugget', 'goldnugget'});
-
-        CTFPrefabPatcher:patchStats(inst, data);
 
         local OldRetargetFunction = inst.components.combat.targetfn;
         inst.components.combat:SetRetargetFunction(inst.components.combat.retargetperiod, function(self)

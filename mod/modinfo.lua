@@ -1,7 +1,7 @@
 name = 'Capture The Flag'
 description = 'Capture the flag yo!'
 author = 'fibonacci618, JayLil & aligura'
-version = '0.3.0'
+version = '0.3.3'
 
 forumthread = ''
 

@@ -15005,7 +15005,7 @@ return {
         {
           id = 1955,
           name = "Bishop",
-          type = "bishop",
+          type = "bishop_nightmare",
           shape = "point",
           x = 3490.3,
           y = 736.969,
@@ -15684,7 +15684,7 @@ return {
         {
           id = 2067,
           name = "Bishop",
-          type = "bishop",
+          type = "bishop_nightmare",
           shape = "point",
           x = 158.667,
           y = 720,
@@ -15699,7 +15699,7 @@ return {
         {
           id = 2068,
           name = "Bishop",
-          type = "bishop",
+          type = "bishop_nightmare",
           shape = "point",
           x = 156,
           y = 990.667,
@@ -15714,7 +15714,7 @@ return {
         {
           id = 2069,
           name = "Bishop",
-          type = "bishop",
+          type = "bishop_nightmare",
           shape = "point",
           x = 3485.33,
           y = 996,

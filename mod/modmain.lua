@@ -3,6 +3,7 @@ local CTF_CONSTANTS = require('teams/CTFTeamConstants');
 
 modimport('scripts/init/prefab_on_load');
 modimport('scripts/init/crafting');
+modimport('scripts/init/characters');
 modimport('scripts/init/player');
 
 modimport('scripts/teams/CTFTeamManager');

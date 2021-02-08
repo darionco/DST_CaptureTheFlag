@@ -8,6 +8,8 @@ local require = GLOBAL.require;
 local CTF_CONSTANTS = require('teams/CTFTeamConstants');
 local CTFTeamCombat = require('teams/CTFTeamCombat');
 
+modimport('scripts/prefabs/patcher/CTFPrefabPatcher');
+
 local function TestWinState(inst, self)
     local player = FindClosestPlayerInRange(
             self.basePosition.x,
@@ -158,6 +160,8 @@ function CTFTeam:patchChildSpawner(obj)
         local team = self;
         obj.components.childspawner:SetSpawnedFn(function(inst, child)
             child:AddTag(CTF_CONSTANTS.TEAM_MINION_TAG);
+            CTFPrefabPatcher:patchStats(child, inst.data);
+
             team:registerObject(child, nil);
             if OldOnSpawned then
                 OldOnSpawned(inst, child);
@@ -173,6 +177,8 @@ function CTFTeam:patchSpawner(obj)
         obj.components.spawner.TakeOwnership = function(inst, child)
             if inst.child ~= child then
                 child:AddTag(CTF_CONSTANTS.TEAM_MINION_TAG);
+                CTFPrefabPatcher:patchStats(child, inst.data);
+
                 team:registerObject(child, nil);
                 OldTakeOwnership(inst, child);
             end
@@ -180,6 +186,7 @@ function CTFTeam:patchSpawner(obj)
         if obj.components.spawner.child then
             obj.components.spawner.child:AddTag(CTF_CONSTANTS.TEAM_MINION_TAG);
             team:registerObject(obj.components.spawner.child, nil);
+            CTFPrefabPatcher:patchStats(obj.components.spawner.child, obj.data);
         end
     end
 end
@@ -266,8 +273,13 @@ function CTFTeam:registerObject(obj, data)
     end
 
     if not obj.data then
-        obj.data = {};
+        if data then
+            obj.data = data;
+        else
+            obj.data = {};
+        end
     end
+
     obj.data.ctf_team_tag = self.teamTag;
     obj:AddTag(self.teamTag);
 

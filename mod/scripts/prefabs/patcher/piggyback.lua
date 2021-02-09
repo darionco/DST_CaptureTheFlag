@@ -13,7 +13,6 @@ CTFPrefabPatcher:registerPrefabPatcher('piggyback', function(inst, data)
     if TheWorld.ismastersim then
         if data.ctf_team then
             TheWorld:ListenForEvent(CTF_CONSTANTS.PLAYER_CONNECTED_EVENT, function()
-                inst.components.equippable.walkspeedmult = 0.45;
                 CTFTeamManager:registerTeamObject(inst, data);
             end);
         end

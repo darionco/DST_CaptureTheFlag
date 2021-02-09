@@ -267,6 +267,57 @@ function CTFTeam:patchPlayerController(player, teamTag)
     end
 end
 
+function CTFTeam:patchInventory(inst)
+    if inst.components and inst.components.inventory then
+        local OldEquip = inst.components.inventory.Equip;
+        inst.components.inventory.Equip = function(inventory, item, old_to_active)
+            local body = inventory:GetEquippedItem(EQUIPSLOTS.BODY);
+            if body ~= nil and body:HasTag(CTF_CONSTANTS.TEAM_FLAG_TAG) then
+                item = nil
+            end
+            return OldEquip(inventory, item, old_to_active);
+        end
+    end
+end
+
+function CTFTeam:patchFlagEquippable(flag)
+    if flag.components and flag.components.equippable then
+        local OldOnEquipped = flag.components.equippable.onequipfn;
+        flag.components.equippable:SetOnEquip(function(inst, owner)
+            if owner.components and owner.components.inventory then
+                local hands = owner.components.inventory:Unequip(EQUIPSLOTS.HANDS, false);
+                if hands ~= nil then
+                    owner.components.inventory.silentfull = true;
+                    owner.components.inventory:GiveItem(hands);
+                    owner.components.inventory.silentfull = false;
+                end
+
+                local head = owner.components.inventory:Unequip(EQUIPSLOTS.HEAD, false);
+                if head ~= nil then
+                    owner.components.inventory.silentfull = true;
+                    owner.components.inventory:GiveItem(head);
+                    owner.components.inventory.silentfull = false;
+                end
+            end
+
+            self:setPlayerSanity(owner, 0);
+            if OldOnEquipped ~= nil then
+                OldOnEquipped(inst, owner);
+            end
+        end);
+
+        local OldOnUnequipped = flag.components.equippable.onunequipfn;
+        flag.components.equippable:SetOnUnequip(function(inst, owner)
+            self:setPlayerSanity(owner, 1);
+            if OldOnUnequipped then
+                OldOnUnequipped(inst, owner);
+            end
+        end);
+
+        flag.components.equippable.walkspeedmult = 0.45;
+    end
+end
+
 function CTFTeam:registerObject(obj, data)
     if obj:HasTag(self.teamTag) then
         return;
@@ -287,6 +338,8 @@ function CTFTeam:registerObject(obj, data)
         self.flag = obj;
         self.flag:AddTag(CTF_CONSTANTS.TEAM_FLAG_TAG);
         self.flag:AddTag(self.noTeamTag);
+
+        self:patchFlagEquippable(self.flag);
 
         self.basePosition = obj:GetPosition();
         self.winTask = self.flag:DoPeriodicTask(0.2, TestWinState, nil, self);
@@ -328,7 +381,10 @@ end
 
 function CTFTeam:setPlayerSanity(player, n)
     if player ~= nil and player.components.sanity ~= nil and not player:HasTag("playerghost") then
+        local redirect = player.components.sanity.redirect;
+        player.components.sanity.redirect = nil;
         player.components.sanity:SetPercent(n);
+        player.components.sanity.redirect = redirect;
     end
 end
 
@@ -415,6 +471,7 @@ function CTFTeam:registerPlayer(player)
     self:patchCombat(player, self.teamTag);
     self:patchPlayerController(player, self.teamTag);
     self:patchBuilder(player, self.teamTag);
+    self:patchInventory(player);
 
     self.playerCount = self.playerCount + 1;
     player:ListenForEvent('death', function()

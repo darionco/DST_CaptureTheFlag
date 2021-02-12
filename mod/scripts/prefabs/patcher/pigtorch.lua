@@ -10,6 +10,10 @@ modimport('scripts/prefabs/patcher/CTFPrefabPatcher');
 modimport('scripts/teams/CTFTeamManager');
 
 CTFPrefabPatcher:registerPrefabPatcher('pigtorch', function(inst, data)
+    if inst.components and inst.components.spawner then
+        inst.components.spawner.delay = TUNING.TOTAL_DAY_TIME * 2;
+    end
+
     if TheWorld.ismastersim then
         if data.ctf_team then
             TheWorld:ListenForEvent(CTF_CONSTANTS.PLAYER_CONNECTED_EVENT, function()

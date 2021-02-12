@@ -177,7 +177,7 @@ function CTFTeam:patchSpawner(obj)
         obj.components.spawner.TakeOwnership = function(inst, child)
             if inst.child ~= child then
                 child:AddTag(CTF_CONSTANTS.TEAM_MINION_TAG);
-                CTFPrefabPatcher:patchStats(child, inst.data);
+                CTFPrefabPatcher:patchStats(child, obj.data);
 
                 team:registerObject(child, nil);
                 OldTakeOwnership(inst, child);

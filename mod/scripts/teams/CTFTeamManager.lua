@@ -33,6 +33,12 @@ local function showWelcomeScreen(cb)
                         GLOBAL.TheFrontEnd:PopScreen();
                         cb();
                     end
+                },
+                {
+                    text = "Video Tutorial",
+                    cb = function()
+                        VisitURL('https://www.youtube.com/embed/_LN5mRUN6cE?autoplay=1');
+                    end
                 }
             }
     ));

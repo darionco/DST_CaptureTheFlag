@@ -59,9 +59,6 @@ local CTFInstructionsPopup = Class(Screen, function(self, title, text, buttons, 
     local space_between = 20
     local spacing = button_w + space_between
 
-
-    local spacing = 200
-
     self.menu = self.proot:AddChild(Menu(buttons, spacing, true))
     self.menu:SetPosition(-(spacing*(#buttons-1))/2, -140, 0)
     self.buttons = buttons

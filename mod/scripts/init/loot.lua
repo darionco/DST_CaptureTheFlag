@@ -39,4 +39,6 @@ LootDropper.DropLoot = function(self, pt)
             self:SpawnLootPrefab(v, pt)
         end
     end
+
+    TheWorld:PushEvent("entity_droploot", { inst = self.inst });
 end

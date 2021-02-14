@@ -1,7 +1,7 @@
-name = 'Capture The Flag'
-description = 'Capture the flag yo!'
+name = 'Warpak!'
+description = 'Capture the flag themed mod!'
 author = 'fibonacci618, JayLil & aligura'
-version = '0.3.8'
+version = '0.4.0'
 
 forumthread = ''
 

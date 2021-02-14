@@ -7,7 +7,7 @@
 CTFPrefabPatcher = {};
 
 function CTFPrefabPatcher:patchStats(inst, data)
-    if inst.components then
+    if data and inst.components then
         if inst.components.health then
             if data.ctf_health ~= nil then
                 inst.components.health:SetMaxHealth(data.ctf_health);

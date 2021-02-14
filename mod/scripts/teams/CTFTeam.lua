@@ -342,6 +342,10 @@ function CTFTeam:registerObject(obj, data)
         end
     end
 
+    if obj.entity then
+        obj.entity:SetCanSleep(false);
+    end
+
     obj.data.ctf_team_tag = self.teamTag;
     obj:AddTag(self.teamTag);
 

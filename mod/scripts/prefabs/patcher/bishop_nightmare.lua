@@ -13,6 +13,13 @@ CTFPrefabPatcher:registerPrefabPatcher('bishop_nightmare', function(inst, data)
     if TheWorld.ismastersim then
         CTFPrefabPatcher:patchStats(inst, data);
 
+        if inst.components.sleeper then
+            inst.components.sleeper:SetSleepTest(function() return false end);
+        end
+
+        local OldRetargetFunction = inst.components.combat.targetfn;
+        inst.components.combat:SetRetargetFunction(0.25, OldRetargetFunction);
+
         if data.ctf_team then
             TheWorld:ListenForEvent(CTF_CONSTANTS.PLAYER_CONNECTED_EVENT, function()
                 CTFTeamManager:registerTeamObject(inst, data);

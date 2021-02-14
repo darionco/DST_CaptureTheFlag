@@ -68,12 +68,23 @@ local function SpawnMinions(inst, team)
                     minion.Transform:SetPosition(instPosition.x + targetNormal.x * 3, instPosition.y + targetNormal.y * 3, instPosition.z + targetNormal.z * 3);
 
                     if minion.components.knownlocations then
-                        minion.components.knownlocations:RememberLocation("investigate", target);
+                        minion.components.knownlocations:RememberLocation('investigate', target);
                     end
 
                     if minion.components.sleeper then
                         minion.components.sleeper:SetSleepTest(function() return false end);
                     end
+
+                    if minion.components.combat then
+                        local OldShareTarget = minion.components.combat.ShareTarget;
+                        minion.components.combat.ShareTarget = function(f_self, f_target, range, fn, maxnum, musttags)
+                            OldShareTarget(f_self, f_target, range, function(dude)
+                                return fn(dude) and dude.components.knownlocations and dude.components.knownlocations:GetLocation('investigate') == target;
+                            end, maxnum, musttags);
+                        end
+                    end
+
+                    minion.entity:SetCanSleep(false);
                 end
             end
         end

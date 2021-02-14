@@ -6,7 +6,7 @@
 
 local require = _G.require;
 local CTF_CONSTANTS = require('teams/CTFTeamConstants');
-local wortox_soul_common = require("prefabs/wortox_soul_common");
+local wortox_soul_common = require('prefabs/wortox_soul_common');
 
 wortox_soul_common.HasSoul = function(victim)
     return

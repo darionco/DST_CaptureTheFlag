@@ -5,3 +5,4 @@
 ---
 ---
 modimport('scripts/prefabs/characters/wortox');
+modimport('scripts/prefabs/characters/wolfgang');

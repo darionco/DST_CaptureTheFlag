@@ -7,6 +7,8 @@
 local require = _G.require;
 local CTF_CONSTANTS = require('teams/CTFTeamConstants');
 
+local MAXWELL_SHADOW_MAX_HEALTH = 150;
+
 AddPrefabPostInit('waxwell', function(inst)
     if inst.components then
         if inst.components.sanity then
@@ -21,6 +23,10 @@ AddPrefabPostInit('waxwell', function(inst)
                     local team = CTFTeamManager:getPlayerTeam(f_inst);
                     if team ~= nil then
                         team:registerObject(pet, nil);
+                    end
+
+                    if pet.components and pet.components.health then
+                        pet.components.health:SetMaxHealth(MAXWELL_SHADOW_MAX_HEALTH);
                     end
                 end
             end

@@ -13,7 +13,7 @@ local function registerRecipes(content)
                 v.order,
                 nil,
                 v.icon,
-                nil,
+                v.owner_tag,
                 nil
         );
 
@@ -21,16 +21,16 @@ local function registerRecipes(content)
         -- Recipe("spear", {Ingredient("twigs", 2), Ingredient("rope", 1), Ingredient("flint", 1) }, RECIPETABS.WAR,  TECH.SCIENCE_ONE)
         -- (name, ingredients, tab, level, placer, min_spacing, nounlock, numtogive, builder_tag, atlas, image)
         for _, vv in ipairs(v.recipes) do
-            AddRecipe(vv.prefab, vv.ingredients, recipe_tab, vv.level, nil, nil, nil, vv.count);
+            AddRecipe(vv.prefab, vv.ingredients, recipe_tab, vv.level, vv.placer, vv.spacing, nil, vv.count);
         end
     end
 end
 
 local function buildNewCrafting()
     local content = {
-        {
+		{
             tab = 'Fight',
-            order = -1,
+            order = 1,
             icon = 'tab_fight.tex',
             recipes = {
                 {
@@ -102,7 +102,7 @@ local function buildNewCrafting()
         },
 		{
             tab = 'Food',
-            order = -2,
+            order = -1,
             icon = 'tab_farm.tex',
             recipes = {
                 {
@@ -160,6 +160,158 @@ local function buildNewCrafting()
                 },
             }
         },
+		{
+            tab = 'Slingshot',
+            order = 10,
+            icon = 'tab_slingshot.tex',
+			owner_tag = 'pebblemaker',
+            recipes = {
+                {
+                    prefab = 'slingshot',
+                    ingredients = { Ingredient('goldnugget', 10) },
+                    count = 1
+                },
+				{
+                    prefab = 'slingshotammo_rock',
+                    ingredients = { Ingredient('goldnugget', 2) },
+                    count = 5
+                },
+				{
+                    prefab = 'slingshotammo_gold',
+                    ingredients = { Ingredient('goldnugget', 4) },
+                    count = 5
+                },
+				{
+                    prefab = 'slingshotammo_marble',
+                    ingredients = { Ingredient('goldnugget', 10) },
+                    count = 5
+                },
+				{
+                    prefab = 'slingshotammo_freeze',
+                    ingredients = { Ingredient('goldnugget', 10) },
+                    count = 5
+                },
+				{
+                    prefab = 'slingshotammo_slow',
+                    ingredients = { Ingredient('goldnugget', 10) },
+                    count = 5
+                },
+				{
+                    prefab = 'slingshotammo_thulecite',
+                    ingredients = { Ingredient('goldnugget', 5), Ingredient('slingshotammo_marble', 5) },
+                    count = 10
+                },
+			}
+		},
+		{
+            tab = 'Green Thumb',
+            order = 10,
+            icon = 'tab_nature.tex',
+			owner_tag = 'plantkin',
+            recipes = {
+                {
+                    prefab = 'armor_bramble',
+                    ingredients = { Ingredient('goldnugget', 15), Ingredient('armorwood', 1) },
+                    count = 1
+                },
+				{
+                    prefab = 'trap_bramble',
+                    ingredients = { Ingredient('goldnugget', 15) },
+                    count = 1
+                },
+				{
+                    prefab = 'compostwrap',
+                    ingredients = { Ingredient('goldnugget', 5), Ingredient('dragonfruit_cooked', 1) },
+                    count = 1
+                },
+			}
+		},
+		{
+            tab = 'Books',
+            order = 10,
+            icon = 'tab_book.tex',
+			owner_tag = 'bookbuilder',
+            recipes = {
+                {
+                    prefab = 'book_silviculture',
+                    ingredients = { Ingredient('goldnugget', 35), Ingredient('tallbirdegg', 1) },
+                    count = 1
+                },
+			}
+		},
+		{
+            tab = 'Idols',
+            order = 10,
+            icon = 'tab_arcane.tex',
+			owner_tag = 'werehuman',
+            recipes = {
+                {
+                    prefab = 'wereitem_moose',
+                    ingredients = { Ingredient('goldnugget', 50), Ingredient('tallbirdegg', 1) },
+                    count = 1
+                },
+			}
+		},
+		{
+            tab = 'Engineering ',
+            order = 10,
+            icon = 'tab_engineering.tex',
+			owner_tag = 'handyperson',
+            recipes = {
+                {
+                    prefab = 'winona_catapult',
+                    ingredients = { Ingredient('goldnugget', 20), Ingredient('boomerang', 1) },
+                    count = 1,
+                    placer = 'winona_catapult_placer',
+                    spacing = TUNING.WINONA_ENGINEERING_SPACING,
+                },
+                {
+                    prefab = 'winona_battery_high',
+                    ingredients = { Ingredient('goldnugget', 30) },
+                    count = 1,
+                    placer = 'winona_battery_high_placer',
+                    spacing = TUNING.WINONA_ENGINEERING_SPACING,
+                },
+                {
+                    prefab = 'bluegem',
+                    ingredients = { Ingredient('goldnugget', 10) },
+                    count = 1,
+                },
+			}
+		},
+		{
+            tab = 'Seasonings',
+            order = 10,
+            icon = 'tab_foodprocessing.tex',
+			owner_tag = 'masterchef',
+            recipes = {
+                {
+                    prefab = 'portablecookpot_item',
+                    ingredients = { Ingredient('goldnugget', 20) },
+                    count = 1
+                },
+				{
+                    prefab = 'portablespicer_item',
+                    ingredients = { Ingredient('goldnugget', 20) },
+                    count = 1
+                },
+				{
+                    prefab = 'spice_garlic',
+                    ingredients = { Ingredient('goldnugget', 5) },
+                    count = 1
+                },
+				{
+                    prefab = 'spice_chili',
+                    ingredients = { Ingredient('goldnugget', 5) },
+                    count = 1
+                },
+				{
+                    prefab = 'spice_salt',
+                    ingredients = { Ingredient('goldnugget', 5) },
+                    count = 1
+                },
+			}
+		},
     }
 
     registerRecipes(content);

@@ -478,6 +478,7 @@ function CTFTeam:registerPlayer(player)
         player.data = {};
     end
     player.data.ctf_team_tag = self.teamTag;
+    player.data.ctf_team_id = self.id;
     player:AddTag(self.teamTag);
     player:AddTag(CTF_CONSTANTS.TEAM_PLAYER_TAG);
 

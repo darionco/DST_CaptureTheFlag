@@ -312,6 +312,19 @@ local function buildNewCrafting()
                 },
 			}
 		},
+		{
+            tab = 'Shadow',
+            order = 10,
+            icon = 'tab_shadow.tex',
+			owner_tag = 'shadowmagic',
+            recipes = {
+                {
+                    prefab = 'shadowduelist_builder',
+                    ingredients = { Ingredient('goldnugget', 20), Ingredient('spear', 1) },
+                    count = 1
+                },
+			}
+		},
     }
 
     registerRecipes(content);

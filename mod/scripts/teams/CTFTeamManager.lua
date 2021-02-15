@@ -116,6 +116,10 @@ function CTFTeamManager:startGame()
 end
 
 function CTFTeamManager:getPlayerTeam(player)
+    if player.data and player.data.ctf_team_id ~= nil then
+        return self.teams[player.data.ctf_team_id];
+    end
+
     for _, v in ipairs(self.teams) do
         if v:hasPlayer(player) then
             return v;

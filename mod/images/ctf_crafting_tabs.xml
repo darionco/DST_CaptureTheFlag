@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Atlas>
+	<Texture filename="ctf_crafting_tabs.tex" />
+	<Elements>
+		<Element name="ctf_tab_armour.tex" u1="0.001" u2="0.499" v2="0.999" v1="0.501" variant="" />
+		<Element name="ctf_tab_food.tex" u1="0.501" u2="0.999" v2="0.999" v1="0.501" variant="" />
+		<Element name="ctf_tab_hats.tex" u1="0.001" u2="0.499" v2="0.499" v1="0.001" variant="" />
+		<Element name="ctf_tab_weapons.tex" u1="0.501" u2="0.999" v2="0.499" v1="0.001" variant="" />
+	</Elements>
+</Atlas>

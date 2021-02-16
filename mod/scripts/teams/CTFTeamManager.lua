@@ -128,6 +128,13 @@ function CTFTeamManager:getPlayerTeam(player)
     return nil;
 end
 
+function CTFTeamManager:getObjectTeam(obj)
+    if obj.data and obj.data.ctf_team_id ~= nil then
+        return self.teams[obj.data.ctf_team_id];
+    end
+    return nil;
+end
+
 function CTFTeamManager:onWelcomeScreenClosed(player)
     if TheWorld.ismastersim then
         if self.gameStarted then

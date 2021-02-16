@@ -207,8 +207,12 @@ function CTFTeam:patchBuilder(obj, teamTag)
         local OldOnBuild = obj.components.builder.onBuild;
         obj.components.builder.onBuild = function(inst, prod)
             if prod and (not prod.components or not prod.components.edible) then
-                prod:AddTag(CTF_CONSTANTS.TEAM_ITEM_TAG);
-                prod:AddTag(teamTag);
+                if prod:HasTag('structure') then
+                    self:registerObject(prod, nil);
+                else
+                    prod:AddTag(CTF_CONSTANTS.TEAM_ITEM_TAG);
+                    prod:AddTag(teamTag);
+                end
             end
 
             if OldOnBuild then
@@ -224,14 +228,12 @@ function CTFTeam:patchCombat(obj, teamTag)
             return target:HasTag(teamTag);
         end
 
-        if obj.components.combat then
-            local OldCanTarget = obj.components.combat.CanTarget;
-            obj.components.combat.CanTarget = function(inst, target)
-                if target and target:HasTag(teamTag) then
-                    return false;
-                end
-                return OldCanTarget(inst, target);
+        local OldCanTarget = obj.components.combat.CanTarget;
+        obj.components.combat.CanTarget = function(inst, target)
+            if target and target:HasTag(teamTag) then
+                return false;
             end
+            return OldCanTarget(inst, target);
         end
 
         
@@ -346,6 +348,7 @@ function CTFTeam:registerObject(obj, data)
         obj.entity:SetCanSleep(false);
     end
 
+    obj.data.ctf_team_id = self.id;
     obj.data.ctf_team_tag = self.teamTag;
     obj:AddTag(self.teamTag);
 

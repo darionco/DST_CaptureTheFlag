@@ -10,3 +10,4 @@ modimport('scripts/prefabs/characters/wes');
 modimport('scripts/prefabs/characters/webber');
 modimport('scripts/prefabs/characters/wickerbottom');
 modimport('scripts/prefabs/characters/maxwell');
+modimport('scripts/prefabs/characters/winona');

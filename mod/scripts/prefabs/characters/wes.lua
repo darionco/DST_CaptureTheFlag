@@ -16,7 +16,12 @@ local WES_ARMOR_MULTIPLIER = 0.25;
 local OldArmorGetAbsorption = Armor.GetAbsorption;
 Armor.GetAbsorption = function(self, attacker, weapon)
     local absorption = OldArmorGetAbsorption(self, attacker, weapon);
-    if self.inst.components.inventoryitem and self.inst.components.inventoryitem.owner and self.inst.components.inventoryitem.owner.prefab == 'wes' then
+    if
+        absorption and
+        self.inst.components.inventoryitem and
+        self.inst.components.inventoryitem.owner and
+        self.inst.components.inventoryitem.owner.prefab == 'wes'
+    then
         absorption = absorption * WES_ARMOR_MULTIPLIER;
     end
     return absorption;

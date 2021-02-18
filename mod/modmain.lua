@@ -9,6 +9,7 @@ modimport('scripts/init/crafting_descriptions');
 modimport('scripts/init/loot');
 modimport('scripts/init/food');
 modimport('scripts/init/characters');
+modimport('scripts/init/character_descriptions');
 modimport('scripts/init/player');
 modimport('scripts/teams/CTFTeamManager');
 

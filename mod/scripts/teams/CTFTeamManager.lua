@@ -24,6 +24,12 @@ local function showWelcomeScreen(cb)
             'The are two teams in this game, each team has a different hue.\nThe goal of the game is to bring the opponent\'s piggyback to your base.\nUse gold to craft weapons, armor and food.\nYou can get gold by defeating enemies.\nSome creatures are your friends, some aren\'t, either way, they all drop gold.\n\nGood luck!',
             {
                 {
+                    text = "Discord",
+                    cb = function()
+                        VisitURL('https://discord.gg/2kBJkTaN');
+                    end
+                },
+                {
                     -- Set Text
                     text = "OK",
 
@@ -39,7 +45,7 @@ local function showWelcomeScreen(cb)
                     cb = function()
                         VisitURL('https://www.youtube.com/embed/_LN5mRUN6cE?autoplay=1');
                     end
-                }
+                },
             }
     ));
 end

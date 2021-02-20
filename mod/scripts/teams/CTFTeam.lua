@@ -569,8 +569,17 @@ function CTFTeam:registerPlayer(player)
     end
 end
 
+function CTFTeam:findPlayer(prefab, displayName)
+    for _, v in ipairs(self.players) do
+        if v.prefab == prefab and v:GetDisplayName() == displayName then
+            return v;
+        end
+    end
+    return nil;
+end
+
 function CTFTeam:hasPlayer(player)
-    for i, v in ipairs(self.players) do
+    for _, v in ipairs(self.players) do
         if v == player then
             return true;
         end

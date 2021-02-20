@@ -41,7 +41,7 @@ local function buildNewCrafting()
                 },
 				{
                     prefab = 'blowdart_pipe',
-                    ingredients = { Ingredient('goldnugget', 15) },
+                    ingredients = { Ingredient('goldnugget', 20) },
                     level = TECH.SCIENCE_ONE,
                     count = 1
                 },
@@ -77,13 +77,19 @@ local function buildNewCrafting()
                 },
 				{
                     prefab = 'hambat',
-                    ingredients = { Ingredient('goldnugget', 15), Ingredient('spear_wathgrithr', 1) },
+                    ingredients = { Ingredient('goldnugget', 15), Ingredient('tentaclespike', 1) },
                     level = TECH.SCIENCE_ONE,
                     count = 1
                 },
 				{
                     prefab = 'glasscutter',
                     ingredients = { Ingredient('goldnugget', 20), Ingredient('spear_wathgrithr', 1) },
+                    level = TECH.SCIENCE_ONE,
+                    count = 1
+                },
+				{
+                    prefab = 'icestaff',
+                    ingredients = { Ingredient('goldnugget', 30), Ingredient('batbat', 1) },
                     level = TECH.SCIENCE_ONE,
                     count = 1
                 },
@@ -108,8 +114,14 @@ local function buildNewCrafting()
             icon_atlas = 'images/ctf_crafting_tabs.xml',
             recipes = {
                 {
-                    prefab = 'armorwood',
+                    prefab = 'armorgrass',
                     ingredients = { Ingredient('goldnugget', 20) },
+                    level = TECH.SCIENCE_ONE,
+                    count = 1
+                },
+				{
+                    prefab = 'armorwood',
+                    ingredients = { Ingredient('goldnugget', 20), Ingredient('armorgrass', 1) },
                     level = TECH.SCIENCE_ONE,
                     count = 1
                 },
@@ -127,7 +139,7 @@ local function buildNewCrafting()
                 },
 				{
                     prefab = 'armorsnurtleshell',
-                    ingredients = { Ingredient('goldnugget', 20), Ingredient('armormarble', 1) },
+                    ingredients = { Ingredient('goldnugget', 20), Ingredient('armor_sanity', 1) },
                     level = TECH.SCIENCE_ONE,
                     count = 1
                 },
@@ -306,7 +318,7 @@ local function buildNewCrafting()
                 },
 				{
                     prefab = 'compostwrap',
-                    ingredients = { Ingredient('goldnugget', 5), Ingredient('dragonfruit_cooked', 1) },
+                    ingredients = { Ingredient('goldnugget', 10), Ingredient('dragonpie', 1) },
                     count = 1
                 },
 			}
@@ -332,7 +344,7 @@ local function buildNewCrafting()
             recipes = {
                 {
                     prefab = 'wereitem_moose',
-                    ingredients = { Ingredient('goldnugget', 50), Ingredient('tallbirdegg', 1) },
+                    ingredients = { Ingredient('goldnugget', 40), Ingredient('tallbirdegg', 1) },
                     count = 1
                 },
 			}
@@ -418,7 +430,7 @@ local function buildNewCrafting()
             recipes = {
                 {
                     prefab = 'gears',
-                    ingredients = { Ingredient('goldnugget', 20) },
+                    ingredients = { Ingredient('goldnugget', 15) },
                     count = 1
                 },
 			}

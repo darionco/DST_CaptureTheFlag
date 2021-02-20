@@ -363,7 +363,7 @@ function CTFTeam:registerObject(obj, data)
         self.winTask = self.flag:DoPeriodicTask(0.2, TestWinState, nil, self);
 
         if obj.components and obj.components.hauntable then
-            obj:RemoveComponent("hauntable");
+            obj:RemoveComponent('hauntable');
         end
 
         TheWorld:ListenForEvent(CTF_CONSTANTS.GAME_ENDED, function()
@@ -392,19 +392,19 @@ function CTFTeam:registerObject(obj, data)
 end
 
 function CTFTeam:setPlayerHealth(player, n)
-    if player ~= nil and player.components.health ~= nil and not player:HasTag("playerghost") then
+    if player ~= nil and player.components.health ~= nil and not player:HasTag('playerghost') then
         player.components.health:SetPercent(n);
     end
 end
 
 function CTFTeam:setPlayerHealthValue(player, n)
-    if player ~= nil and player.components.health ~= nil and not player:HasTag("playerghost") then
+    if player ~= nil and player.components.health ~= nil and not player:HasTag('playerghost') then
         self:SetPlayerHealth(player, n / player.components.health.maxhealth);
     end
 end
 
 function CTFTeam:setPlayerSanity(player, n)
-    if player ~= nil and player.components.sanity ~= nil and not player:HasTag("playerghost") then
+    if player ~= nil and player.components.sanity ~= nil and not player:HasTag('playerghost') then
         local redirect = player.components.sanity.redirect;
         player.components.sanity.redirect = nil;
         player.components.sanity:SetPercent(n);
@@ -413,37 +413,37 @@ function CTFTeam:setPlayerSanity(player, n)
 end
 
 function CTFTeam:setPlayerSanityValue(player, n)
-    if player ~= nil and player.components.sanity ~= nil and not player:HasTag("playerghost") then
+    if player ~= nil and player.components.sanity ~= nil and not player:HasTag('playerghost') then
         self:setPlayerSanity(player, n / player.components.sanity.max);
     end
 end
 
 function CTFTeam:setPlayerHunger(player, n)
-    if player ~= nil and player.components.hunger ~= nil and not player:HasTag("playerghost") then
+    if player ~= nil and player.components.hunger ~= nil and not player:HasTag('playerghost') then
         player.components.hunger:SetPercent(n);
     end
 end
 
 function CTFTeam:setPlayerHungerValue(player, n)
-    if player ~= nil and player.components.hunger ~= nil and not player:HasTag("playerghost") then
+    if player ~= nil and player.components.hunger ~= nil and not player:HasTag('playerghost') then
         self:setPlayerHunger(player, n / player.components.hunger.max);
     end
 end
 
 function CTFTeam:setPlayerMoisture(player, n)
-    if player ~= nil and player.components.moisture ~= nil and not player:HasTag("playerghost") then
+    if player ~= nil and player.components.moisture ~= nil and not player:HasTag('playerghost') then
         player.components.moisture:SetPercent(n);
     end
 end
 
 function CTFTeam:setPlayerMoistureValue(player, n)
-    if player ~= nil and player.components.moisture ~= nil and not player:HasTag("playerghost") then
+    if player ~= nil and player.components.moisture ~= nil and not player:HasTag('playerghost') then
         self:setPlayerMoisture(player, n / player.components.moisture.maxmoisture);
     end
 end
 
 function CTFTeam:setPlayerTemperature(player, n)
-    if player ~= nil and player.components.temperature ~= nil and not player:HasTag("playerghost") then
+    if player ~= nil and player.components.temperature ~= nil and not player:HasTag('playerghost') then
         player.components.temperature:SetTemperature(n);
     end
 end
@@ -476,12 +476,20 @@ function CTFTeam:resetPlayerStats(player)
     self:setPlayerTemperature(player, 25);
 end
 
+function CTFTeam:schedulePlayerRevive(player)
+    c_announce(player.name .. ' will revive in 15 seconds');
+    player:DoTaskInTime(15, function ()
+        self:teleportPlayerToBase(player);
+        self:revivePlayer(player);
+    end);
+end
+
 function CTFTeam:revivePlayer(player)
     if player ~= nil then
-        if player:HasTag("playerghost") then
-            player:PushEvent("respawnfromghost")
-        elseif player:HasTag("corpse") then
-            player:PushEvent("respawnfromcorpse")
+        if player:HasTag('playerghost') then
+            player:PushEvent('respawnfromghost')
+        elseif player:HasTag('corpse') then
+            player:PushEvent('respawnfromcorpse')
         end
     end
 end
@@ -538,15 +546,11 @@ function CTFTeam:registerPlayer(player)
 
     self.playerCount = self.playerCount + 1;
     player:ListenForEvent('death', function()
-        c_announce(player.name .. ' will revive in 15 seconds');
-        player:DoTaskInTime(15, function ()
-            self:teleportPlayerToBase(player);
-            self:revivePlayer(player);
-        end);
+        self:schedulePlayerRevive(player);
     end);
 
     local team = self;
-    player:ListenForEvent("ms_respawnedfromghost", function ()
+    player:ListenForEvent('ms_respawnedfromghost', function ()
         team:resetPlayerStats(player);
     end);
 
@@ -559,6 +563,10 @@ function CTFTeam:registerPlayer(player)
     end
 
     TheWorld:PushEvent(CTF_CONSTANTS.PLAYER_JOINED_TEAM_EVENT, player, team);
+
+    if player:HasTag('playerghost') or player:HasTag('corpse') then
+        self:schedulePlayerRevive(player);
+    end
 end
 
 function CTFTeam:hasPlayer(player)

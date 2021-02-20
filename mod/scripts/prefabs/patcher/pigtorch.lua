@@ -11,7 +11,7 @@ modimport('scripts/teams/CTFTeamManager');
 
 CTFPrefabPatcher:registerPrefabPatcher('pigtorch', function(inst, data)
     if inst.components and inst.components.spawner then
-        inst.components.spawner.delay = TUNING.TOTAL_DAY_TIME * 2;
+        inst.components.spawner.delay = TUNING.TOTAL_DAY_TIME;
     end
 
     if TheWorld.ismastersim then

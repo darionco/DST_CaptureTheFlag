@@ -476,9 +476,9 @@ function CTFTeam:resetPlayerStats(player)
     self:setPlayerTemperature(player, 25);
 end
 
-function CTFTeam:schedulePlayerRevive(player)
-    c_announce(player.name .. ' will revive in 15 seconds');
-    player:DoTaskInTime(15, function ()
+function CTFTeam:schedulePlayerRevive(player, seconds)
+    c_announce(player.name .. ' will revive in ' .. seconds .. ' seconds');
+    player:DoTaskInTime(seconds, function ()
         self:teleportPlayerToBase(player);
         self:revivePlayer(player);
     end);
@@ -546,7 +546,7 @@ function CTFTeam:registerPlayer(player)
 
     self.playerCount = self.playerCount + 1;
     player:ListenForEvent('death', function()
-        self:schedulePlayerRevive(player);
+        self:schedulePlayerRevive(player, 15);
     end);
 
     local team = self;
@@ -565,7 +565,7 @@ function CTFTeam:registerPlayer(player)
     TheWorld:PushEvent(CTF_CONSTANTS.PLAYER_JOINED_TEAM_EVENT, player, team);
 
     if player:HasTag('playerghost') or player:HasTag('corpse') then
-        self:schedulePlayerRevive(player);
+        self:schedulePlayerRevive(player, 15);
     end
 end
 

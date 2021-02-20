@@ -397,6 +397,12 @@ function CTFTeam:setPlayerHealth(player, n)
     end
 end
 
+function CTFTeam:setPlayerHealthValue(player, n)
+    if player ~= nil and player.components.health ~= nil and not player:HasTag("playerghost") then
+        self:SetPlayerHealth(player, n / player.components.health.maxhealth);
+    end
+end
+
 function CTFTeam:setPlayerSanity(player, n)
     if player ~= nil and player.components.sanity ~= nil and not player:HasTag("playerghost") then
         local redirect = player.components.sanity.redirect;
@@ -406,15 +412,33 @@ function CTFTeam:setPlayerSanity(player, n)
     end
 end
 
+function CTFTeam:setPlayerSanityValue(player, n)
+    if player ~= nil and player.components.sanity ~= nil and not player:HasTag("playerghost") then
+        self:setPlayerSanity(player, n / player.components.sanity.max);
+    end
+end
+
 function CTFTeam:setPlayerHunger(player, n)
     if player ~= nil and player.components.hunger ~= nil and not player:HasTag("playerghost") then
         player.components.hunger:SetPercent(n);
     end
 end
 
+function CTFTeam:setPlayerHungerValue(player, n)
+    if player ~= nil and player.components.hunger ~= nil and not player:HasTag("playerghost") then
+        self:setPlayerHunger(player, n / player.components.hunger.max);
+    end
+end
+
 function CTFTeam:setPlayerMoisture(player, n)
     if player ~= nil and player.components.moisture ~= nil and not player:HasTag("playerghost") then
         player.components.moisture:SetPercent(n);
+    end
+end
+
+function CTFTeam:setPlayerMoistureValue(player, n)
+    if player ~= nil and player.components.moisture ~= nil and not player:HasTag("playerghost") then
+        self:setPlayerMoisture(player, n / player.components.moisture.maxmoisture);
     end
 end
 
@@ -425,11 +449,31 @@ function CTFTeam:setPlayerTemperature(player, n)
 end
 
 function CTFTeam:resetPlayerStats(player)
-    self:setPlayerHealth(player,1);
-    self:setPlayerSanity(player,1);
-    self:setPlayerHunger(player, 1);
+    if player.data and player.data.ctf_spawnHealth then
+        self:setPlayerHealthValue(player, player.data.ctf_spawnHealth);
+    else
+        self:setPlayerHealth(player,1);
+    end
+
+    if player.data and player.data.ctf_spawnSanity then
+        self:setPlayerSanityValue(player, player.data.ctf_spawnSanity);
+    else
+        self:setPlayerSanity(player,1);
+    end
+
+    if player.data and player.data.ctf_spawnHunger then
+        self:setPlayerHungerValue(player, player.data.ctf_spawnHunger);
+    else
+        self:setPlayerHunger(player,1);
+    end
+
+    if player.data and player.data.ctf_spawnMoisture then
+        self:setPlayerMoistureValue(player, player.data.ctf_spawnMoisture);
+    else
+        self:setPlayerMoisture(player,0);
+    end
+
     self:setPlayerTemperature(player, 25);
-    self:setPlayerMoisture(player, 0);
 end
 
 function CTFTeam:revivePlayer(player)

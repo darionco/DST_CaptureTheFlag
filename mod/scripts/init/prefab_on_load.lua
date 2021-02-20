@@ -16,6 +16,7 @@ modimport('scripts/prefabs/patcher/wall_ruins_2');
 modimport('scripts/prefabs/patcher/pigtorch');
 modimport('scripts/prefabs/patcher/bishop_nightmare');
 modimport('scripts/prefabs/patcher/pigguard');
+modimport('scripts/prefabs/patcher/skeleton_player');
 
 --modimport('scripts/teams/CTFTeamManager');
 --

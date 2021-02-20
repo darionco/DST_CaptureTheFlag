@@ -410,6 +410,19 @@ local function buildNewCrafting()
                 },
 			}
 		},
+		{
+            tab = 'Gears',
+            order = 10,
+            icon = 'tab_fight.tex',
+			owner_tag = 'soulless',
+            recipes = {
+                {
+                    prefab = 'gears',
+                    ingredients = { Ingredient('goldnugget', 20) },
+                    count = 1
+                },
+			}
+		},
     }
 
     registerRecipes(content);

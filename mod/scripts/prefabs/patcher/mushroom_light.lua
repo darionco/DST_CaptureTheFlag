@@ -14,5 +14,8 @@ AddPrefabPostInit('mushroom_light', function(inst)
 
         -- they shouldn't be opened
         inst.components.container.canbeopened = false;
+
+        -- they should not be inspectable
+        inst:RemoveComponent('inspectable');
     end
 end);

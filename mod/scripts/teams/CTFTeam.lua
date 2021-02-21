@@ -10,17 +10,18 @@ local CTFTeamCombat = require('teams/CTFTeamCombat');
 
 modimport('scripts/prefabs/patcher/CTFPrefabPatcher');
 
+local CTF_FLAG_TAGS = { CTF_CONSTANTS.TEAM_FLAG_TAG };
 local function TestWinState(inst, self)
-    local player = FindClosestPlayerInRange(
+    local ents = TheSim:FindEntities(
             self.basePosition.x,
             self.basePosition.y,
             self.basePosition.z,
-            10, -- range
-            true -- is alive
+            10,
+            CTF_FLAG_TAGS
     );
-    if player ~= nil then
-        local item = player.components.inventory:GetEquippedItem(GLOBAL.EQUIPSLOTS.BODY);
-        if item ~= nil and item:HasTag(CTF_CONSTANTS.TEAM_FLAG_TAG) and not item:HasTag(self.teamTag) then
+
+    for _, v in ipairs(ents) do
+        if v:HasTag(CTF_CONSTANTS.TEAM_FLAG_TAG) and not v:HasTag(self.teamTag) then
             c_announce('Team ' .. self.id .. ' wins!');
             c_announce('Game restarting in 10 seconds!');
             TheWorld:DoTaskInTime(10, c_regenerateworld);
@@ -28,7 +29,7 @@ local function TestWinState(inst, self)
         end
     end
 
-    self.flag.AnimState:SetMultColour(self:getTeamColor(self.id));
+    --self.flag.AnimState:SetMultColour(self:getTeamColor(self.id));
 end
 
 local function FindSpawnerTarget(inst, team)

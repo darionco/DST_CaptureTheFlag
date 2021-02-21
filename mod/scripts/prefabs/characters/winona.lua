@@ -9,6 +9,8 @@ local CTFTeamCombat = require('teams/CTFTeamCombat');
 local WINONA_MAX_CATAPULTS = 3;
 
 TUNING.WINONA_CATAPULT_MIN_RANGE = 0;
+TUNING.WINONA_CATAPULT_HEALTH = 250;
+TUNING.WINONA_CATAPULT_DAMAGE = 35;
 
 AddPrefabPostInit('winona_catapult', function(inst)
     if inst.components then

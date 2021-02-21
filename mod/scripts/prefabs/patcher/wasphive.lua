@@ -17,4 +17,8 @@ CTFPrefabPatcher:registerPrefabPatcher('wasphive', function(inst, data)
             end);
         end
     end
+
+    if inst.components and inst.components.health then
+        inst.components.health:SetMaxHealth(CTF_CONSTANTS.WASPHIVE_HEALTH);
+    end
 end)

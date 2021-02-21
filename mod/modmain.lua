@@ -1,7 +1,7 @@
 local require = _G.require;
 local CTF_CONSTANTS = require('teams/CTFTeamConstants');
 
-modimport('scripts/init/loading_screen');
+modimport('scripts/init/screens');
 modimport('scripts/init/assets');
 modimport('scripts/init/prefab_on_load');
 modimport('scripts/init/crafting');

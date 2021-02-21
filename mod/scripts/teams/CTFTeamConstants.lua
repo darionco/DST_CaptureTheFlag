@@ -10,6 +10,7 @@ local CTF_CONSTANTS = {
     MINION_PREFABS = { 'spider', 'spider', 'spider', 'spider_warrior' },
 
     TEAM_FLAG_PREFAB = 'piggyback',
+    TEAM_FLAG_WALK_SPEED_MULT = 0.45,
 
     TEAM_PREFIX_TAG = 'CTF_TEAM_',
     TEAM_FLAG_TAG = 'CTF_TEAM_FLAG',

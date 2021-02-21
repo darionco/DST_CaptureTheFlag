@@ -328,7 +328,7 @@ function CTFTeam:patchFlagEquippable(flag)
             end
         end);
 
-        flag.components.equippable.walkspeedmult = 0.45;
+        flag.components.equippable.walkspeedmult = CTF_CONSTANTS.TEAM_FLAG_WALK_SPEED_MULT;
     end
 end
 

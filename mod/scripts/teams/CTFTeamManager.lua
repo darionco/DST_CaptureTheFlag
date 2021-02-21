@@ -188,9 +188,9 @@ function CTFTeamManager:removePlayer(player)
     end
 end
 
-function CTFTeamManager:findPlayer(prefab, displayName)
+function CTFTeamManager:findPlayer(prefab, userid)
     for _, v in ipairs(self.teams) do
-        local player = v:findPlayer(prefab, displayName);
+        local player = v:findPlayer(prefab, userid);
         if player ~= nil then
             return player;
         end

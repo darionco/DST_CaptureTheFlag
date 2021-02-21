@@ -7,9 +7,9 @@
 local CTF_SKELETON_MAX_HEALTH = 200;
 
 AddPrefabPostInit('skeleton_player', function(inst)
-    local OldSetSkeletonDescription = inst.SetSkeletonDescription;
-    inst.SetSkeletonDescription = function(f_inst, char, playername, cause, pkname)
-        local player = CTFTeamManager:findPlayer(char, playername);
+    local OldSetSkeletonAvatarData = inst.SetSkeletonAvatarData;
+    inst.SetSkeletonAvatarData = function(f_inst, client_obj)
+        local player = CTFTeamManager:findPlayer(client_obj.prefab, client_obj.userid);
         if player then
             local team = CTFTeamManager:getPlayerTeam(player);
             if team then
@@ -51,6 +51,6 @@ AddPrefabPostInit('skeleton_player', function(inst)
             end);
         end
 
-        OldSetSkeletonDescription(f_inst, char, playername, cause, pkname);
+        OldSetSkeletonAvatarData(f_inst, client_obj);
     end
 end);

@@ -334,6 +334,11 @@ local function buildNewCrafting()
                     ingredients = { Ingredient('goldnugget', 35), Ingredient('tallbirdegg', 1) },
                     count = 1
                 },
+                {
+                    prefab = 'book_brimstone',
+                    ingredients = { Ingredient('goldnugget', 40), Ingredient('tallbirdegg', 1) },
+                    count = 1
+                },
 			}
 		},
 		{

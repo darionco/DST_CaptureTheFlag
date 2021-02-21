@@ -4,4 +4,9 @@
 --- DateTime: 2021-02-15 12:22 p.m.
 ---
 
+-- Winona
 STRINGS.RECIPE_DESC.BLUEGEM = 'Power your G.E.M.erator!';
+
+-- Wickerbottom
+STRINGS.RECIPE_DESC.BOOK_SILVICULTURE = 'Heal the heart, tart, art.';
+STRINGS.RECIPE_DESC.BOOK_BRIMSTONE = 'Humpty Dumpty had a great killing spree.';

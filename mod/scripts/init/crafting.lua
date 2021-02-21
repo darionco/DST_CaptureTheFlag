@@ -24,6 +24,10 @@ local function registerRecipes(content)
             AddRecipe(vv.prefab, vv.ingredients, recipe_tab, vv.level, vv.placer, vv.spacing, nil, vv.count);
         end
     end
+
+    -- This is to make geometric placement be compatible with our mod
+    local nobody_tab = AddRecipeTab('Nobody', 999, nil, nil, '_ctf_nobody_tab', nil);
+    AddRecipe('treasurechest', { Ingredient('goldnugget', 10) }, nobody_tab);
 end
 
 local function buildNewCrafting()

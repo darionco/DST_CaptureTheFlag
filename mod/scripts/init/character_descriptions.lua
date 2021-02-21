@@ -28,9 +28,9 @@ end
 STRINGS.CHARACTER_DESCRIPTIONS.wilson = 'WORK IN PROGRESS'; -- '\n*Is a well rounded character';
 STRINGS.CHARACTER_DESCRIPTIONS.willow = 'WORK IN PROGRESS'; -- '*Can deploy bernie to battle';
 STRINGS.CHARACTER_DESCRIPTIONS.wendy = 'WORK IN PROGRESS'; -- '*Can place Abigail somewhere on the map\n*Abigail cannot move';
-STRINGS.CHARACTER_DESCRIPTIONS.wolfgang = '*Grows mighty on a full belly\n*No speed bonus when full';
-STRINGS.CHARACTER_DESCRIPTIONS.wx78 = 'WORK IN PROGRESS'; -- '*Can buy gears to upgrade from the store\n*Can get very tanky';
-STRINGS.CHARACTER_DESCRIPTIONS.wickerbottom = '*Can craft a book to help her team\n*Restores 45 health and 35 hunger\n*Applies to structures';
+STRINGS.CHARACTER_DESCRIPTIONS.wolfgang = '*Gets damage reduction on a full belly\n*But becomes slower as he grows';
+STRINGS.CHARACTER_DESCRIPTIONS.wx78 = '*Can buy gears to upgrade from the store\n*Can get very tanky';
+STRINGS.CHARACTER_DESCRIPTIONS.wickerbottom = '*Can craft two books\n*One restores allies\' health and hunger\n*The other damages enemies and allies\n*Effects apply to structures';
 STRINGS.CHARACTER_DESCRIPTIONS.wes = '*Is a glass cannon\n*Armor effectiveness reduced bt 75%\n*Has 55% damage multiplier\n*75 points of everything';
 STRINGS.CHARACTER_DESCRIPTIONS.waxwell = '*Can spawn up to 5 shadow duelists';
 STRINGS.CHARACTER_DESCRIPTIONS.woodie = '*Can transform into the weremoose';

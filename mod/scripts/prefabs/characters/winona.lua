@@ -42,11 +42,15 @@ end);
 
 AddPrefabPostInit('winona', function(inst)
     if inst.components and inst.components.builder then
-        local winona_active_catapults = 0;
+        if not inst.data then
+            inst.data = {};
+        end
+        inst.data.active_catapults = 0;
+
         local OldCanBuild = inst.components.builder.CanBuild;
         inst.components.builder.CanBuild = function(self, recname)
             local result = OldCanBuild(self, recname);
-            if result and recname == 'winona_catapult' and winona_active_catapults >= WINONA_MAX_CATAPULTS then
+            if result and recname == 'winona_catapult' and inst.data.active_catapults >= WINONA_MAX_CATAPULTS then
                 return false;
             end
             return result;
@@ -55,11 +59,11 @@ AddPrefabPostInit('winona', function(inst)
         local OldOnBuild = inst.components.builder.onBuild;
         inst.components.builder.onBuild = function(f_inst, prod)
             if prod and prod.prefab == 'winona_catapult' then
-                winona_active_catapults = winona_active_catapults + 1;
+                inst.data.active_catapults = inst.data.active_catapults + 1;
 
                 if prod.inst then
                     prod.inst:ListenForEvent("death", function()
-                        winona_active_catapults = winona_active_catapults - 1;
+                        inst.data.active_catapults = inst.data.active_catapults - 1;
                     end);
                 end
             end

@@ -11,6 +11,7 @@ modimport('scripts/init/food');
 modimport('scripts/init/characters');
 modimport('scripts/init/character_descriptions');
 modimport('scripts/init/player');
+modimport('scripts/init/chat');
 modimport('scripts/teams/CTFTeamManager');
 
 

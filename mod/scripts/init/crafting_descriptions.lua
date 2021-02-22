@@ -4,9 +4,94 @@
 --- DateTime: 2021-02-15 12:22 p.m.
 ---
 
--- Winona
+
+
+--FOOD
+STRINGS.RECIPE_DESC.JELLYBEAN = '+122 health over 120 seconds';
+STRINGS.RECIPE_DESC.COOKEDMEAT = 'Health: 3\n Hunger: 25';
+STRINGS.RECIPE_DESC.BIRD_EGG_COOKED = 'Health: 0\n Hunger: 12.5';
+STRINGS.RECIPE_DESC.DRAGONFRUIT_COOKED = 'Health: 20\n Hunger: 12.5';
+STRINGS.RECIPE_DESC.POTATO_COOKED = 'Health: 20\n Hunger: 25';
+STRINGS.RECIPE_DESC.GARLIC_COOKED = 'Health: 1\n Hunger: 9.375';
+STRINGS.RECIPE_DESC.CARROT_COOKED = 'Health: 3\n Hunger: 12.5';
+STRINGS.RECIPE_DESC.BUTTERFLYWINGS = 'Health: 8\n Hunger: 9.375';
+STRINGS.RECIPE_DESC.HONEY = 'Health: 3\n Hunger: 9.375';
+
+
+--WEAPONS
+STRINGS.RECIPE_DESC.SPEAR = 'Damage: 34\n Durability: 150';
+STRINGS.RECIPE_DESC.BLOWDART_PIPE = 'Damage: 100\n Durability: 1';
+STRINGS.RECIPE_DESC.BOOMERANG = 'Damage: 27.2\n Durability: 10';
+STRINGS.RECIPE_DESC.WHIP = 'Damage: 27.2\n Durability: 175';
+STRINGS.RECIPE_DESC.TENTACLESPIKE = 'Damage: 51\n Durability: 100';
+STRINGS.RECIPE_DESC.BATBAT = 'Damage: 42.5\n Durability: 75';
+STRINGS.RECIPE_DESC.SPEAR_WATHGRITHR = 'Damage: 42.5\n Durability: 200';
+STRINGS.RECIPE_DESC.HAMBAT = 'Damage: 29.75 - 59.5\n Durability: 10 days';
+STRINGS.RECIPE_DESC.GLASSCUTTER = 'Damage: 68\n Durability: 75';
+STRINGS.RECIPE_DESC.ICESTAFF = 'Damage: 0\n Durability: 20';
+STRINGS.RECIPE_DESC.NIGHTSWORD = 'Damage: 68\n Durability: 100';
+STRINGS.RECIPE_DESC.RUINS_BAT = 'Damage: 59.5\n Durability: 200';
+
+
+--ARMOR
+STRINGS.RECIPE_DESC.ARMORGRASS = 'Absorbtion: 60%\n Durability: 158';
+STRINGS.RECIPE_DESC.ARMORWOOD = 'Absorbtion: 80%\n Durability: 315';
+STRINGS.RECIPE_DESC.ARMORMARBLE = 'Absorbtion: 95%\n Durability: 735';
+STRINGS.RECIPE_DESC.ARMOR_SANITY = 'Absorbtion: 95%\n Durability: 525';
+STRINGS.RECIPE_DESC.ARMORSNURTLESHELL = 'Absorbtion: 60-100%\n Durability: 735';
+STRINGS.RECIPE_DESC.ARMORRUINS = 'Absorbtion: 90%\n Durability: 1260';
+STRINGS.RECIPE_DESC.ARMORSKELETON = 'Blocks all damage every 5 seconds';
+
+
+--HATS
+STRINGS.RECIPE_DESC.BEEHAT = 'Bee Absorbtion: 80%\n Durability: 1050';
+STRINGS.RECIPE_DESC.COOKIECUTTERHAT = 'Absorbtion: 70%\n Durability: 525';
+STRINGS.RECIPE_DESC.FOOTBALLHAT = 'Absorbtion: 80%\n Durability: 315';
+STRINGS.RECIPE_DESC.WATHGRITHRHAT = 'Absorbtion: 80%\n Durability: 525';
+STRINGS.RECIPE_DESC.SLURTLEHAT = 'Absorbtion: 90%\n Durability: 525';
+STRINGS.RECIPE_DESC.RUINSHAT = 'Absorbtion: 90-100%\n Durability: 840';
+
+
+--WALTER
+STRINGS.RECIPE_DESC.SLINGSHOT = 'Shoot pebbles at your enemies!';
+STRINGS.RECIPE_DESC.SLINGSHOTAMMO_ROCK = 'Amount: 5\n Damage: 17';
+STRINGS.RECIPE_DESC.SLINGSHOTAMMO_GOLD = 'Amount: 5\n Damage: 34';
+STRINGS.RECIPE_DESC.SLINGSHOTAMMO_MARBLE = 'Amount: 5\n Damage: 51';
+STRINGS.RECIPE_DESC.SLINGSHOTAMMO_FREEZE = 'Amount: 5\n Freeze your enemies!';
+STRINGS.RECIPE_DESC.SLINGSHOTAMMO_SLOW = 'Amount: 5\n Slow your enemies!';
+
+
+--WORMWOOD
+STRINGS.RECIPE_DESC.ARMOR_BRAMBLE = 'Damage nearby enemies when hit!';
+STRINGS.RECIPE_DESC.TRAP_BRAMBLE = 'Damage: 40\n Durability: 10';
+STRINGS.RECIPE_DESC.COMPOSTWRAP = '+40 health over 32 seconds';
+
+
+--WOODIE
+STRINGS.RECIPE_DESC.WEREITEM_MOOSE = 'Destroy anything as the weremoose!';
+
+
+--WINONA
+STRINGS.RECIPE_DESC.WINONA_CATAPULT = 'Damage: 35\n Health: 250';
+STRINGS.RECIPE_DESC.WINONA_BATTERY_HIGH = 'Power your catapult!';
 STRINGS.RECIPE_DESC.BLUEGEM = 'Power your G.E.M.erator!';
 
--- Wickerbottom
+
+--WARLY
+STRINGS.RECIPE_DESC.PORTABLECOOKPOT_ITEM = 'Cook on the go!';
+STRINGS.RECIPE_DESC.PORTABLESPICER_ITEM = 'Gain unique abilities!';
+STRINGS.RECIPE_DESC.SPICE_GARLIC = '33% absorbtion\n Duration: 4 minutes';
+STRINGS.RECIPE_DESC.SPICE_CHILI = '20% more damage\n Duration: 4 minutes';
+STRINGS.RECIPE_DESC.SPICE_SALT = '25% more healing\n Duration: 4 minutes';
+
+--WICKERBOTTOM
 STRINGS.RECIPE_DESC.BOOK_SILVICULTURE = 'Heal the heart, tart, art.';
 STRINGS.RECIPE_DESC.BOOK_BRIMSTONE = 'Humpty Dumpty had a great killing spree.';
+
+
+--MAXWELL
+STRINGS.RECIPE_DESC.SHADOWDUELIST_BUILDER = 'Build up to 5 minions!';
+
+
+--WX-78
+STRINGS.RECIPE_DESC.GEARS = 'Eat up to 15 and gain up to 400 health!';

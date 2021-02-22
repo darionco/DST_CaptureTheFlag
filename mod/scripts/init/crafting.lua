@@ -69,7 +69,7 @@ local function buildNewCrafting()
                 },
 				{
                     prefab = 'batbat',
-                    ingredients = { Ingredient('goldnugget', 10), Ingredient('spear', 1) },
+                    ingredients = { Ingredient('goldnugget', 15), Ingredient('spear', 1) },
                     level = TECH.SCIENCE_ONE,
                     count = 1
                 },
@@ -93,7 +93,7 @@ local function buildNewCrafting()
                 },
 				{
                     prefab = 'icestaff',
-                    ingredients = { Ingredient('goldnugget', 30), Ingredient('batbat', 1) },
+                    ingredients = { Ingredient('goldnugget', 35), Ingredient('batbat', 1) },
                     level = TECH.SCIENCE_ONE,
                     count = 1
                 },
@@ -284,7 +284,7 @@ local function buildNewCrafting()
                 },
 				{
                     prefab = 'slingshotammo_gold',
-                    ingredients = { Ingredient('goldnugget', 4) },
+                    ingredients = { Ingredient('goldnugget', 5) },
                     count = 5
                 },
 				{
@@ -294,12 +294,12 @@ local function buildNewCrafting()
                 },
 				{
                     prefab = 'slingshotammo_freeze',
-                    ingredients = { Ingredient('goldnugget', 10) },
+                    ingredients = { Ingredient('goldnugget', 15) },
                     count = 5
                 },
 				{
                     prefab = 'slingshotammo_slow',
-                    ingredients = { Ingredient('goldnugget', 10) },
+                    ingredients = { Ingredient('goldnugget', 15) },
                     count = 5
                 },
 			}
@@ -312,7 +312,7 @@ local function buildNewCrafting()
             recipes = {
                 {
                     prefab = 'armor_bramble',
-                    ingredients = { Ingredient('goldnugget', 15), Ingredient('armorwood', 1) },
+                    ingredients = { Ingredient('goldnugget', 30), Ingredient('armor_sanity', 1) },
                     count = 1
                 },
 				{
@@ -322,7 +322,7 @@ local function buildNewCrafting()
                 },
 				{
                     prefab = 'compostwrap',
-                    ingredients = { Ingredient('goldnugget', 10), Ingredient('dragonpie', 1) },
+                    ingredients = { Ingredient('goldnugget', 15), Ingredient('dragonfruit_cooked', 5) },
                     count = 1
                 },
 			}
@@ -439,7 +439,7 @@ local function buildNewCrafting()
             recipes = {
                 {
                     prefab = 'gears',
-                    ingredients = { Ingredient('goldnugget', 15) },
+                    ingredients = { Ingredient('goldnugget', 10) },
                     count = 1
                 },
 			}

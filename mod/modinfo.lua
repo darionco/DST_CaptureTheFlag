@@ -1,7 +1,7 @@
 name = 'Warsak!'
 description = 'Capture the flag themed mod!'
 author = 'fibonacci618, JayLil & aligura'
-version = '0.6.0'
+version = '0.6.13'
 
 forumthread = ''
 

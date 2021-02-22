@@ -53,9 +53,46 @@ end
 CTFTeamManager = {
     teamCount = 0,
     teams = {},
+    userid2teamid = {},
     gameStarted = false,
     gameStartCount = 0,
 };
+
+function CTFTeamManager:registerNetEvents(inst)
+    self._net_player_event = GLOBAL.net_string(inst.GUID, 'ctf_team_manager_net_player_event', 'ctf_team_manager_net_player_event');
+    if not TheNet:IsDedicated() then
+        inst:ListenForEvent('ctf_team_manager_net_player_event', function()
+            local event = CTFTeamManager._net_player_event:value();
+            self:handleNetPlayerEvent(event);
+        end);
+    end
+end
+
+function CTFTeamManager:netUpdateUserTable()
+    if self._net_player_event then
+        local serialized = '|';
+        for k, v in pairs(self.userid2teamid) do
+            serialized = serialized .. k .. ':' .. v .. '|';
+        end
+        self._net_player_event:set(serialized);
+    end
+end
+
+function CTFTeamManager:handleNetPlayerEvent(event)
+    self.userid2teamid = {};
+    for pair in string.gmatch(event, '([^|]+)') do
+        if pair then
+            local userid, teamid = string.match(pair, '(.+):(.+)');
+            if userid ~= nil and teamid ~= nil then
+                self.userid2teamid[userid] = tonumber(teamid);
+            end
+        end
+    end
+end
+
+function CTFTeamManager:getUserTeamID(userid)
+    return self.userid2teamid[userid];
+end
 
 function CTFTeamManager:registerTeamObject(obj, data)
     if (self.teams[data.ctf_team] == nil) then
@@ -164,6 +201,9 @@ function CTFTeamManager:registerPlayer(player)
             team:registerPlayer(player);
             team:setPlayerInvincibility(player, true);
         end
+
+        self.userid2teamid[player.userid] = team.id;
+        self:netUpdateUserTable();
     end
 
     -- try this again later, but it's not that important
@@ -185,6 +225,11 @@ end
 function CTFTeamManager:removePlayer(player)
     for _, v in ipairs(self.teams) do
         v:removePlayer(player);
+    end
+
+    if TheWorld.ismastersim then
+        self.userid2teamid[player.userid] = nil;
+        self:netUpdateUserTable();
     end
 end
 

@@ -38,10 +38,13 @@ end
 AddPrefabPostInit('player_classified', function(inst)
     inst.ctf_net_on_player_spawned = GLOBAL.net_event(inst.GUID, 'ctf_net_on_player_spawned');
     inst.ctf_net_on_player_team_id = GLOBAL.net_byte(inst.GUID, 'ctf_net_on_player_team_id', 'ctf_net_on_player_team_id');
+    
     if not TheWorld.ismastersim then
         inst:ListenForEvent('ctf_net_on_player_spawned', OnPlayerSpawned, inst.entity:GetParent());
         inst:ListenForEvent('ctf_net_on_player_team_id', OnPlayerTeamID, inst.entity:GetParent());
     end
+
+    CTFTeamManager:registerNetEvents(inst);
 end);
 
 AddComponentPostInit('playervision', function(component)

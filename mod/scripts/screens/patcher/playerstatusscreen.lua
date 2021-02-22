@@ -12,7 +12,7 @@ local OldGetDisplayName = PlayerStatusScreen.GetDisplayName;
 PlayerStatusScreen.GetDisplayName = function(self, clientrecord)
     local result = OldGetDisplayName(self, clientrecord);
     local teamID = CTFTeamManager:getUserTeamID(clientrecord.userid);
-    if teamID ~= nil then
+    if teamID ~= nil and clientrecord.netid ~= nil then
         -- patch the client color here
         clientrecord.colour = CTF_CONSTANTS.TEAM_COLORS[teamID];
         return '[T' .. teamID .. '] ' .. result;

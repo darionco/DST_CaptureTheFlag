@@ -22,7 +22,15 @@ end
 
 local function OnPlayerTeamID(inst)
     local player = inst.entity:GetParent();
-    local teamTag = CTFTeam.makeTeamTag(nil, player.player_classified.ctf_net_on_player_team_id:value());
+    local teamID = player.player_classified.ctf_net_on_player_team_id:value();
+    local teamTag = CTFTeam.makeTeamTag(nil, teamID);
+
+    if not player.data then
+        player.data = {};
+    end
+    player.data.ctf_team_id = teamID;
+    player.data.ctf_team_tag = teamTag;
+
     CTFTeam.patchPlayerController(nil, player, teamTag);
     CTFTeam.patchCombat(nil, player, teamTag);
 end

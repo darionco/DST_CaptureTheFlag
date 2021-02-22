@@ -11,11 +11,11 @@ local PlayerStatusScreen = require('screens/playerstatusscreen');
 local OldGetDisplayName = PlayerStatusScreen.GetDisplayName;
 PlayerStatusScreen.GetDisplayName = function(self, clientrecord)
     local result = OldGetDisplayName(self, clientrecord);
-    local player = CTFTeamManager:findPlayer(clientrecord.prefab, clientrecord.userid);
-    if player and player.data and player.data.ctf_team_id then
+    local teamID = CTFTeamManager:getUserTeamID(clientrecord.userid);
+    if teamID ~= nil then
         -- patch the client color here
-        clientrecord.colour = CTF_CONSTANTS.TEAM_COLORS[player.data.ctf_team_id];
-        return '[T' .. player.data.ctf_team_id .. '] ' .. result;
+        clientrecord.colour = CTF_CONSTANTS.TEAM_COLORS[teamID];
+        return '[T' .. teamID .. '] ' .. result;
     end
 
     return result;

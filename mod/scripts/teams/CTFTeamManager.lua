@@ -200,10 +200,9 @@ function CTFTeamManager:registerPlayer(player)
             c_announce(player.name .. ' joins team ' .. team.id);
             team:registerPlayer(player);
             team:setPlayerInvincibility(player, true);
+            self.userid2teamid[player.userid] = team.id;
+            self:netUpdateUserTable();
         end
-
-        self.userid2teamid[player.userid] = team.id;
-        self:netUpdateUserTable();
     end
 
     -- try this again later, but it's not that important

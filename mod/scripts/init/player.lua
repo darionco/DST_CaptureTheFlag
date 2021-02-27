@@ -43,8 +43,6 @@ AddPrefabPostInit('player_classified', function(inst)
         inst:ListenForEvent('ctf_net_on_player_spawned', OnPlayerSpawned, inst.entity:GetParent());
         inst:ListenForEvent('ctf_net_on_player_team_id', OnPlayerTeamID, inst.entity:GetParent());
     end
-
-    CTFTeamManager:registerNetEvents(inst);
 end);
 
 AddComponentPostInit('playervision', function(component)

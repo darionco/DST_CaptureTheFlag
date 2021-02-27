@@ -33,4 +33,8 @@ AddPrefabPostInit('world', function(world)
     TheWorld:ListenForEvent('ms_playerdisconnected', handlePlayerDisconnected);
 end);
 
+AddPrefabPostInit('forest_network', function(inst)
+    CTFTeamManager:registerNetEvents(inst);
+end);
+
 

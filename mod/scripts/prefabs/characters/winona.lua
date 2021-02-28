@@ -61,11 +61,9 @@ AddPrefabPostInit('winona', function(inst)
             if prod and prod.prefab == 'winona_catapult' then
                 inst.data.active_catapults = inst.data.active_catapults + 1;
 
-                if prod.inst then
-                    prod.inst:ListenForEvent("death", function()
-                        inst.data.active_catapults = inst.data.active_catapults - 1;
-                    end);
-                end
+                prod:ListenForEvent("death", function()
+                    inst.data.active_catapults = inst.data.active_catapults - 1;
+                end);
             end
 
             if OldOnBuild then

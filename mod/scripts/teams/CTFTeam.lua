@@ -28,8 +28,6 @@ local function TestWinState(inst, self)
             TheWorld:PushEvent(CTF_CONSTANTS.GAME_ENDED);
         end
     end
-
-    --self.flag.AnimState:SetMultColour(self:getTeamColor(self.id));
 end
 
 local function FindSpawnerTarget(inst, team)
@@ -332,6 +330,14 @@ function CTFTeam:patchFlagEquippable(flag)
     end
 end
 
+function CTFTeam:setTeamColor(obj)
+    local amt = 0.2;
+    local multAmt = math.pow(1 - amt, 2);
+    local r, g, b, a = self:getTeamColor(self.id);
+    obj.AnimState:SetMultColour(r * multAmt, g * multAmt, b * multAmt, a);
+    obj.AnimState:SetAddColour(r * amt, g * amt, b * amt, a);
+end
+
 function CTFTeam:registerObject(obj, data)
     if obj:HasTag(self.teamTag) then
         return;
@@ -388,7 +394,7 @@ function CTFTeam:registerObject(obj, data)
     self:patchCombat(obj, self.teamTag);
 
     if obj.AnimState then
-        obj.AnimState:SetMultColour(self:getTeamColor(self.id));
+        self:setTeamColor(obj);
     end
 end
 
@@ -555,9 +561,7 @@ function CTFTeam:registerPlayer(player)
         team:resetPlayerStats(player);
     end);
 
-    --player:DoPeriodicTask(0.5, function()
-        player.AnimState:SetMultColour(self:getTeamColor(self.id));
-    --end);
+    self:setTeamColor(player);
 
     if player.player_classified and player.player_classified.ctf_net_on_player_team_id then
         player.player_classified.ctf_net_on_player_team_id:set(self.id);

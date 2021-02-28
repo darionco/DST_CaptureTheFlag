@@ -201,11 +201,22 @@ function CTFTeam:patchSpawner(obj)
     end
 end
 
+function CTFTeam:shouldTagItem(item)
+    if item.components and item.components.edible then
+        for _, v in ipairs(FOODGROUP.OMNI.types) do
+            if item.components.edible.foodtype == v then
+                return false;
+            end
+        end
+    end
+    return true;
+end
+
 function CTFTeam:patchBuilder(obj, teamTag)
     if obj.components and obj.components.builder then
         local OldOnBuild = obj.components.builder.onBuild;
         obj.components.builder.onBuild = function(inst, prod)
-            if prod and (not prod.components or not prod.components.edible) then
+            if prod and self:shouldTagItem(prod) then
                 if prod:HasTag('structure') then
                     self:registerObject(prod, nil);
                 else

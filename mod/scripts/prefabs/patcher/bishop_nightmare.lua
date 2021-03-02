@@ -4,7 +4,7 @@
 --- DateTime: 2021-01-23 5:10 p.m.
 ---
 local require = _G.require;
-local CTF_CONSTANTS = require('teams/CTFTeamConstants');
+local CTF_TEAM_CONSTANTS = require('constants/CTFTeamConstants');
 
 modimport('scripts/prefabs/patcher/CTFPrefabPatcher');
 modimport('scripts/teams/CTFTeamManager');
@@ -21,7 +21,7 @@ CTFPrefabPatcher:registerPrefabPatcher('bishop_nightmare', function(inst, data)
         inst.components.combat:SetRetargetFunction(0.25, OldRetargetFunction);
 
         if data.ctf_team then
-            TheWorld:ListenForEvent(CTF_CONSTANTS.PLAYER_CONNECTED_EVENT, function()
+            TheWorld:ListenForEvent(CTF_TEAM_CONSTANTS.PLAYER_CONNECTED_EVENT, function()
                 CTFTeamManager:registerTeamObject(inst, data);
             end);
         end

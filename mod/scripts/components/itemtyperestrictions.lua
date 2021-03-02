@@ -5,7 +5,7 @@
 ---
 
 local require = _G.require;
-local CTF_CONSTANTS = require('teams/CTFTeamConstants');
+local CTF_TEAM_CONSTANTS = require('constants/CTFTeamConstants');
 
 local ItemTypeRestrictions = Class(function(self, inst)
     self.player = inst.entity:GetParent();
@@ -15,7 +15,7 @@ local ItemTypeRestrictions = Class(function(self, inst)
 end);
 
 function ItemTypeRestrictions:IsAllowed(target)
-    if target:HasTag(CTF_CONSTANTS.TEAM_ITEM_TAG) then
+    if target:HasTag(CTF_TEAM_CONSTANTS.TEAM_ITEM_TAG) then
         if target:HasTag(self.ctfTeamTag) then
             return true;
         else

@@ -4,12 +4,12 @@
 --- DateTime: 2021-01-17 1:43 p.m.
 ---
 local require = _G.require;
-local CTF_CONSTANTS = require('teams/CTFTeamConstants');
+local CTF_TEAM_CONSTANTS = require('constants/CTFTeamConstants');
 
 CTFPrefabPatcher:registerPrefabPatcher('spiderden', function(inst, data)
     if TheWorld.ismastersim then
         if data.ctf_team then
-            TheWorld:ListenForEvent(CTF_CONSTANTS.PLAYER_CONNECTED_EVENT, function()
+            TheWorld:ListenForEvent(CTF_TEAM_CONSTANTS.PLAYER_CONNECTED_EVENT, function()
                 CTFTeamManager:registerTeamObject(inst, data);
             end);
         end

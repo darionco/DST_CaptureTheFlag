@@ -5,7 +5,7 @@
 ---
 
 local require = GLOBAL.require;
-local CTF_CONSTANTS = require('teams/CTFTeamConstants');
+local CTF_TEAM_CONSTANTS = require('constants/CTFTeamConstants');
 local PlayerStatusScreen = require('screens/playerstatusscreen');
 
 local OldGetDisplayName = PlayerStatusScreen.GetDisplayName;
@@ -14,7 +14,7 @@ PlayerStatusScreen.GetDisplayName = function(self, clientrecord)
     local teamID = CTFTeamManager:getUserTeamID(clientrecord.userid);
     if teamID ~= nil and clientrecord.netid ~= nil then
         -- patch the client color here
-        clientrecord.colour = CTF_CONSTANTS.TEAM_COLORS[teamID];
+        clientrecord.colour = CTF_TEAM_CONSTANTS.TEAM_COLORS[teamID];
         return '[T' .. teamID .. '] ' .. result;
     end
 

@@ -5,14 +5,14 @@
 ---
 ---
 local require = GLOBAL.require;
-local CTF_CONSTANTS = require('teams/CTFTeamConstants');
+local CTF_TEAM_CONSTANTS = require('constants/CTFTeamConstants');
 local CTFTeamCombat = require('teams/CTFTeamCombat');
 
 AddPrefabPostInit('spider', function(inst)
     if TheWorld.ismastersim then
         local OldRetargetFunction = inst.components.combat.targetfn;
         inst.components.combat:SetRetargetFunction(inst.components.combat.retargetperiod, function(self)
-            if self:HasTag(CTF_CONSTANTS.TEAM_MINION_TAG) then
+            if self:HasTag(CTF_TEAM_CONSTANTS.TEAM_MINION_TAG) then
                 local radius = self.components.knownlocations:GetLocation("investigate") ~= nil and TUNING.SPIDER_INVESTIGATETARGET_DIST or TUNING.SPIDER_TARGET_DIST;
                 return CTFTeamCombat.findEnemy(self, SpringCombatMod(radius), self.data.ctf_team_tag);
             end

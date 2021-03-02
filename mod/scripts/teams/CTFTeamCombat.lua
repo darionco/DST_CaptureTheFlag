@@ -4,9 +4,9 @@
 --- DateTime: 2021-01-22 11:09 p.m.
 ---
 local require = _G.require;
-local CTF_CONSTANTS = require('teams/CTFTeamConstants');
+local CTF_TEAM_CONSTANTS = require('constants/CTFTeamConstants');
 
-local RETARGET_ONEOF_TAGS = { CTF_CONSTANTS.TEAM_MINION_TAG, CTF_CONSTANTS.TEAM_PLAYER_TAG, CTF_CONSTANTS.TEAM_MINION_SPAWNER_TAG };
+local RETARGET_ONEOF_TAGS = { CTF_TEAM_CONSTANTS.TEAM_MINION_TAG, CTF_TEAM_CONSTANTS.TEAM_PLAYER_TAG, CTF_TEAM_CONSTANTS.TEAM_MINION_SPAWNER_TAG };
 
 local findEnemy = function(inst, radius, teamTag)
     return FindEntity(inst, radius, nil, { "_combat", "_health" }, { teamTag, 'INLIMBO' }, RETARGET_ONEOF_TAGS);

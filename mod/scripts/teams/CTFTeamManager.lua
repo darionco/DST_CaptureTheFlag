@@ -6,7 +6,7 @@
 modimport('scripts/teams/CTFTeam');
 
 local require = GLOBAL.require;
-local CTF_CONSTANTS = require('teams/CTFTeamConstants');
+local CTF_TEAM_CONSTANTS = require('constants/CTFTeamConstants');
 local CTFInstructionsPopup = require "screens/CTFInstructionsPopup"
 
 local CTF_RPC = 'CTF::PLAYER';
@@ -154,7 +154,7 @@ function CTFTeamManager:startGame()
         for _, v in ipairs(self.teams) do
             v:teleportAllPlayersToBase();
         end
-        TheWorld:PushEvent(CTF_CONSTANTS.GAME_STARTED);
+        TheWorld:PushEvent(CTF_TEAM_CONSTANTS.GAME_STARTED);
     end
 end
 

@@ -4,7 +4,7 @@
 --- DateTime: 2021-02-14 11:40 p.m.
 ---
 local require = _G.require;
-local CTF_CONSTANTS = require('teams/CTFTeamConstants');
+local CTF_TEAM_CONSTANTS = require('constants/CTFTeamConstants');
 
 local WICKERBOTTOM_BOOK_RANGE = 30;
 
@@ -20,7 +20,7 @@ local WICKERBOTTOM_BOOK_BRIMSTONE_TAGS = { '_combat', '_health' };
 AddPrefabPostInit('book_silviculture', function(inst)
     if inst.components and inst.components.book then
         inst.components.book.onread = function(f_inst, reader)
-            if reader:HasTag(CTF_CONSTANTS.TEAM_PLAYER_TAG) and reader.data and reader.data.ctf_team_tag then
+            if reader:HasTag(CTF_TEAM_CONSTANTS.TEAM_PLAYER_TAG) and reader.data and reader.data.ctf_team_tag then
                 local teamTag = reader.data.ctf_team_tag;
                 local x, y, z = reader.Transform:GetWorldPosition();
                 local ents = TheSim:FindEntities(x, y, z, WICKERBOTTOM_BOOK_RANGE, { teamTag });
@@ -44,7 +44,7 @@ end);
 AddPrefabPostInit('book_brimstone', function(inst)
     if inst.components and inst.components.book then
         inst.components.book.onread = function(f_inst, reader)
-            if reader:HasTag(CTF_CONSTANTS.TEAM_PLAYER_TAG) and reader.data and reader.data.ctf_team_tag then
+            if reader:HasTag(CTF_TEAM_CONSTANTS.TEAM_PLAYER_TAG) and reader.data and reader.data.ctf_team_tag then
                 local teamTag = reader.data.ctf_team_tag;
                 local x, y, z = reader.Transform:GetWorldPosition();
                 local ents = TheSim:FindEntities(x, y, z, WICKERBOTTOM_BOOK_RANGE, WICKERBOTTOM_BOOK_BRIMSTONE_TAGS);

@@ -5,12 +5,12 @@
 ---
 
 local require = GLOBAL.require;
-local CTF_CONSTANTS = require('teams/CTFTeamConstants');
+local CTF_TEAM_CONSTANTS = require('constants/CTFTeamConstants');
 local CTFTeamCombat = require('teams/CTFTeamCombat');
 
 modimport('scripts/prefabs/patcher/CTFPrefabPatcher');
 
-local CTF_FLAG_TAGS = { CTF_CONSTANTS.TEAM_FLAG_TAG };
+local CTF_FLAG_TAGS = { CTF_TEAM_CONSTANTS.TEAM_FLAG_TAG };
 local function TestWinState(inst, self)
     local ents = TheSim:FindEntities(
             self.basePosition.x,
@@ -21,11 +21,11 @@ local function TestWinState(inst, self)
     );
 
     for _, v in ipairs(ents) do
-        if v:HasTag(CTF_CONSTANTS.TEAM_FLAG_TAG) and not v:HasTag(self.teamTag) then
+        if v:HasTag(CTF_TEAM_CONSTANTS.TEAM_FLAG_TAG) and not v:HasTag(self.teamTag) then
             c_announce('Team ' .. self.id .. ' wins!');
             c_announce('Game restarting in 10 seconds!');
             TheWorld:DoTaskInTime(10, c_regenerateworld);
-            TheWorld:PushEvent(CTF_CONSTANTS.GAME_ENDED);
+            TheWorld:PushEvent(CTF_TEAM_CONSTANTS.GAME_ENDED);
         end
     end
 end
@@ -48,7 +48,7 @@ local function SpawnMinions(inst, team)
         for _, v in ipairs(CTFTeamManager.teams) do
             if v.id ~= team.id then
                 local target = FindSpawnerTarget(inst, v);
-                local minionPrefab = CTF_CONSTANTS.MINION_PREFABS[(inst.data.ctf_minion_count % 4) + 1];
+                local minionPrefab = CTF_TEAM_CONSTANTS.MINION_PREFABS[(inst.data.ctf_minion_count % 4) + 1];
                 local minion = inst.components.childspawner:DoSpawnChild(nil, minionPrefab, 5);
                 if minion ~= nil then
                     inst.data.ctf_minion_count = inst.data.ctf_minion_count + 1;
@@ -107,15 +107,15 @@ CTFTeam = Class(function(self, id)
 end);
 
 function CTFTeam:makeTeamTag(id)
-    return CTF_CONSTANTS.TEAM_PREFIX_TAG .. id;
+    return CTF_TEAM_CONSTANTS.TEAM_PREFIX_TAG .. id;
 end
 
 function CTFTeam:makeExcludeTag(teamTag)
-    return CTF_CONSTANTS.EXCLUDE_PREFIX_TAG .. teamTag;
+    return CTF_TEAM_CONSTANTS.EXCLUDE_PREFIX_TAG .. teamTag;
 end
 
 function CTFTeam:getTeamColor(id)
-    return unpack(CTF_CONSTANTS.TEAM_COLORS[math.min(id, 5)]);
+    return unpack(CTF_TEAM_CONSTANTS.TEAM_COLORS[math.min(id, 5)]);
 end
 
 function CTFTeam:makeMinionSpawner(obj)
@@ -125,12 +125,12 @@ function CTFTeam:makeMinionSpawner(obj)
         end
 
         obj:AddComponent('childspawner');
-        TheWorld:ListenForEvent(CTF_CONSTANTS.GAME_STARTED, function()
+        TheWorld:ListenForEvent(CTF_TEAM_CONSTANTS.GAME_STARTED, function()
             SpawnMinions(obj, self);
             obj:DoPeriodicTask(10, SpawnMinions, nil, self);
         end);
 
-        obj:AddTag(CTF_CONSTANTS.TEAM_MINION_SPAWNER_TAG);
+        obj:AddTag(CTF_TEAM_CONSTANTS.TEAM_MINION_SPAWNER_TAG);
     end
 end
 
@@ -169,7 +169,7 @@ function CTFTeam:patchChildSpawner(obj)
         local OldOnSpawned = obj.components.childspawner.onspawned;
         local team = self;
         obj.components.childspawner:SetSpawnedFn(function(inst, child)
-            child:AddTag(CTF_CONSTANTS.TEAM_MINION_TAG);
+            child:AddTag(CTF_TEAM_CONSTANTS.TEAM_MINION_TAG);
             CTFPrefabPatcher:patchStats(child, inst.data);
 
             team:registerObject(child, nil);
@@ -186,7 +186,7 @@ function CTFTeam:patchSpawner(obj)
         local team = self;
         obj.components.spawner.TakeOwnership = function(inst, child)
             if inst.child ~= child then
-                child:AddTag(CTF_CONSTANTS.TEAM_MINION_TAG);
+                child:AddTag(CTF_TEAM_CONSTANTS.TEAM_MINION_TAG);
                 CTFPrefabPatcher:patchStats(child, obj.data);
 
                 team:registerObject(child, nil);
@@ -194,7 +194,7 @@ function CTFTeam:patchSpawner(obj)
             end
         end
         if obj.components.spawner.child then
-            obj.components.spawner.child:AddTag(CTF_CONSTANTS.TEAM_MINION_TAG);
+            obj.components.spawner.child:AddTag(CTF_TEAM_CONSTANTS.TEAM_MINION_TAG);
             team:registerObject(obj.components.spawner.child, nil);
             CTFPrefabPatcher:patchStats(obj.components.spawner.child, obj.data);
         end
@@ -220,7 +220,7 @@ function CTFTeam:patchBuilder(obj, teamTag)
                 if prod:HasTag('structure') then
                     self:registerObject(prod, nil);
                 else
-                    prod:AddTag(CTF_CONSTANTS.TEAM_ITEM_TAG);
+                    prod:AddTag(CTF_TEAM_CONSTANTS.TEAM_ITEM_TAG);
                     prod:AddTag(teamTag);
                 end
             end
@@ -252,7 +252,7 @@ function CTFTeam:patchCombat(obj, teamTag)
             if target then
                 if target:HasTag(teamTag) then
                     return false;
-                elseif target:HasTag(CTF_CONSTANTS.TEAM_MINION_TAG) then
+                elseif target:HasTag(CTF_TEAM_CONSTANTS.TEAM_MINION_TAG) then
                     return true;
                 end
             end
@@ -278,8 +278,8 @@ function CTFTeam:patchPlayerController(player, teamTag)
             local result = OldGetActionButtonAction(inst, force_target);
             if result
                     and result.target
-                    and ((result.target:HasTag(CTF_CONSTANTS.TEAM_FLAG_TAG) and result.target:HasTag(teamTag))
-                    or (result.target:HasTag(CTF_CONSTANTS.TEAM_ITEM_TAG) and not result.target:HasTag(teamTag))) then
+                    and ((result.target:HasTag(CTF_TEAM_CONSTANTS.TEAM_FLAG_TAG) and result.target:HasTag(teamTag))
+                    or (result.target:HasTag(CTF_TEAM_CONSTANTS.TEAM_ITEM_TAG) and not result.target:HasTag(teamTag))) then
                 local target = result.target;
                 target:AddTag('fire');
                 result = OldGetActionButtonAction(inst, force_target)
@@ -295,7 +295,7 @@ function CTFTeam:patchInventory(inst)
         local OldEquip = inst.components.inventory.Equip;
         inst.components.inventory.Equip = function(inventory, item, old_to_active)
             local body = inventory:GetEquippedItem(EQUIPSLOTS.BODY);
-            if body ~= nil and body:HasTag(CTF_CONSTANTS.TEAM_FLAG_TAG) then
+            if body ~= nil and body:HasTag(CTF_TEAM_CONSTANTS.TEAM_FLAG_TAG) then
                 item = nil
             end
             return OldEquip(inventory, item, old_to_active);
@@ -337,7 +337,7 @@ function CTFTeam:patchFlagEquippable(flag)
             end
         end);
 
-        flag.components.equippable.walkspeedmult = CTF_CONSTANTS.TEAM_FLAG_WALK_SPEED_MULT;
+        flag.components.equippable.walkspeedmult = CTF_TEAM_CONSTANTS.TEAM_FLAG_WALK_SPEED_MULT;
     end
 end
 
@@ -370,9 +370,9 @@ function CTFTeam:registerObject(obj, data)
     obj.data.ctf_team_tag = self.teamTag;
     obj:AddTag(self.teamTag);
 
-    if obj.prefab == CTF_CONSTANTS.TEAM_FLAG_PREFAB then
+    if obj.prefab == CTF_TEAM_CONSTANTS.TEAM_FLAG_PREFAB then
         self.flag = obj;
-        self.flag:AddTag(CTF_CONSTANTS.TEAM_FLAG_TAG);
+        self.flag:AddTag(CTF_TEAM_CONSTANTS.TEAM_FLAG_TAG);
         self.flag:AddTag(self.noTeamTag);
 
         self:patchFlagEquippable(self.flag);
@@ -384,7 +384,7 @@ function CTFTeam:registerObject(obj, data)
             obj:RemoveComponent('hauntable');
         end
 
-        TheWorld:ListenForEvent(CTF_CONSTANTS.GAME_ENDED, function()
+        TheWorld:ListenForEvent(CTF_TEAM_CONSTANTS.GAME_ENDED, function()
             if self.winTask then
                 self.winTask:Cancel();
                 self.winTask = nil;
@@ -553,7 +553,7 @@ function CTFTeam:registerPlayer(player)
     player.data.ctf_team_tag = self.teamTag;
     player.data.ctf_team_id = self.id;
     player:AddTag(self.teamTag);
-    player:AddTag(CTF_CONSTANTS.TEAM_PLAYER_TAG);
+    player:AddTag(CTF_TEAM_CONSTANTS.TEAM_PLAYER_TAG);
 
     table.insert(self.players, player);
 
@@ -578,7 +578,7 @@ function CTFTeam:registerPlayer(player)
         player.player_classified.ctf_net_on_player_team_id:set(self.id);
     end
 
-    TheWorld:PushEvent(CTF_CONSTANTS.PLAYER_JOINED_TEAM_EVENT, player, team);
+    TheWorld:PushEvent(CTF_TEAM_CONSTANTS.PLAYER_JOINED_TEAM_EVENT, player, team);
 
     if player:HasTag('playerghost') or player:HasTag('corpse') then
         self:schedulePlayerRevive(player, 15);
@@ -609,7 +609,7 @@ function CTFTeam:removePlayer(player)
             c_announce(player.name .. ' has left team ' .. self.id);
             table.remove(self.players, i);
             self.playerCount = self.playerCount - 1;
-            TheWorld:PushEvent(CTF_CONSTANTS.PLAYER_LEFT_TEAM_EVENT, player, team);
+            TheWorld:PushEvent(CTF_TEAM_CONSTANTS.PLAYER_LEFT_TEAM_EVENT, player, team);
             return;
         end
     end

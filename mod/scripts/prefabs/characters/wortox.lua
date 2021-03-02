@@ -5,7 +5,7 @@
 ---
 
 local require = _G.require;
-local CTF_CONSTANTS = require('teams/CTFTeamConstants');
+local CTF_TEAM_CONSTANTS = require('constants/CTFTeamConstants');
 local wortox_soul_common = require('prefabs/wortox_soul_common');
 
 wortox_soul_common.HasSoul = function(victim)
@@ -15,7 +15,7 @@ wortox_soul_common.HasSoul = function(victim)
         victim.components.combat.lastattacker and
         victim.components.combat.lastattacker.prefab == 'wortox' and
         (
-            victim:HasTag(CTF_CONSTANTS.TEAM_PLAYER_TAG) or
+            victim:HasTag(CTF_TEAM_CONSTANTS.TEAM_PLAYER_TAG) or
             victim.prefab == 'wasphive' or
             victim.prefab == 'pigguard'
         );
@@ -27,7 +27,7 @@ local function PatchSpecialActions(inst)
         inst.components.playeractionpicker.pointspecialactionsfn = function(f_inst, pos, useitem, right)
             if f_inst.components and f_inst.components.inventory then
                 local item = f_inst.components.inventory:GetEquippedItem(GLOBAL.EQUIPSLOTS.BODY);
-                if item ~= nil and item:HasTag(CTF_CONSTANTS.TEAM_FLAG_TAG) then
+                if item ~= nil and item:HasTag(CTF_TEAM_CONSTANTS.TEAM_FLAG_TAG) then
                     return {};
                 end
             end

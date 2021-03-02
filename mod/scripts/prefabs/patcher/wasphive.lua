@@ -4,7 +4,7 @@
 --- DateTime: 2021-01-17 1:11 p.m.
 ---
 local require = _G.require;
-local CTF_CONSTANTS = require('teams/CTFTeamConstants');
+local CTF_TEAM_CONSTANTS = require('constants/CTFTeamConstants');
 
 modimport('scripts/prefabs/patcher/CTFPrefabPatcher');
 modimport('scripts/teams/CTFTeamManager');
@@ -12,13 +12,13 @@ modimport('scripts/teams/CTFTeamManager');
 CTFPrefabPatcher:registerPrefabPatcher('wasphive', function(inst, data)
     if TheWorld.ismastersim then
         if data.ctf_team then
-            TheWorld:ListenForEvent(CTF_CONSTANTS.PLAYER_CONNECTED_EVENT, function()
+            TheWorld:ListenForEvent(CTF_TEAM_CONSTANTS.PLAYER_CONNECTED_EVENT, function()
                 CTFTeamManager:registerTeamObject(inst, data);
             end);
         end
     end
 
     if inst.components and inst.components.health then
-        inst.components.health:SetMaxHealth(CTF_CONSTANTS.WASPHIVE_HEALTH);
+        inst.components.health:SetMaxHealth(CTF_TEAM_CONSTANTS.WASPHIVE_HEALTH);
     end
 end)

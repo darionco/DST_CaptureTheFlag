@@ -5,7 +5,7 @@
 ---
 
 local require = _G.require;
-local CTF_CONSTANTS = require('teams/CTFTeamConstants');
+local CTF_TEAM_CONSTANTS = require('constants/CTFTeamConstants');
 
 local MAXWELL_SHADOW_MAX_HEALTH = 150;
 
@@ -19,7 +19,7 @@ AddPrefabPostInit('waxwell', function(inst)
             local OldOnSpawnFn = inst.components.petleash.onspawnfn;
             inst.components.petleash.onspawnfn = function(f_inst, pet)
                 OldOnSpawnFn(f_inst, pet);
-                if f_inst:HasTag(CTF_CONSTANTS.TEAM_PLAYER_TAG) then
+                if f_inst:HasTag(CTF_TEAM_CONSTANTS.TEAM_PLAYER_TAG) then
                     local team = CTFTeamManager:getPlayerTeam(f_inst);
                     if team ~= nil then
                         team:registerObject(pet, nil);

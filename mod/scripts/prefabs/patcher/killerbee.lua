@@ -5,14 +5,14 @@
 ---
 
 local require = GLOBAL.require;
-local CTF_CONSTANTS = require('teams/CTFTeamConstants');
+local CTF_TEAM_CONSTANTS = require('constants/CTFTeamConstants');
 local CTFTeamCombat = require('teams/CTFTeamCombat');
 
 AddPrefabPostInit('killerbee', function(inst)
     if TheWorld.ismastersim then
         local OldRetargetFunction = inst.components.combat.targetfn;
         inst.components.combat:SetRetargetFunction(0.5, function(self)
-            if self:HasTag(CTF_CONSTANTS.TEAM_MINION_TAG) then
+            if self:HasTag(CTF_TEAM_CONSTANTS.TEAM_MINION_TAG) then
                 return CTFTeamCombat.findEnemy(self, SpringCombatMod(8), self.data.ctf_team_tag);
             end
             return OldRetargetFunction(self);

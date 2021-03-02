@@ -5,7 +5,7 @@
 ---
 
 local require = GLOBAL.require;
-local CTF_CONSTANTS = require('teams/CTFTeamConstants');
+local CTF_TEAM_CONSTANTS = require('constants/CTFTeamConstants');
 local CTFTeamCombat = require('teams/CTFTeamCombat');
 
 AddPrefabPostInit('spider_warrior', function(inst)
@@ -14,7 +14,7 @@ AddPrefabPostInit('spider_warrior', function(inst)
 
         local OldRetargetFunction = inst.components.combat.targetfn;
         inst.components.combat:SetRetargetFunction(inst.components.combat.retargetperiod, function(self)
-            if self:HasTag(CTF_CONSTANTS.TEAM_MINION_TAG) then
+            if self:HasTag(CTF_TEAM_CONSTANTS.TEAM_MINION_TAG) then
                 return CTFTeamCombat.findEnemy(self, SpringCombatMod(TUNING.SPIDER_WARRIOR_TARGET_DIST), self.data.ctf_team_tag);
             end
             return OldRetargetFunction(self);

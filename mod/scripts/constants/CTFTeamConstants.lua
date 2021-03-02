@@ -4,7 +4,7 @@
 --- DateTime: 2021-01-22 3:58 p.m.
 ---
 
-local CTF_CONSTANTS = {
+local CTF_TEAM_CONSTANTS = {
     EXCLUDE_PREFIX_TAG = 'CTF_EXCLUDE_',
 
     MINION_PREFABS = { 'spider', 'spider', 'spider', 'spider_warrior' },
@@ -38,4 +38,4 @@ local CTF_CONSTANTS = {
     WASPHIVE_HEALTH = 500,
 }
 
-return CTF_CONSTANTS;
+return CTF_TEAM_CONSTANTS;

@@ -1,5 +1,5 @@
 local require = _G.require;
-local CTF_CONSTANTS = require('teams/CTFTeamConstants');
+local CTF_TEAM_CONSTANTS = require('constants/CTFTeamConstants');
 
 modimport('scripts/init/screens');
 modimport('scripts/init/assets');
@@ -16,11 +16,11 @@ modimport('scripts/teams/CTFTeamManager');
 
 
 local function handlePlayerJoined(_, player)
-    TheWorld:PushEvent(CTF_CONSTANTS.PLAYER_CONNECTED_EVENT, player);
+    TheWorld:PushEvent(CTF_TEAM_CONSTANTS.PLAYER_CONNECTED_EVENT, player);
 end
 
 local function handlePlayerDisconnected(_, args)
-    TheWorld:PushEvent(CTF_CONSTANTS.PLAYER_DISCONNECTED_EVENT, args.player);
+    TheWorld:PushEvent(CTF_TEAM_CONSTANTS.PLAYER_DISCONNECTED_EVENT, args.player);
     CTFTeamManager:removePlayer(args.player);
 end
 

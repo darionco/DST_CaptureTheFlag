@@ -4,6 +4,10 @@
 --- DateTime: 2021-02-07 10:31 p.m.
 ---
 ---
+
+local require = _G.require;
+local CTF_MISC_CONSTANTS = require('constants/CTFMiscConstants');
+
 modimport('scripts/prefabs/characters/wortox');
 modimport('scripts/prefabs/characters/wolfgang');
 modimport('scripts/prefabs/characters/wes');
@@ -11,3 +15,8 @@ modimport('scripts/prefabs/characters/webber');
 modimport('scripts/prefabs/characters/wickerbottom');
 modimport('scripts/prefabs/characters/maxwell');
 modimport('scripts/prefabs/characters/winona');
+
+-- disable characters not completed/banned etc
+for _, v in ipairs(CTF_MISC_CONSTANTS.DISABLED_CHARACTERS) do
+    table.insert(_G.MODCHARACTEREXCEPTIONS_DST, v);
+end

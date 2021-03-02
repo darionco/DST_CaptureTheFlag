@@ -222,6 +222,9 @@ function CTFTeam:patchBuilder(obj, teamTag)
                 else
                     prod:AddTag(CTF_TEAM_CONSTANTS.TEAM_ITEM_TAG);
                     prod:AddTag(teamTag);
+                    if prod.AnimState then
+                        self:setTeamColor(prod);
+                    end
                 end
             end
 

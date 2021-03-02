@@ -26,7 +26,7 @@ local function showWelcomeScreen(cb)
                 {
                     text = "Discord",
                     cb = function()
-                        VisitURL('https://discord.gg/2kBJkTaN');
+                        VisitURL('https://discord.gg/qfNbVrXCkd');
                     end
                 },
                 {

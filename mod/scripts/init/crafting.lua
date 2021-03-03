@@ -81,13 +81,13 @@ local function buildNewCrafting()
                 },
 				{
                     prefab = 'hambat',
-                    ingredients = { Ingredient('goldnugget', 15), Ingredient('tentaclespike', 1) },
+                    ingredients = { Ingredient('goldnugget', 15), Ingredient('spear_wathgrithr', 1) },
                     level = TECH.SCIENCE_ONE,
                     count = 1
                 },
 				{
                     prefab = 'glasscutter',
-                    ingredients = { Ingredient('goldnugget', 20), Ingredient('spear_wathgrithr', 1) },
+                    ingredients = { Ingredient('goldnugget', 20), Ingredient('tentaclespike', 1) },
                     level = TECH.SCIENCE_ONE,
                     count = 1
                 },
@@ -175,13 +175,13 @@ local function buildNewCrafting()
                 },
 				{
                     prefab = 'cookiecutterhat',
-                    ingredients = { Ingredient('goldnugget', 20), Ingredient('beehat', 1) },
+                    ingredients = { Ingredient('goldnugget', 20) },
                     level = TECH.SCIENCE_ONE,
                     count = 1
                 },
 				{
                     prefab = 'footballhat',
-                    ingredients = { Ingredient('goldnugget', 20), Ingredient('beehat', 1) },
+                    ingredients = { Ingredient('goldnugget', 20), Ingredient('cookiecutterhat', 1) },
                     level = TECH.SCIENCE_ONE,
                     count = 1
                 },

@@ -574,10 +574,6 @@ function CTFTeam:registerPlayer(player)
         team:resetPlayerStats(player);
     end);
 
-    self:setTeamColor(player);
-    player:AddComponent('ctfteammarker');
-    player.components.ctfteammarker:SetTeam(self.id);
-
     if player.player_classified and player.player_classified.ctf_net_on_player_team_id then
         player.player_classified.ctf_net_on_player_team_id:set(self.id);
     end

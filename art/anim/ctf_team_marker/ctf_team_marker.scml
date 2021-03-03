@@ -1,18 +1,109 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <spriter_data scml_version="1.0" generator="BrashMonkey Spriter" generator_version="r11">
     <folder id="0" name="assets">
-        <file id="0" name="assets/ctf_player_marker.png" width="600" height="600" pivot_x="0.5" pivot_y="0.5"/>
+        <file id="0" name="assets/marker_background.png" width="239" height="239" pivot_x="0.5" pivot_y="0.5"/>
+        <file id="1" name="assets/marker_half_empty.png" width="231" height="115" pivot_x="0.5" pivot_y="0"/>
+        <file id="2" name="assets/marker_half_filled.png" width="231" height="115" pivot_x="0.5" pivot_y="1"/>
     </folder>
     <entity id="0" name="ctf_team_marker">
-        <animation id="0" name="idle" length="1000" interval="100">
+        <animation id="0" name="health" length="360" interval="100">
             <mainline>
                 <key id="0">
-                    <object_ref id="0" timeline="0" key="0" z_index="0"/>
+                    <object_ref id="0" timeline="1" key="0" z_index="0"/>
+                    <object_ref id="1" timeline="3" key="0" z_index="1"/>
+                    <object_ref id="2" timeline="2" key="0" z_index="2"/>
+                    <object_ref id="3" timeline="0" key="0" z_index="3"/>
+                </key>
+                <key id="1" time="90">
+                    <object_ref id="0" timeline="1" key="0" z_index="0"/>
+                    <object_ref id="1" timeline="3" key="1" z_index="1"/>
+                    <object_ref id="2" timeline="2" key="0" z_index="2"/>
+                    <object_ref id="3" timeline="0" key="0" z_index="3"/>
+                </key>
+                <key id="2" time="179">
+                    <object_ref id="0" timeline="1" key="0" z_index="0"/>
+                    <object_ref id="1" timeline="3" key="2" z_index="1"/>
+                    <object_ref id="2" timeline="2" key="0" z_index="2"/>
+                    <object_ref id="3" timeline="0" key="0" z_index="3"/>
+                </key>
+                <key id="3" time="180">
+                    <object_ref id="0" timeline="1" key="0" z_index="0"/>
+                    <object_ref id="1" timeline="2" key="0" z_index="1"/>
+                    <object_ref id="2" timeline="4" key="0" z_index="2"/>
+                    <object_ref id="3" timeline="0" key="0" z_index="3"/>
+                </key>
+                <key id="4" time="270">
+                    <object_ref id="0" timeline="1" key="0" z_index="0"/>
+                    <object_ref id="1" timeline="2" key="0" z_index="1"/>
+                    <object_ref id="2" timeline="4" key="1" z_index="2"/>
+                    <object_ref id="3" timeline="0" key="0" z_index="3"/>
+                </key>
+                <key id="5" time="360">
+                    <object_ref id="0" timeline="1" key="0" z_index="0"/>
+                    <object_ref id="1" timeline="2" key="0" z_index="1"/>
+                    <object_ref id="2" timeline="4" key="2" z_index="2"/>
+                    <object_ref id="3" timeline="0" key="0" z_index="3"/>
                 </key>
             </mainline>
-            <timeline id="0" name="ctf_player_marker">
+            <timeline id="0" name="marker_background">
                 <key id="0" spin="0">
                     <object folder="0" file="0"/>
+                </key>
+            </timeline>
+            <timeline id="1" name="marker_half_empty">
+                <key id="0" spin="0">
+                    <object folder="0" file="1"/>
+                </key>
+            </timeline>
+            <timeline id="2" name="marker_half_filled">
+                <key id="0" spin="0">
+                    <object folder="0" file="2"/>
+                </key>
+            </timeline>
+            <timeline id="3" name="marker_half_filled_000">
+                <key id="0">
+                    <object folder="0" file="2" angle="180"/>
+                </key>
+                <key id="1" time="90">
+                    <object folder="0" file="2" angle="270"/>
+                </key>
+                <key id="2" time="179" spin="-1">
+                    <object folder="0" file="2" angle="359"/>
+                </key>
+            </timeline>
+            <timeline id="4" name="marker_half_empty_000">
+                <key id="0" time="180">
+                    <object folder="0" file="1" angle="0"/>
+                </key>
+                <key id="1" time="270">
+                    <object folder="0" file="1" angle="90"/>
+                </key>
+                <key id="2" time="360" spin="-1">
+                    <object folder="0" file="1" angle="180"/>
+                </key>
+            </timeline>
+        </animation>
+        <animation id="1" name="idle" length="1000" interval="100">
+            <mainline>
+                <key id="0">
+                    <object_ref id="0" timeline="1" key="0" z_index="0"/>
+                    <object_ref id="1" timeline="2" key="0" z_index="1"/>
+                    <object_ref id="2" timeline="0" key="0" z_index="2"/>
+                </key>
+            </mainline>
+            <timeline id="0" name="marker_background_000">
+                <key id="0" spin="0">
+                    <object folder="0" file="0"/>
+                </key>
+            </timeline>
+            <timeline id="1" name="marker_half_filled_001">
+                <key id="0" spin="0">
+                    <object folder="0" file="2"/>
+                </key>
+            </timeline>
+            <timeline id="2" name="marker_half_filled_002">
+                <key id="0" spin="0">
+                    <object folder="0" file="2" angle="180"/>
                 </key>
             </timeline>
         </animation>

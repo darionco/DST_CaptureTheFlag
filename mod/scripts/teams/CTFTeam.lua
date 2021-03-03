@@ -345,10 +345,9 @@ function CTFTeam:patchFlagEquippable(flag)
 end
 
 function CTFTeam:setTeamColor(obj)
-    local amt = 0.2;
-    local multAmt = math.pow(1 - amt, 2);
+    local amt = 0.15;
     local r, g, b, a = self:getTeamColor(self.id);
-    obj.AnimState:SetMultColour(r * multAmt, g * multAmt, b * multAmt, a);
+    obj.AnimState:SetMultColour((1 - amt) * r, (1 - amt) * g, (1 - amt) * b, a);
     obj.AnimState:SetAddColour(r * amt, g * amt, b * amt, a);
 end
 
@@ -576,6 +575,8 @@ function CTFTeam:registerPlayer(player)
     end);
 
     self:setTeamColor(player);
+    player:AddComponent('ctfteammarker');
+    player.components.ctfteammarker:SetTeam(self.id);
 
     if player.player_classified and player.player_classified.ctf_net_on_player_team_id then
         player.player_classified.ctf_net_on_player_team_id:set(self.id);

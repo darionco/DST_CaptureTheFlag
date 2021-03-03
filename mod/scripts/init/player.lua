@@ -8,6 +8,7 @@ modimport('scripts/teams/CTFTeamManager');
 
 local require = GLOBAL.require;
 local inventory = require('init/player_inventory');
+local Image = require('widgets/image');
 
 local function OnPlayerSpawned(player)
     CTFTeamManager:registerPlayer(player);
@@ -45,6 +46,13 @@ AddPrefabPostInit('player_classified', function(inst)
     end
 end);
 
+--AddPlayerPostInit(function(inst)
+--    inst:DoTaskInTime(0, function(player)
+--        player.ctf_team_marker = player:SpawnChild('ctf_team_marker');
+--    end);
+--end);
+
+-- local player
 AddComponentPostInit('playervision', function(component)
     component.inst:DoTaskInTime(0, function(player)
 

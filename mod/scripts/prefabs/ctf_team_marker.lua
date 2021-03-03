@@ -4,33 +4,26 @@
 --- DateTime: 2021-03-02 6:38 p.m.
 ---
 
-local assets = {};
+local assets = {
+    Asset("ANIM", "anim/ctf_team_marker.zip"),
+};
 local prefabs = {};
 
-local function fn()
+local function ctf()
     local inst = CreateEntity();
+
     inst.entity:AddTransform();
+    inst.Transform:SetPosition(0, -0.05, 0);
+
     inst.entity:AddAnimState();
-
-    inst:AddTag("FX");
-
-    local label = inst.entity:AddLabel();
-    label:SetFont(NUMBERFONT)
-    label:SetFontSize(13);
-    inst.Label:SetWorldOffset(0, 3.3, 0);
-    label:SetColour(1, 1, 1);
-    label:SetText(" ");
-    label:Enable(true);
+    inst.AnimState:SetBank("ctf_team_marker");
+    inst.AnimState:SetBuild("ctf_team_marker");
+    inst.AnimState:PlayAnimation("idle");
+    inst.AnimState:SetMultColour(1, 1, 1, 1);
+    inst.AnimState:SetOrientation(ANIM_ORIENTATION.OnGround);
+    inst.AnimState:SetScale(0.4, 0.4);
 
     inst.persists = false;
-
-    return inst;
-end
-
-local function ctf()
-    local inst = fn();
-    inst.Label:SetText('[T1]');
-    inst.Label:SetColour(0.666, 0.407, 0.784);
 
     return inst;
 end

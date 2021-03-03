@@ -6,14 +6,18 @@
 local require = _G.require;
 local CTF_TEAM_CONSTANTS = require('constants/CTFTeamConstants');
 
+local function getTeamColor(id)
+    return unpack(CTF_TEAM_CONSTANTS.TEAM_COLORS[math.min(id, 5)]);
+end
+
 local CTFTeamMarker = Class(function(self, inst)
-    --self.player = inst.entity:GetParent();
     self.marker = inst:SpawnChild('ctf_team_marker');
 end);
 
 function CTFTeamMarker:SetTeam(teamID)
-    self.marker.Label:SetText('[T' .. teamID .. ']');
-    self.marker.Label:SetColour(unpack(CTF_TEAM_CONSTANTS.TEAM_COLORS[math.min(teamID, 5)]));
+    --self.marker.Label:SetText('[T' .. teamID .. ']');
+    --self.marker.Label:SetColour(getTeamColor(teamID));
+    self.marker.AnimState:SetMultColour(getTeamColor(teamID));
 end
 
 return CTFTeamMarker;

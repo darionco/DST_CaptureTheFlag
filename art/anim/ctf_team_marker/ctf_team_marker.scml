@@ -6,7 +6,7 @@
         <file id="2" name="assets/marker_half_filled.png" width="231" height="115" pivot_x="0.5" pivot_y="1"/>
     </folder>
     <entity id="0" name="ctf_team_marker">
-        <animation id="0" name="health" length="3600" interval="2">
+        <animation id="0" name="health" length="3800" interval="2">
             <mainline>
                 <key id="0">
                     <object_ref id="0" timeline="4" key="0" z_index="0"/>
@@ -45,10 +45,17 @@
                 </key>
                 <key id="5" time="3600">
                     <object_ref id="0" timeline="4" key="4" z_index="0"/>
-                    <object_ref id="1" timeline="3" key="4" z_index="1"/>
+                    <object_ref id="1" timeline="3" key="5" z_index="1"/>
                     <object_ref id="2" timeline="2" key="5" z_index="2"/>
                     <object_ref id="3" timeline="1" key="4" z_index="3"/>
                     <object_ref id="4" timeline="0" key="4" z_index="4"/>
+                </key>
+                <key id="6" time="3800">
+                    <object_ref id="0" timeline="4" key="5" z_index="0"/>
+                    <object_ref id="1" timeline="3" key="6" z_index="1"/>
+                    <object_ref id="2" timeline="2" key="6" z_index="2"/>
+                    <object_ref id="3" timeline="1" key="5" z_index="3"/>
+                    <object_ref id="4" timeline="0" key="5" z_index="4"/>
                 </key>
             </mainline>
             <timeline id="0" name="marker_background">
@@ -65,6 +72,9 @@
                     <object folder="0" file="0" angle="0"/>
                 </key>
                 <key id="4" time="2700" spin="0">
+                    <object folder="0" file="0" angle="0"/>
+                </key>
+                <key id="5" time="3800" spin="0">
                     <object folder="0" file="0" angle="0"/>
                 </key>
             </timeline>
@@ -84,6 +94,9 @@
                 <key id="4" time="2700" spin="0">
                     <object folder="0" file="1" angle="0"/>
                 </key>
+                <key id="5" time="3800" spin="0">
+                    <object folder="0" file="1" angle="0"/>
+                </key>
             </timeline>
             <timeline id="2" name="marker_half_filled">
                 <key id="0" spin="0">
@@ -101,7 +114,10 @@
                 <key id="4" time="2700">
                     <object folder="0" file="2" angle="90"/>
                 </key>
-                <key id="5" time="3600" spin="-1">
+                <key id="5" time="3600" spin="0">
+                    <object folder="0" file="2" angle="180"/>
+                </key>
+                <key id="6" time="3800" spin="-1">
                     <object folder="0" file="2" angle="180"/>
                 </key>
             </timeline>
@@ -121,6 +137,12 @@
                 <key id="4" time="2700">
                     <object folder="0" file="2" angle="90"/>
                 </key>
+                <key id="5" time="3600" spin="0">
+                    <object folder="0" file="2" angle="180"/>
+                </key>
+                <key id="6" time="3800" spin="0">
+                    <object folder="0" file="2" angle="180"/>
+                </key>
             </timeline>
             <timeline id="4" name="marker_half_empty_000">
                 <key id="0" spin="0">
@@ -136,6 +158,9 @@
                     <object folder="0" file="1" angle="180"/>
                 </key>
                 <key id="4" time="2700" spin="0">
+                    <object folder="0" file="1" angle="180"/>
+                </key>
+                <key id="5" time="3800" spin="0">
                     <object folder="0" file="1" angle="180"/>
                 </key>
             </timeline>

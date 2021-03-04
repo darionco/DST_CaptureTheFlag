@@ -49,14 +49,16 @@ end);
 AddPlayerPostInit(function(inst)
     inst:DoTaskInTime(0, function(player)
         player:AddComponent('ctfteammarker');
-        player.teamMarkerTask = player:DoPeriodicTask(0.2, function()
-            local teamID = CTFTeamManager:getUserTeamID(player.userid);
-            if teamID then
-                player.teamMarkerTask:Cancel();
-                player.teamMarkerTask = nil;
-                player.components.ctfteammarker:SetTeam(teamID);
-            end
-        end);
+        if not TheNet:IsDedicated() then
+            player.teamMarkerTask = player:DoPeriodicTask(0.2, function()
+                local teamID = CTFTeamManager:getUserTeamID(player.userid);
+                if teamID then
+                    player.teamMarkerTask:Cancel();
+                    player.teamMarkerTask = nil;
+                    player.components.ctfteammarker:SetTeam(teamID);
+                end
+            end);
+        end
     end);
 end);
 

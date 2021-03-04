@@ -353,7 +353,7 @@ local function buildNewCrafting()
             recipes = {
                 {
                     prefab = 'wereitem_moose',
-                    ingredients = { Ingredient('goldnugget', 40), Ingredient('tallbirdegg', 1) },
+                    ingredients = { Ingredient('goldnugget', 40), Ingredient('poop', 3) },
                     count = 1
                 },
 			}

@@ -12,18 +12,21 @@ local prefabs = {};
 local function ctf()
     local inst = CreateEntity();
 
+    inst.entity:AddNetwork();
+
+    if not TheNet:IsDedicated() then
+        inst.entity:AddTransform();
+        inst.Transform:SetPosition(0, -0.05, 0);
+
+        inst.entity:AddAnimState();
+        inst.AnimState:SetBank('ctf_team_marker');
+        inst.AnimState:SetBuild('ctf_team_marker');
+        inst.AnimState:PlayAnimation('idle');
+        inst.AnimState:SetMultColour(1, 1, 1, 1);
+        inst.AnimState:SetOrientation(ANIM_ORIENTATION.OnGround);
+    end
+
     inst:AddTag('FX');
-
-    inst.entity:AddTransform();
-    inst.Transform:SetPosition(0, -0.05, 0);
-
-    inst.entity:AddAnimState();
-    inst.AnimState:SetBank('ctf_team_marker');
-    inst.AnimState:SetBuild('ctf_team_marker');
-    inst.AnimState:PlayAnimation('idle');
-    inst.AnimState:SetMultColour(1, 1, 1, 1);
-    inst.AnimState:SetOrientation(ANIM_ORIENTATION.OnGround);
-
     inst.persists = false;
 
     return inst;

@@ -14,27 +14,24 @@ local CTFTeamMarker = Class(function(self, inst)
     self.inst = inst;
     self.marker = inst:SpawnChild('ctf_team_marker');
 
-    if inst.components and inst.components.health then
-        self.marker.AnimState:PlayAnimation("health");
-        self.marker.AnimState:SetDeltaTimeMultiplier(0);
-        self.marker.AnimState:SetTime(0);
+    self.net_health_percent = _G.net_float(inst.GUID, 'ctf_net_health_percent', 'ctf_net_health_percent');
+    if not TheNet:IsDedicated() then
+        self:InitHealthBar();
 
+        inst:ListenForEvent('ctf_net_health_percent', function()
+            local percent = self.net_health_percent:value();
+            self:SetHealthPercent(percent);
+        end);
+    end
+
+    if inst.components and inst.components.health then
         inst:ListenForEvent('healthdelta', function(owner, data)
             if not inst.components.health:IsDead() and not inst:HasTag('playerghost') then
-                self:SetHealthPercent(data.newpercent);
+                self.net_health_percent:set(data.newpercent);
             else
-                self:SetHealthPercent(0);
+                self.net_health_percent:set(0);
             end
         end);
-
-        local InstTransform = _G.getmetatable(inst.Transform).__index;
-        local OldSetRotation = InstTransform.SetRotation;
-        InstTransform.SetRotation = function(f_self, rot)
-            if f_self == inst.Transform then
-                self.marker.Transform:SetRotation(-rot);
-            end
-            OldSetRotation(f_self, rot);
-        end
     end
 end);
 
@@ -46,6 +43,21 @@ end
 
 function CTFTeamMarker:SetHealthPercent(percent)
     self.marker.AnimState:SetTime(3.61 * (1 - percent));
+end
+
+function CTFTeamMarker:InitHealthBar()
+    self.marker.AnimState:PlayAnimation("health");
+    self.marker.AnimState:SetDeltaTimeMultiplier(0);
+    self.marker.AnimState:SetTime(0);
+
+    local InstTransform = _G.getmetatable(self.inst.Transform).__index;
+    local OldSetRotation = InstTransform.SetRotation;
+    InstTransform.SetRotation = function(f_self, rot)
+        if f_self == self.inst.Transform then
+            self.marker.Transform:SetRotation(-rot);
+        end
+        OldSetRotation(f_self, rot);
+    end
 end
 
 return CTFTeamMarker;

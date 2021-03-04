@@ -12,11 +12,10 @@ end
 
 local CTFTeamMarker = Class(function(self, inst)
     self.inst = inst;
-    self.marker = inst:SpawnChild('ctf_team_marker');
 
     self.net_health_percent = _G.net_float(inst.GUID, 'ctf_net_health_percent', 'ctf_net_health_percent');
     if not TheNet:IsDedicated() then
-        self:InitHealthBar();
+        self:InitMarker();
         inst:ListenForEvent('ctf_net_health_percent', function()
             local percent = self.net_health_percent:value();
             self:SetHealthPercent(percent);
@@ -35,8 +34,6 @@ local CTFTeamMarker = Class(function(self, inst)
 end);
 
 function CTFTeamMarker:SetTeam(teamID)
-    --self.marker.Label:SetText('[T' .. teamID .. ']');
-    --self.marker.Label:SetColour(getTeamColor(teamID));
     self.marker.AnimState:SetMultColour(getTeamColor(teamID));
 end
 
@@ -44,24 +41,18 @@ function CTFTeamMarker:SetHealthPercent(percent)
     self.marker.AnimState:SetTime(3.61 * (1 - percent));
 end
 
-function CTFTeamMarker:InitHealthBar()
-    self.marker.AnimState:PlayAnimation("health");
+function CTFTeamMarker:InitMarker()
+    self.anchor = SpawnPrefab('ctf_team_marker');
+    self.anchor.entity:SetParent(self.inst.entity);
+    self.anchor.AnimState:SetScale(0, 0);
+
+    self.marker = SpawnPrefab('ctf_team_marker');
+    self.marker.AnimState:PlayAnimation('health');
     self.marker.AnimState:SetDeltaTimeMultiplier(0);
     self.marker.AnimState:SetTime(0);
+    self.marker.AnimState:SetScale(-1, 1);
 
-    --local InstTransform = _G.getmetatable(self.inst.Transform).__index;
-    --local OldSetRotation = InstTransform.SetRotation;
-    --InstTransform.SetRotation = function(f_self, rot)
-    --    if f_self == self.dinst.Transform then
-    --        self.marker.Transform:SetRotation(-rot);
-    --    end
-    --    OldSetRotation(f_self, rot);
-    --end
-    self.inst:StartUpdatingComponent(self);
-end
-
-function CTFTeamMarker:OnUpdate()
-    self.marker.Transform:SetRotation(-self.inst.Transform:GetRotation());
+    self.marker.Follower:FollowSymbol(self.anchor.GUID, 'assets', 0, 0, 0);
 end
 
 return CTFTeamMarker;

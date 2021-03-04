@@ -13,9 +13,10 @@ local function ctf()
     local inst = CreateEntity();
 
     inst.entity:AddNetwork();
+    inst.entity:AddTransform();
+    inst.entity:AddFollower();
 
     if not TheNet:IsDedicated() then
-        inst.entity:AddTransform();
         inst.Transform:SetPosition(0, -0.05, 0);
 
         inst.entity:AddAnimState();
@@ -25,6 +26,8 @@ local function ctf()
         inst.AnimState:SetMultColour(1, 1, 1, 1);
         inst.AnimState:SetOrientation(ANIM_ORIENTATION.OnGround);
     end
+
+    inst.entity:SetPristine();
 
     inst:AddTag('FX');
     inst.persists = false;

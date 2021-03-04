@@ -11,13 +11,41 @@ local function getTeamColor(id)
 end
 
 local CTFTeamMarker = Class(function(self, inst)
+    self.inst = inst;
     self.marker = inst:SpawnChild('ctf_team_marker');
+
+    if inst.components and inst.components.health then
+        self.marker.AnimState:PlayAnimation("health");
+        self.marker.AnimState:SetDeltaTimeMultiplier(0);
+        self.marker.AnimState:SetTime(0);
+
+        inst:ListenForEvent('healthdelta', function(owner, data)
+            if not inst.components.health:IsDead() and not inst:HasTag('playerghost') then
+                self:SetHealthPercent(data.newpercent);
+            else
+                self:SetHealthPercent(0);
+            end
+        end);
+
+        local InstTransform = _G.getmetatable(inst.Transform).__index;
+        local OldSetRotation = InstTransform.SetRotation;
+        InstTransform.SetRotation = function(f_self, rot)
+            if f_self == inst.Transform then
+                self.marker.Transform:SetRotation(-rot);
+            end
+            OldSetRotation(f_self, rot);
+        end
+    end
 end);
 
 function CTFTeamMarker:SetTeam(teamID)
     --self.marker.Label:SetText('[T' .. teamID .. ']');
     --self.marker.Label:SetColour(getTeamColor(teamID));
     self.marker.AnimState:SetMultColour(getTeamColor(teamID));
+end
+
+function CTFTeamMarker:SetHealthPercent(percent)
+    self.marker.AnimState:SetTime(3.61 * (1 - percent));
 end
 
 return CTFTeamMarker;

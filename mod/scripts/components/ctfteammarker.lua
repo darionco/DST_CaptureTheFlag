@@ -17,7 +17,6 @@ local CTFTeamMarker = Class(function(self, inst)
     self.net_health_percent = _G.net_float(inst.GUID, 'ctf_net_health_percent', 'ctf_net_health_percent');
     if not TheNet:IsDedicated() then
         self:InitHealthBar();
-
         inst:ListenForEvent('ctf_net_health_percent', function()
             local percent = self.net_health_percent:value();
             self:SetHealthPercent(percent);
@@ -50,14 +49,19 @@ function CTFTeamMarker:InitHealthBar()
     self.marker.AnimState:SetDeltaTimeMultiplier(0);
     self.marker.AnimState:SetTime(0);
 
-    local InstTransform = _G.getmetatable(self.inst.Transform).__index;
-    local OldSetRotation = InstTransform.SetRotation;
-    InstTransform.SetRotation = function(f_self, rot)
-        if f_self == self.inst.Transform then
-            self.marker.Transform:SetRotation(-rot);
-        end
-        OldSetRotation(f_self, rot);
-    end
+    --local InstTransform = _G.getmetatable(self.inst.Transform).__index;
+    --local OldSetRotation = InstTransform.SetRotation;
+    --InstTransform.SetRotation = function(f_self, rot)
+    --    if f_self == self.dinst.Transform then
+    --        self.marker.Transform:SetRotation(-rot);
+    --    end
+    --    OldSetRotation(f_self, rot);
+    --end
+    self.inst:StartUpdatingComponent(self);
+end
+
+function CTFTeamMarker:OnUpdate()
+    self.marker.Transform:SetRotation(-self.inst.Transform:GetRotation());
 end
 
 return CTFTeamMarker;

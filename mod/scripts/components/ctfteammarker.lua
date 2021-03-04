@@ -12,10 +12,10 @@ end
 
 local CTFTeamMarker = Class(function(self, inst)
     self.inst = inst;
-    self:InitMarker();
 
     self.net_health_percent = _G.net_float(inst.GUID, 'ctf_net_health_percent', 'ctf_net_health_percent');
     if not TheNet:IsDedicated() then
+        self:InitMarker();
         inst:ListenForEvent('ctf_net_health_percent', function()
             local percent = self.net_health_percent:value();
             self:SetHealthPercent(percent);

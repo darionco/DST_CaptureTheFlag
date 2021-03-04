@@ -19,6 +19,17 @@ local LOOT_TABLE = {
     tallbird = { gold = 3 },
     wasphive = { gold = 4 },
     skeleton_player = { gold = 10 },
+    molebat = { gold = 2 },
+
+    -- Secret Fight
+    frog = { other = { 'slurper', }, gold = 1 },
+    slurper = { other = { 'spider_dropper', }, gold = 2 },
+    spider_dropper = { other = { 'tentacle', }, gold = 3 },
+    tentacle = { other = { 'knight', }, gold = 4 },
+    knight = { other = { 'leif', }, gold = 5 },
+    leif = { other = { 'warg', }, gold = 6 },
+    warg = { other = { 'rabbit', }, gold = 7 },
+    rabbit = { other = { 'tallbirdegg', 'tallbirdegg', 'tallbirdegg', 'orangestaff', 'beemine', 'beemine', 'beemine', 'beemine', 'beemine', 'cane', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', }, gold = 80 },
 };
 
 LootDropper.DropLoot = function(self, pt)

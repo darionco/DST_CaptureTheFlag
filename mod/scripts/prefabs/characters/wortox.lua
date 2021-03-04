@@ -16,8 +16,17 @@ wortox_soul_common.HasSoul = function(victim)
         victim.components.combat.lastattacker.prefab == 'wortox' and
         (
             victim:HasTag(CTF_TEAM_CONSTANTS.TEAM_PLAYER_TAG) or
-            victim.prefab == 'wasphive' or
-            victim.prefab == 'pigguard'
+            (
+                (
+                    victim:HasTag(CTF_TEAM_CONSTANTS.TEAM_MINION_TAG) or
+                    victim:HasTag(CTF_TEAM_CONSTANTS.TEAM_OBJECT_TAG)
+                )
+                and
+                (
+                    victim.prefab == 'wasphive' or
+                    victim.prefab == 'pigguard'
+                )
+            )
         );
 end;
 

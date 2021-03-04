@@ -371,6 +371,7 @@ function CTFTeam:registerObject(obj, data)
     obj.data.ctf_team_id = self.id;
     obj.data.ctf_team_tag = self.teamTag;
     obj:AddTag(self.teamTag);
+    obj:AddTag(CTF_TEAM_CONSTANTS.TEAM_OBJECT_TAG);
 
     if obj.prefab == CTF_TEAM_CONSTANTS.TEAM_FLAG_PREFAB then
         self.flag = obj;

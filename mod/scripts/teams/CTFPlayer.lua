@@ -51,7 +51,9 @@ end
 
 function CTFPlayer:initNet()
     if not TheNet:IsDedicated() then
-        self:initNetEvents();
+        self.player:DoTaskInTime(0, function ()
+            self:initNetEvents();
+        end);
     end
 end
 

@@ -4,6 +4,28 @@
 --- DateTime: 2021-03-05 12:01 p.m.
 ---
 
+local function addFunctions(inst)
+    inst.addPlayerNetVars = function(self, userid)
+        local spawn_event_key = 'ctf_spawn_event.' .. userid;
+        local team_id_key = 'ctf_team_id.' .. userid;
+        local ready_key = 'ctf_ready.' .. userid;
+
+        local ret = {
+            inst = self,
+            spawn_event = { var = net_event(self.GUID, spawn_event_key), event = spawn_event_key },
+            team_id = { var = net_tinybyte(self.GUID, team_id_key, team_id_key), event = team_id_key },
+            ready = { var = net_bool(self.GUID, ready_key, ready_key), event = ready_key },
+        };
+
+        ret.team_id.var:set(0);
+        ret.ready.var:set(false);
+
+        self.entity:FlushLocalDirtyNetVars();
+
+        return ret;
+    end
+end
+
 local function ctf()
     local inst = CreateEntity();
 
@@ -13,15 +35,7 @@ local function ctf()
     inst:AddTag("CLASSIFIED");
     inst.entity:SetPristine();
 
-    inst.spawn_event = net_event(inst.GUID, 'spawn_event');
-
-    inst.team_id = net_tinybyte(inst.GUID, 'team_id', 'team_id');
-    inst.team_id:set(0);
-
-    inst.ready = net_bool(inst.GUID, 'ready', 'ready');
-    inst.ready:set(false);
-
-    inst.entity:FlushLocalDirtyNetVars();
+    addFunctions(inst);
 
     return inst;
 end

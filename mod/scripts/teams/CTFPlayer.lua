@@ -13,7 +13,7 @@ CTFPlayer = Class(function(self, player)
     print('======================================== CTFPlayer');
     -- this is supposed to run on both server and client
     self.player = player;
-    self.net = SpawnPrefab('ctf_player_net');
+    self.net = CTFTeamManager.net:addPlayerNetVars(player.userid);
     self.marker = CTFTeamMarker(self.player);
 
     self:initNet();
@@ -44,7 +44,7 @@ function CTFPlayer:initMaster()
     local function OnPlayerSpawned(f_player)
         print('======================================== OnPlayerSpawned', f_player);
         f_player:RemoveEventCallback('colourtweener_end', OnPlayerSpawned);
-        self.net.spawn_event:push();
+        self.net.spawn_event.var:push();
     end
     player:ListenForEvent('colourtweener_end', OnPlayerSpawned);
 end
@@ -62,7 +62,7 @@ function CTFPlayer:initNetEvents()
     print('======================================== initNetEvents');
     if self.player == _G.ThePlayer then
         print('======================================== _G.ThePlayer');
-        self.net:ListenForEvent('spawn_event', function() self:netHandleSpawnedEvent() end);
+        self.net.inst:ListenForEvent(self.net.spawn_event.event, function() self:netHandleSpawnedEvent() end);
         --self.player:DoTaskInTime(5, function() self:netHandleSpawnedEvent() end);
     end
 end
@@ -75,19 +75,19 @@ function CTFPlayer:netHandleSpawnedEvent()
 end
 
 function CTFPlayer:getTeamID()
-    return self.net.team_id:value();
+    return self.net.team_id.var:value();
 end
 
 function CTFPlayer:setTeamID(teamID)
-    self.net.team_id:set(teamID);
+    self.net.team_id.var:set(teamID);
 end
 
 function CTFPlayer:isReady()
-    return self.net.ready:value();
+    return self.net.ready.var:value();
 end
 
 function CTFPlayer:setReady(ready)
-    self.net.ready:set(ready);
+    self.net.ready.var:set(ready);
     if TheWorld.ismastersim then
         CTFTeamManager:playerReadyUpdated(self);
     end

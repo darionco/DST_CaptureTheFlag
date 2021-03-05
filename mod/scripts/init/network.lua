@@ -15,5 +15,5 @@ AddModRPCHandler(CTF_TEAM_CONSTANTS.RPC_NAMESPACE, CTF_TEAM_CONSTANTS.RPC.PLAYER
 end);
 
 AddPrefabPostInit('forest_network', function(inst)
-    CTFTeamManager:initNet(inst);
+    CTFTeamManager:initNet(SpawnPrefab('ctf_player_net'));
 end);

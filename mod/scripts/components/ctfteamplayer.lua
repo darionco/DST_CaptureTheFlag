@@ -26,8 +26,8 @@ function CTFTeamPlayer:initializeNetwork()
     local player = self.inst;
     if player.player_classified then
         self.net = player.player_classified;
-        self.net.ctf_spawn_event = net_event(player.GUID, 'ctf_spawn_event');
-        self.net.ctf_team_id = net_tinybyte(player.GUID, 'ctf_team_id', 'ctf_team_id');
+        self.net.ctf_spawn_event = net_event(self.net.GUID, 'ctf_spawn_event');
+        self.net.ctf_team_id = net_tinybyte(self.net.GUID, 'ctf_team_id', 'ctf_team_id');
 
         if not TheNet:IsDedicated() then
             if player == _G.ThePlayer then

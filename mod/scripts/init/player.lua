@@ -13,9 +13,6 @@
 --end);
 
 AddPlayerPostInit(function(inst)
-    inst:DoTaskInTime(0, function(pc)
-        print('======================================== player_classified');
-        local player = pc.entity:GetParent();
-        CTFPlayer(player);
-    end);
+    print('======================================== AddPlayerPostInit');
+    CTFPlayer(inst);
 end);

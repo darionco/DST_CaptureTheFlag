@@ -14,8 +14,11 @@ local CTFTeamPlayer = Class(function(self, inst)
     self.marker = nil;
     self.net = nil;
 
-    self:initializeNetwork();
     self:initMarker();
+
+    self.inst:DoTaskInTime(0, function()
+        self:initializeNetwork();
+    end);
 
     if TheWorld.ismastersim then
         CTFTeam.setPlayerInvincibility(CTFTeam, self.inst);
@@ -47,12 +50,17 @@ function CTFTeamPlayer:netHandleSpawnedEvent()
     end);
 end
 
-function CTFTeamPlayer:netHandleTeamID()
-    print('============================================== netHandleTeamID')
-    local player = self.inst;
+function CTFTeamPlayer:setTeamID(teamID)
+    print('============================================== setTeamID');
+    if TheWorld.ismastersim then
+        self.net.ctf_team_id:set(teamID);
+    end
 
-    local teamID = self.net.ctf_team_id:value();
     local teamTag = CTFTeam.makeTeamTag(nil, teamID);
+    local player = self.inst;
+    print(player);
+    print('teamID', teamID);
+    print('teamTag', teamTag);
 
     if not player.data then
         player.data = {};
@@ -68,10 +76,14 @@ function CTFTeamPlayer:netHandleTeamID()
     end
 end
 
+function CTFTeamPlayer:netHandleTeamID()
+    print('============================================== netHandleTeamID');
+    self:setTeamID(self.net.ctf_team_id:value());
+end
+
 function CTFTeamPlayer:netHandleHealthChange()
-    local player = self.inst;
-    if self.marker and player.player_classified then
-        local percent = player.player_classified.currenthealth:value() / player.player_classified.maxhealth:value();
+    if self.marker then
+        local percent = self.net.currenthealth:value() / self.net.maxhealth:value();
         if not self.inst:HasTag('playerghost') then
             self.marker.AnimState:SetTime(3.61 * (1 - percent));
         else
@@ -84,6 +96,7 @@ end
 function CTFTeamPlayer:initMarker()
     self.markerAnchor = SpawnPrefab('ctf_team_marker');
     self.markerAnchor.entity:SetParent(self.inst.entity);
+    --self.markerAnchor.AnimState:SetScale(0, 0);
     self.markerAnchor.entity:Hide();
 
     self.marker = SpawnPrefab('ctf_team_marker');

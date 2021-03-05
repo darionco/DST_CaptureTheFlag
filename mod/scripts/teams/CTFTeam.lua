@@ -545,8 +545,8 @@ function CTFTeam:registerPlayer(player)
             player.components.sanity.redirect = function() return;  end;
         end
 
-        if player.components.ctfteamplayer and player.components.ctfteamplayer.net then
-            player.components.ctfteamplayer.net.ctf_team_id:set(self.id);
+        if player.components.ctfteamplayer then
+            player.components.ctfteamplayer:setTeamID(self.id);
         end
     end
 

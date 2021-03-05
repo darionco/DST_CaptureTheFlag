@@ -49,7 +49,7 @@ function CTFTeamPlayer:initializeNetwork()
             end);
         end
 
-        self.idTask = player.DoPeriodicTask(0.2, function()
+        self.idTask = player:DoPeriodicTask(0.2, function()
             local teamID = CTFTeamManager:getUserTeamID(player.userid);
             if teamID then
                 self:setTeamID(teamID);

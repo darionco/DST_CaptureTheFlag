@@ -40,10 +40,8 @@ function CTFTeamPlayer:initializeNetwork()
         player:ListenForEvent('ctf_team_id', function() self:netHandleTeamID() end);
 
         if player.player_classified then
-            player.player_classified:ListenForEvent('healthdirty', function()
-                local percent = player.player_classified.currenthealth:value() / player.player_classified.maxhealth:value();
-                self:netHandleHealthPercent(percent);
-            end);
+            player.player_classified:ListenForEvent('isghostmodedirty', function() self:netHandleHealthChange() end);
+            player.player_classified:ListenForEvent('healthdirty', function() self:netHandleHealthChange(); end);
         end
     end
 end
@@ -55,6 +53,7 @@ function CTFTeamPlayer:netHandleSpawnedEvent()
 end
 
 function CTFTeamPlayer:netHandleTeamID()
+    print('============================================== netHandleTeamID')
     local player = self.inst;
 
     self.teamID = self.net.teamID:value();
@@ -71,12 +70,13 @@ function CTFTeamPlayer:netHandleTeamID()
 
     if self.marker then
         self.marker.AnimState:SetMultColour(CTFTeam:getTeamColor(self.teamID));
-        self.marker.entity:Show();
     end
 end
 
-function CTFTeamPlayer:netHandleHealthPercent(percent)
-    if self.marker then
+function CTFTeamPlayer:netHandleHealthChange()
+    local player = self.inst;
+    if self.marker and player.player_classified then
+        local percent = player.player_classified.currenthealth:value() / player.player_classified.maxhealth:value();
         if not self.inst:HasTag('playerghost') then
             self.marker.AnimState:SetTime(3.61 * (1 - percent));
         else
@@ -99,8 +99,6 @@ function CTFTeamPlayer:initMarker()
     self.marker.AnimState:SetScale(-1, 1);
 
     self.marker.Follower:FollowSymbol(self.markerAnchor.GUID, 'assets', 0, 0, 0);
-
-    self.marker.entity:Hide();
 end
 
 return CTFTeamPlayer;

@@ -1,6 +1,7 @@
 local require = _G.require;
 local CTF_TEAM_CONSTANTS = require('constants/CTFTeamConstants');
 
+modimport('scripts/teams/CTFTeamManager');
 modimport('scripts/init/screens');
 modimport('scripts/init/assets');
 modimport('scripts/init/prefab_on_load');
@@ -12,7 +13,7 @@ modimport('scripts/init/characters');
 modimport('scripts/init/character_descriptions');
 modimport('scripts/init/player');
 modimport('scripts/init/chat');
-modimport('scripts/teams/CTFTeamManager');
+modimport('scripts/init/network');
 
 
 local function handlePlayerJoined(_, player)
@@ -25,10 +26,6 @@ local function handlePlayerDisconnected(_, args)
 end
 
 AddPrefabPostInit('world', function(world)
-    --local OldSpawnAtLocation = world.components.playerspawner.SpawnAtLocation;
-    --world.components.playerspawner.SpawnAtLocation = function(inst, player, x, y, z, isloading)
-    --    OldSpawnAtLocation(inst, player, x, y, z, isloading);
-    --end
     TheWorld:ListenForEvent('ms_playerjoined', handlePlayerJoined);
     TheWorld:ListenForEvent('ms_playerdisconnected', handlePlayerDisconnected);
 end);

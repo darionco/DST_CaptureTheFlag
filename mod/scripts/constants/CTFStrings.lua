@@ -5,6 +5,13 @@
 ---
 
 local CTF_STRINGS = {
+    WELCOME = {
+        TITLE = 'Welcome to Capture the Flag!',
+        TEXT = 'The are two teams in this game, each team has a different hue.\nThe goal of the game is to bring the opponent\'s piggyback to your base.\nUse gold to craft weapons, armor and food.\nYou can get gold by defeating enemies.\nSome creatures are your friends, some aren\'t, either way, they all drop gold.\n\nGood luck!',
+        DISCORD = 'https://discord.gg/qfNbVrXCkd',
+        VIDEO = 'https://www.youtube.com/embed/_LN5mRUN6cE?autoplay=1',
+    },
+
     CHAT_ALL = '[ALL]',
     CHAT_TEAM = '[TEAM]',
 

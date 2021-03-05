@@ -1,5 +1,6 @@
 -- Don't use this on new screens! Use PopupDialogScreen with big longness
 -- instead.
+local require = _G.require;
 local Screen = require "widgets/screen"
 local Button = require "widgets/button"
 local AnimButton = require "widgets/animbutton"
@@ -9,7 +10,7 @@ local Image = require "widgets/image"
 local Widget = require "widgets/widget"
 local Menu = require "widgets/menu"
 local TEMPLATES = require "widgets/templates"
-
+local CTF_STRINGS = require('constants/CTFStrings');
 
 local CTFInstructionsPopup = Class(Screen, function(self, title, text, buttons, timeout)
     Screen._ctor(self, "BigPopupDialogScreen")
@@ -83,4 +84,30 @@ function CTFInstructionsPopup:OnControl(control, down)
     end
 end
 
-return CTFInstructionsPopup
+return function(cb)
+    _G.TheFrontEnd:PushScreen(CTFInstructionsPopup(
+            CTF_STRINGS.WELCOME.TITLE,
+            CTF_STRINGS.WELCOME.TEXT,
+            {
+                {
+                    text = "Discord",
+                    cb = function()
+                        VisitURL(CTF_STRINGS.WELCOME.DISCORD);
+                    end
+                },
+                {
+                    text = "OK",
+                    cb = function()
+                        _G.TheFrontEnd:PopScreen();
+                        cb();
+                    end
+                },
+                {
+                    text = "Video Tutorial",
+                    cb = function()
+                        VisitURL(CTF_STRINGS.WELCOME.VIDEO);
+                    end
+                },
+            }
+    ));
+end

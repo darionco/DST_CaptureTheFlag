@@ -10,8 +10,6 @@ require('teams/CTFTeam');
 
 local CTFTeamPlayer = Class(function(self, inst)
     self.inst = inst;
-    self.teamID = nil;
-    self.teamTag = nil;
     self.markerAnchor = nil;
     self.marker = nil;
     self.net = nil;
@@ -56,20 +54,20 @@ function CTFTeamPlayer:netHandleTeamID()
     print('============================================== netHandleTeamID')
     local player = self.inst;
 
-    self.teamID = self.net.teamID:value();
-    self.teamTag = CTFTeam.makeTeamTag(nil, self.teamID);
+    local teamID = self.net.teamID:value();
+    local teamTag = CTFTeam.makeTeamTag(nil, teamID);
 
     if not player.data then
         player.data = {};
     end
-    player.data.ctf_team_id = self.teamID;
-    player.data.ctf_team_tag = self.teamTag;
+    player.data.ctf_team_id = teamID;
+    player.data.ctf_team_tag = teamTag;
 
-    CTFTeam.patchPlayerController(nil, player, self.teamTag);
-    CTFTeam.patchCombat(nil, player, self.teamTag);
+    CTFTeam.patchPlayerController(nil, player, teamTag);
+    CTFTeam.patchCombat(nil, player, teamTag);
 
     if self.marker then
-        self.marker.AnimState:SetMultColour(CTFTeam:getTeamColor(self.teamID));
+        self.marker.AnimState:SetMultColour(CTFTeam.getTeamColor(nil, teamID));
     end
 end
 
@@ -90,7 +88,6 @@ function CTFTeamPlayer:initMarker()
     self.markerAnchor = SpawnPrefab('ctf_team_marker');
     self.markerAnchor.entity:SetParent(self.inst.entity);
     self.markerAnchor.entity:Hide();
-    --self.markerAnchor.AnimState:SetScale(0, 0);
 
     self.marker = SpawnPrefab('ctf_team_marker');
     self.marker.AnimState:PlayAnimation('health');

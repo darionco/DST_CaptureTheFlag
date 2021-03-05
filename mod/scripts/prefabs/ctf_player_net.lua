@@ -10,6 +10,7 @@ local function ctf()
     inst.entity:AddTransform();
     inst.entity:AddNetwork();
     inst.entity:Hide()
+    inst.entity:SetCanSleep(false);
 
     inst.spawn_event = net_event(inst.GUID, 'spawn_event');
 

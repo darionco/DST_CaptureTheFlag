@@ -10,12 +10,11 @@ local CTF_TEAM_CONSTANTS = require('constants/CTFTeamConstants');
 local CTFTeamMarker = use('scripts/teams/CTFTeamMarker');
 
 CTFPlayer = Class(function(self, player)
+    print('======================================== CTFPlayer');
     -- this is supposed to run on both server and client
     self.player = player;
-    self.net = nil;
-    self.marker = nil;
-
-    self.net = self.player:SpawnChild('ctf_player_net');
+    self.net = SpawnPrefab('ctf_player_net');
+    self.marker = CTFTeamMarker(self.player);
 
     self:initNet();
     self:initCommon();
@@ -30,6 +29,10 @@ end
 
 function CTFPlayer:initCommon()
     CTFTeamManager:registerCTFPlayer(self);
+    local teamID = self:getTeamID();
+    if teamID ~= 0 then
+        self.marker:setHue(CTFTeam:getTeamColor(teamID));
+    end
 end
 
 function CTFPlayer:initMaster()
@@ -38,13 +41,9 @@ function CTFPlayer:initMaster()
     inventory.initializeInventory(player);
 
     local function OnPlayerSpawned(f_player)
+        print('======================================== OnPlayerSpawned', f_player);
         f_player:RemoveEventCallback('colourtweener_end', OnPlayerSpawned);
         self.net.spawn_event:push();
-        self.marker = CTFTeamMarker(self.player);
-        local teamID = self:getTeamID();
-        if teamID ~= 0 then
-            self.marker:setHue(CTFTeam:getTeamColor(teamID));
-        end
     end
     player:ListenForEvent('colourtweener_end', OnPlayerSpawned);
 end
@@ -52,18 +51,23 @@ end
 function CTFPlayer:initNet()
     if not TheNet:IsDedicated() then
         self.player:DoTaskInTime(0, function ()
+            print('======================================== initNet');
             self:initNetEvents();
         end);
     end
 end
 
 function CTFPlayer:initNetEvents()
+    print('======================================== initNetEvents');
     if self.player == _G.ThePlayer then
+        print('======================================== _G.ThePlayer');
         self.net:ListenForEvent('spawn_event', function() self:netHandleSpawnedEvent() end);
+        --self.player:DoTaskInTime(5, function() self:netHandleSpawnedEvent() end);
     end
 end
 
 function CTFPlayer:netHandleSpawnedEvent()
+    print('======================================== netHandleSpawnedEvent');
     ShowWelcomeScreen(function()
         SendModRPCToServer(MOD_RPC[CTF_TEAM_CONSTANTS.RPC_NAMESPACE][CTF_TEAM_CONSTANTS.RPC.PLAYER_JOINED_CTF]);
     end);

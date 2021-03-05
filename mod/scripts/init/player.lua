@@ -4,8 +4,17 @@
 --- DateTime: 2021-01-17 2:10 p.m.
 ---
 
-AddPrefabPostInit('player_classified', function (inst)
+--AddPrefabPostInit('player_classified', function (inst)
+--    inst:DoTaskInTime(0, function(pc)
+--        print('======================================== player_classified');
+--        local player = pc.entity:GetParent();
+--        CTFPlayer(player);
+--    end);
+--end);
+
+AddPlayerPostInit(function(inst)
     inst:DoTaskInTime(0, function(pc)
+        print('======================================== player_classified');
         local player = pc.entity:GetParent();
         CTFPlayer(player);
     end);

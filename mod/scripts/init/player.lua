@@ -18,12 +18,13 @@ local function OnPlayerSpawned(player)
     end
 end
 
+AddPlayerPostInit(function(inst)
+    inst:AddComponent('itemtyperestrictions');
+    inst:AddComponent('ctfteamplayer');
+end);
+
 AddComponentPostInit('playervision', function(component)
     component.inst:DoTaskInTime(0, function(player)
-
-        player:AddComponent('itemtyperestrictions');
-        player:AddComponent('ctfteamplayer');
-
         if TheWorld.ismastersim then
             inventory.removeAllItems(player);
             inventory.initializeInventory(player);

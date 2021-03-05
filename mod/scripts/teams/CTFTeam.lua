@@ -582,24 +582,6 @@ function CTFTeam:registerPlayer(player)
     end
 end
 
-function CTFTeam:findPlayer(prefab, userid)
-    for _, v in ipairs(self.players) do
-        if v.prefab == prefab and v.userid == userid then
-            return v;
-        end
-    end
-    return nil;
-end
-
-function CTFTeam:hasPlayer(player)
-    for _, v in ipairs(self.players) do
-        if v == player then
-            return true;
-        end
-    end
-    return false;
-end
-
 function CTFTeam:removePlayer(player)
     for i, v in ipairs(self.players) do
         if v == player then

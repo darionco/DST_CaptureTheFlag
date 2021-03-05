@@ -50,7 +50,6 @@ function CTFPlayer:initNetEvents()
     if self.player == _G.ThePlayer then
         self.net:ListenForEvent('spawn_event', function() self:netHandleSpawnedEvent() end);
     end
-    self.net:ListenForEvent('team_id', function() self:netHandleTeamID() end);
 end
 
 function CTFPlayer:netHandleSpawnedEvent()
@@ -59,22 +58,21 @@ function CTFPlayer:netHandleSpawnedEvent()
     end);
 end
 
-function CTFPlayer:netHandleTeamID()
-
-end
-
 function CTFPlayer:getTeamID()
     return self.net.team_id:value();
 end
 
 function CTFPlayer:setTeamID(teamID)
-    self.net.team_id:value(teamID);
+    self.net.team_id:set(teamID);
 end
 
-function CTFPlayer:getReady()
+function CTFPlayer:isReady()
     return self.net.ready:value();
 end
 
 function CTFPlayer:setReady(ready)
     self.net.ready:set(ready);
+    if TheWorld.ismastersim then
+        CTFTeamManager:playerReadyUpdated(self);
+    end
 end

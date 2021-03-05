@@ -85,12 +85,14 @@ end
 function CTFTeamManager:shouldStartGame()
     -- gameStartCount other than 0 means the game is starting
     if self.gameStarted == false and self.gameStartCount == 0 then
-        local totalPlayers = 0;
-        for _, v in ipairs(self.teams) do
-            totalPlayers = totalPlayers + v.playerCount;
+        local totalReadyPlayers = 0;
+        for _, v in pairs(self.players) do
+            if v:isReady() then
+                totalReadyPlayers = totalReadyPlayers + 1;
+            end
         end
         local minPlayerCount = GetModConfigData('CTF_MIN_PLAYERS_TO_START');
-        if totalPlayers >= minPlayerCount then
+        if totalReadyPlayers >= minPlayerCount then
             return true;
         end
     end
@@ -125,15 +127,21 @@ function CTFTeamManager:startGame()
     end
 end
 
-function CTFTeamManager:getPlayerTeam(player)
-    if player.data and player.data.ctf_team_id ~= nil then
-        return self.teams[player.data.ctf_team_id];
-    end
-
-    for _, v in ipairs(self.teams) do
-        if v:hasPlayer(player) then
-            return v;
+function CTFTeamManager:playerReadyUpdated(ctfPlayer)
+    if ctfPlayer:isReady() and self.gameStarted then
+        local team = self.teams[ctfPlayer:getTeamID()];
+        if team then
+            team:teleportPlayerToBase(ctfPlayer.player);
         end
+    elseif self:shouldStartGame() then
+        self:scheduleGameStart();
+    end
+end
+
+function CTFTeamManager:getPlayerTeam(userid)
+    local player = self:getCTFPlayer(userid);
+    if player then
+        return self.teams[player:getTeamID()];
     end
     return nil;
 end
@@ -187,14 +195,4 @@ function CTFTeamManager:removePlayer(player)
             self:netUpdatePlayerTable();
         end
     end
-end
-
-function CTFTeamManager:findPlayer(prefab, userid)
-    for _, v in ipairs(self.teams) do
-        local player = v:findPlayer(prefab, userid);
-        if player ~= nil then
-            return player;
-        end
-    end
-    return nil;
 end

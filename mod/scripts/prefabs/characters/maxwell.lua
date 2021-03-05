@@ -20,7 +20,7 @@ AddPrefabPostInit('waxwell', function(inst)
             inst.components.petleash.onspawnfn = function(f_inst, pet)
                 OldOnSpawnFn(f_inst, pet);
                 if f_inst:HasTag(CTF_TEAM_CONSTANTS.TEAM_PLAYER_TAG) then
-                    local team = CTFTeamManager:getPlayerTeam(f_inst);
+                    local team = CTFTeamManager:getPlayerTeam(f_inst.userid);
                     if team ~= nil then
                         team:registerObject(pet, nil);
                     end

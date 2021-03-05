@@ -3,6 +3,7 @@
 --- Created by darionco.
 --- DateTime: 2021-01-16 4:57 p.m.
 ---
+modimport('scripts/prefabs/patcher/CTFPrefabPatcher');
 
 modimport('scripts/prefabs/patcher/piggyback');
 modimport('scripts/prefabs/patcher/killerbee');

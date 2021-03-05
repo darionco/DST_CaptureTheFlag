@@ -3,11 +3,6 @@
 --- Created by darionco.
 --- DateTime: 2021-01-23 5:10 p.m.
 ---
-local require = _G.require;
-local CTF_TEAM_CONSTANTS = require('constants/CTFTeamConstants');
-
-modimport('scripts/prefabs/patcher/CTFPrefabPatcher');
-modimport('scripts/teams/CTFTeamManager');
 
 CTFPrefabPatcher:registerPrefabPatcher('bishop_nightmare', function(inst, data)
     if TheWorld.ismastersim then

@@ -4,11 +4,9 @@
 --- DateTime: 2021-01-16 4:51 p.m.
 ---
 
-local require = GLOBAL.require;
+local require = _G.require;
 local CTF_TEAM_CONSTANTS = require('constants/CTFTeamConstants');
 local CTFTeamCombat = require('teams/CTFTeamCombat');
-
-modimport('scripts/prefabs/patcher/CTFPrefabPatcher');
 
 local CTF_FLAG_TAGS = { CTF_TEAM_CONSTANTS.TEAM_FLAG_TAG };
 local function TestWinState(inst, self)
@@ -546,9 +544,11 @@ function CTFTeam:registerPlayer(player)
         if player.components.sanity then
             player.components.sanity.redirect = function() return;  end;
         end
+
+        if player.components.ctfteamplayer and player.components.ctfteamplayer.net then
+            player.components.ctfteamplayer.net.teamID:set(self.id);
+        end
     end
-
-
 
     if not player.data then
         player.data = {};
@@ -574,10 +574,6 @@ function CTFTeam:registerPlayer(player)
     player:ListenForEvent('ms_respawnedfromghost', function ()
         team:resetPlayerStats(player);
     end);
-
-    if player.player_classified and player.player_classified.ctf_net_on_player_team_id then
-        player.player_classified.ctf_net_on_player_team_id:set(self.id);
-    end
 
     TheWorld:PushEvent(CTF_TEAM_CONSTANTS.PLAYER_JOINED_TEAM_EVENT, player, team);
 

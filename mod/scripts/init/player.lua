@@ -6,67 +6,23 @@
 
 modimport('scripts/teams/CTFTeamManager');
 
-local require = GLOBAL.require;
+local require = _G.require;
 local inventory = require('init/player_inventory');
-local Image = require('widgets/image');
 
 local function OnPlayerSpawned(player)
-    CTFTeamManager:registerPlayer(player);
-
     if TheWorld.ismastersim then
         player:RemoveEventCallback('colourtweener_end', OnPlayerSpawned);
-        player.player_classified.ctf_net_on_player_spawned:push();
-    else
-        player:RemoveEventCallback('ctf_net_on_player_spawned', OnPlayerSpawned, player);
-    end
-end
-
-local function OnPlayerTeamID(inst)
-    local player = inst.entity:GetParent();
-    local teamID = player.player_classified.ctf_net_on_player_team_id:value();
-    local teamTag = CTFTeam.makeTeamTag(nil, teamID);
-
-    if not player.data then
-        player.data = {};
-    end
-    player.data.ctf_team_id = teamID;
-    player.data.ctf_team_tag = teamTag;
-
-    CTFTeam.patchPlayerController(nil, player, teamTag);
-    CTFTeam.patchCombat(nil, player, teamTag);
-end
-
-AddPrefabPostInit('player_classified', function(inst)
-    inst.ctf_net_on_player_spawned = GLOBAL.net_event(inst.GUID, 'ctf_net_on_player_spawned');
-    inst.ctf_net_on_player_team_id = GLOBAL.net_byte(inst.GUID, 'ctf_net_on_player_team_id', 'ctf_net_on_player_team_id');
-    
-    if not TheWorld.ismastersim then
-        inst:ListenForEvent('ctf_net_on_player_spawned', OnPlayerSpawned, inst.entity:GetParent());
-        inst:ListenForEvent('ctf_net_on_player_team_id', OnPlayerTeamID, inst.entity:GetParent());
-    end
-end);
-
-AddPlayerPostInit(function(inst)
-    inst:DoTaskInTime(0, function(player)
-        player:AddComponent('ctfteammarker');
-        if not TheNet:IsDedicated() then
-            player.teamMarkerTask = player:DoPeriodicTask(0.2, function()
-                local teamID = CTFTeamManager:getUserTeamID(player.userid);
-                if teamID then
-                    player.teamMarkerTask:Cancel();
-                    player.teamMarkerTask = nil;
-                    player.components.ctfteammarker:SetTeam(teamID);
-                end
-            end);
+        if player.components and player.components.ctfteamplayer and player.components.ctfteamplayer.net then
+            player.components.ctfteamplayer.net.spawnEvent:push();
         end
-    end);
-end);
+    end
+end
 
--- local player
 AddComponentPostInit('playervision', function(component)
     component.inst:DoTaskInTime(0, function(player)
 
         player:AddComponent('itemtyperestrictions');
+        player:AddComponent('ctfteamplayer');
 
         if TheWorld.ismastersim then
             inventory.removeAllItems(player);

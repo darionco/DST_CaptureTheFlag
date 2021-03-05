@@ -9,8 +9,9 @@ local function ctf()
 
     inst.entity:AddTransform();
     inst.entity:AddNetwork();
-    inst.entity:Hide()
     inst.entity:SetCanSleep(false);
+    inst:AddTag("CLASSIFIED");
+    inst.entity:SetPristine();
 
     inst.spawn_event = net_event(inst.GUID, 'spawn_event');
 
@@ -20,7 +21,7 @@ local function ctf()
     inst.ready = net_bool(inst.GUID, 'ready', 'ready');
     inst.ready:set(false);
 
-    inst.entity:SetPristine();
+    inst.entity:FlushLocalDirtyNetVars();
 
     return inst;
 end

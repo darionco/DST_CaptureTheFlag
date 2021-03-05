@@ -15,6 +15,8 @@ CTFPlayer = Class(function(self, player)
     self.net = nil;
     self.marker = nil;
 
+    self.net = self.player:SpawnChild('ctf_player_net');
+
     self:initNet();
     self:initCommon();
     if TheWorld.ismastersim then
@@ -48,10 +50,6 @@ function CTFPlayer:initMaster()
 end
 
 function CTFPlayer:initNet()
-    if TheWorld.ismastersim then
-        self.net = self.player:SpawnChild('ctf_player_net');
-    end
-
     if not TheNet:IsDedicated() then
         self:initNetEvents();
     end

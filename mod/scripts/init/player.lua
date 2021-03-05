@@ -14,5 +14,7 @@
 
 AddPlayerPostInit(function(inst)
     print('======================================== AddPlayerPostInit');
-    CTFPlayer(inst);
+    inst:DoTaskInTime(0, function()
+        CTFPlayer(inst);
+    end);
 end);

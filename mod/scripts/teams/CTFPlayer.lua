@@ -37,6 +37,7 @@ end
 
 function CTFPlayer:initMaster()
     local player = self.player;
+    print('======================================== CTFPlayer:initMaster', player);
     inventory.removeAllItems(player);
     inventory.initializeInventory(player);
 

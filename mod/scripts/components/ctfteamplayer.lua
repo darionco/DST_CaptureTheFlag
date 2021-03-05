@@ -6,6 +6,7 @@
 local require = _G.require;
 local ShowWelcomeScreen = require('screens/CTFInstructionsPopup');
 local CTF_TEAM_CONSTANTS = require('constants/CTFTeamConstants');
+require('teams/CTFTeamManager');
 require('teams/CTFTeam');
 
 local CTFTeamPlayer = Class(function(self, inst)
@@ -13,6 +14,7 @@ local CTFTeamPlayer = Class(function(self, inst)
     self.markerAnchor = nil;
     self.marker = nil;
     self.net = nil;
+    self.idTask = nil;
 
     self:initMarker();
 
@@ -30,17 +32,29 @@ function CTFTeamPlayer:initializeNetwork()
     if player.player_classified then
         self.net = player.player_classified;
         self.net.ctf_spawn_event = net_event(self.net.GUID, 'ctf_spawn_event');
-        self.net.ctf_team_id = net_tinybyte(self.net.GUID, 'ctf_team_id', 'ctf_team_id');
+        self.net.ctf_player_health = net_float(self.net.GUID, 'ctf_player_health', 'ctf_player_health');
 
         if not TheNet:IsDedicated() then
             if player == _G.ThePlayer then
                 self.net:ListenForEvent('ctf_spawn_event', function() self:netHandleSpawnedEvent() end);
             end
 
-            self.net:ListenForEvent('ctf_team_id', function() self:netHandleTeamID() end);
-            self.net:ListenForEvent('isghostmodedirty', function() self:netHandleHealthChange() end);
+            self.net:ListenForEvent('ctf_player_health', function() self:netHandleHealthChange() end);
             self.net:ListenForEvent('healthdirty', function() self:netHandleHealthChange(); end);
         end
+
+        if player.components and player.components.health then
+            player:ListenForEvent('healthdelta', function(owner, data)
+                self.net.ctf_player_health:set(data.newpercent);
+            end);
+        end
+
+        self.idTask = player.DoPeriodicTask(0.2, function()
+            local teamID = CTFTeamManager:getUserTeamID(player.userid);
+            if teamID then
+                self:setTeamID(teamID);
+            end
+        end);
     end
 end
 
@@ -51,16 +65,13 @@ function CTFTeamPlayer:netHandleSpawnedEvent()
 end
 
 function CTFTeamPlayer:setTeamID(teamID)
-    print('============================================== setTeamID');
-    if TheWorld.ismastersim then
-        self.net.ctf_team_id:set(teamID);
+    if self.idTask then
+        self.idTask:Cancel();
+        self.idTask = nil;
     end
 
     local teamTag = CTFTeam.makeTeamTag(nil, teamID);
     local player = self.inst;
-    print(player);
-    print('teamID', teamID);
-    print('teamTag', teamTag);
 
     if not player.data then
         player.data = {};
@@ -76,14 +87,9 @@ function CTFTeamPlayer:setTeamID(teamID)
     end
 end
 
-function CTFTeamPlayer:netHandleTeamID()
-    print('============================================== netHandleTeamID');
-    self:setTeamID(self.net.ctf_team_id:value());
-end
-
 function CTFTeamPlayer:netHandleHealthChange()
     if self.marker then
-        local percent = self.net.currenthealth:value() / self.net.maxhealth:value();
+        local percent = self.net.ctf_player_health:value();
         if not self.inst:HasTag('playerghost') then
             self.marker.AnimState:SetTime(3.61 * (1 - percent));
         else

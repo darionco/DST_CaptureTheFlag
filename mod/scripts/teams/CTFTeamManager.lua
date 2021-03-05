@@ -6,7 +6,6 @@
 local require = _G.require;
 
 local CTF_TEAM_CONSTANTS = require('constants/CTFTeamConstants');
-modimport('scripts/teams/CTFTeam');
 
 CTFTeamManager = {
     teamCount = 0,

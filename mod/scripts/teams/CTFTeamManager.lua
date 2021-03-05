@@ -3,52 +3,10 @@
 --- Created by darionco.
 --- DateTime: 2021-01-16 4:45 p.m.
 ---
-modimport('scripts/teams/CTFTeam');
+local require = _G.require;
 
-local require = GLOBAL.require;
 local CTF_TEAM_CONSTANTS = require('constants/CTFTeamConstants');
-local CTFInstructionsPopup = require "screens/CTFInstructionsPopup"
-
-local CTF_RPC = 'CTF::PLAYER';
-
-local function registerPlayer(player)
-    print('============== REGISTERING PLAYER: ' .. player.name .. ' ================');
-    CTFTeamManager:onWelcomeScreenClosed(player);
-end
-
-AddModRPCHandler(CTF_RPC, "ctf_register_player", registerPlayer);
-
-local function showWelcomeScreen(cb)
-    GLOBAL.TheFrontEnd:PushScreen(CTFInstructionsPopup(
-            'Welcome to Capture the Flag!',
-            'The are two teams in this game, each team has a different hue.\nThe goal of the game is to bring the opponent\'s piggyback to your base.\nUse gold to craft weapons, armor and food.\nYou can get gold by defeating enemies.\nSome creatures are your friends, some aren\'t, either way, they all drop gold.\n\nGood luck!',
-            {
-                {
-                    text = "Discord",
-                    cb = function()
-                        VisitURL('https://discord.gg/qfNbVrXCkd');
-                    end
-                },
-                {
-                    -- Set Text
-                    text = "OK",
-
-                    -- Create Callback
-                    cb = function()
-                        print('OK CLICKED =====================================');
-                        GLOBAL.TheFrontEnd:PopScreen();
-                        cb();
-                    end
-                },
-                {
-                    text = "Video Tutorial",
-                    cb = function()
-                        VisitURL('https://www.youtube.com/embed/_LN5mRUN6cE?autoplay=1');
-                    end
-                },
-            }
-    ));
-end
+modimport('scripts/teams/CTFTeam');
 
 CTFTeamManager = {
     teamCount = 0,
@@ -178,19 +136,6 @@ function CTFTeamManager:getObjectTeam(obj)
     return nil;
 end
 
-function CTFTeamManager:onWelcomeScreenClosed(player)
-    if TheWorld.ismastersim then
-        if self.gameStarted then
-            local team = self:getPlayerTeam(player);
-            if team then
-                team:teleportPlayerToBase(player);
-            end
-        elseif self:shouldStartGame() then
-            self:scheduleGameStart();
-        end
-    end
-end
-
 function CTFTeamManager:registerPlayer(player)
     if TheWorld.ismastersim then
         local team = self:getTeamWithLeastPlayers();
@@ -202,22 +147,13 @@ function CTFTeamManager:registerPlayer(player)
             team:setPlayerInvincibility(player, true);
             self.userid2teamid[player.userid] = team.id;
             self:netUpdateUserTable();
+
+            if self.gameStarted then
+                team:teleportPlayerToBase(player);
+            elseif self:shouldStartGame() then
+                self:scheduleGameStart();
+            end
         end
-    end
-
-    -- try this again later, but it's not that important
-    --player.components.playercontroller:RotRight();
-
-    if not TheWorld.ismastersim then
-        showWelcomeScreen(function()
-            print('SENDING REMOTE EVENT =====================================');
-            SendModRPCToServer(MOD_RPC[CTF_RPC]['ctf_register_player']);
-        end);
-    elseif TheWorld.ismastersim and player == ThePlayer then
-        -- host
-        showWelcomeScreen(function()
-            registerPlayer(player);
-        end);
     end
 end
 

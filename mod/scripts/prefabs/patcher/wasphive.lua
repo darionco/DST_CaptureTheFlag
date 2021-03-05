@@ -12,9 +12,7 @@ modimport('scripts/teams/CTFTeamManager');
 CTFPrefabPatcher:registerPrefabPatcher('wasphive', function(inst, data)
     if TheWorld.ismastersim then
         if data.ctf_team then
-            TheWorld:ListenForEvent(CTF_TEAM_CONSTANTS.PLAYER_CONNECTED_EVENT, function()
-                CTFTeamManager:registerTeamObject(inst, data);
-            end);
+            CTFTeamManager:registerTeamObject(inst, data);
         end
     end
 

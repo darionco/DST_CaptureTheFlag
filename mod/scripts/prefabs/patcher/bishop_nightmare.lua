@@ -21,9 +21,7 @@ CTFPrefabPatcher:registerPrefabPatcher('bishop_nightmare', function(inst, data)
         inst.components.combat:SetRetargetFunction(0.25, OldRetargetFunction);
 
         if data.ctf_team then
-            TheWorld:ListenForEvent(CTF_TEAM_CONSTANTS.PLAYER_CONNECTED_EVENT, function()
-                CTFTeamManager:registerTeamObject(inst, data);
-            end);
+            CTFTeamManager:registerTeamObject(inst, data);
         end
     end
 end)

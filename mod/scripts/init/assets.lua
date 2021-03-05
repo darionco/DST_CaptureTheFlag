@@ -11,4 +11,5 @@ Assets = {
 
 PrefabFiles = {
     'ctf_team_marker',
+    'ctf_player_net',
 }

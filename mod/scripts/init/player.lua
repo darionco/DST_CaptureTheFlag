@@ -4,31 +4,9 @@
 --- DateTime: 2021-01-17 2:10 p.m.
 ---
 
-modimport('scripts/teams/CTFTeamManager');
-
-local require = _G.require;
-local inventory = require('init/player_inventory');
-
-local function OnPlayerSpawned(player)
-    if TheWorld.ismastersim then
-        player:RemoveEventCallback('colourtweener_end', OnPlayerSpawned);
-        if player.components and player.components.ctfteamplayer and player.components.ctfteamplayer.net then
-            player.components.ctfteamplayer.net.ctf_spawn_event:push();
-        end
-    end
-end
-
-AddPlayerPostInit(function(inst)
-    inst:AddComponent('itemtyperestrictions');
-    inst:AddComponent('ctfteamplayer');
-end);
-
-AddComponentPostInit('playervision', function(component)
-    component.inst:DoTaskInTime(0, function(player)
-        if TheWorld.ismastersim then
-            inventory.removeAllItems(player);
-            inventory.initializeInventory(player);
-            player:ListenForEvent('colourtweener_end', OnPlayerSpawned);
-        end
-    end)
+AddPrefabPostInit('player_classified', function (inst)
+    inst:DoTaskInTime(0, function(pc)
+        local player = pc.entity:GetParent();
+        CTFPlayer(player);
+    end);
 end);

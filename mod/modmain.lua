@@ -3,6 +3,8 @@ local CTF_TEAM_CONSTANTS = require('constants/CTFTeamConstants');
 
 modimport('scripts/teams/CTFTeamManager');
 modimport('scripts/teams/CTFTeam');
+modimport('scripts/teams/CTFPlayer');
+
 modimport('scripts/init/screens');
 modimport('scripts/init/assets');
 modimport('scripts/init/prefab_on_load');
@@ -17,22 +19,26 @@ modimport('scripts/init/chat');
 modimport('scripts/init/network');
 
 
-local function handlePlayerJoined(_, player)
-    TheWorld:PushEvent(CTF_TEAM_CONSTANTS.PLAYER_CONNECTED_EVENT, player);
+local function handlePlayerJoined(world, player)
+    world:PushEvent(CTF_TEAM_CONSTANTS.PLAYER_CONNECTED_EVENT, player);
 end
 
-local function handlePlayerDisconnected(_, args)
-    TheWorld:PushEvent(CTF_TEAM_CONSTANTS.PLAYER_DISCONNECTED_EVENT, args.player);
+local function handlePlayerDisconnected(world, args)
+    world:PushEvent(CTF_TEAM_CONSTANTS.PLAYER_DISCONNECTED_EVENT, args.player);
     CTFTeamManager:removePlayer(args.player);
 end
 
-AddPrefabPostInit('world', function(world)
-    TheWorld:ListenForEvent('ms_playerjoined', handlePlayerJoined);
-    TheWorld:ListenForEvent('ms_playerdisconnected', handlePlayerDisconnected);
+AddPrefabPostInit('world', function(inst)
+    inst:ListenForEvent('ms_playerjoined', handlePlayerJoined);
+    inst:ListenForEvent('ms_playerdisconnected', handlePlayerDisconnected);
+
+    -- check world completeness
+    if inst.ismastersim then
+        inst:DoTaskInTime(0, function()
+            local team = CTFTeamManager:getTeamWithLeastPlayers();
+            if not team then
+                c_regenerateworld();
+            end
+        end);
+    end
 end);
-
-AddPrefabPostInit('forest_network', function(inst)
-    CTFTeamManager:registerNetEvents(inst);
-end);
-
-

@@ -7,7 +7,6 @@
 local assets = {
     Asset('ANIM', 'anim/ctf_team_marker.zip'),
 };
-local prefabs = {};
 
 local function ctf()
     local inst = CreateEntity();
@@ -15,6 +14,8 @@ local function ctf()
     inst.entity:AddTransform();
     inst.entity:AddFollower();
     inst.entity:AddAnimState();
+    inst.entity:AddNetwork();
+    inst:AddTag('FX');
 
     inst.Transform:SetPosition(0, -0.05, 0);
 
@@ -25,11 +26,9 @@ local function ctf()
     inst.AnimState:SetOrientation(ANIM_ORIENTATION.OnGround);
 
     inst.entity:SetPristine();
-
-    inst:AddTag('FX');
     inst.persists = false;
 
     return inst;
 end
 
-return Prefab( 'ctf_team_marker', ctf, assets, prefabs);
+return Prefab( 'ctf_team_marker', ctf, assets);

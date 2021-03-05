@@ -8,5 +8,12 @@ local require = _G.require;
 local CTF_TEAM_CONSTANTS = require('constants/CTFTeamConstants');
 
 AddModRPCHandler(CTF_TEAM_CONSTANTS.RPC_NAMESPACE, CTF_TEAM_CONSTANTS.RPC.PLAYER_JOINED_CTF, function(player)
-    CTFTeamManager:registerPlayer(player);
+    local ctfPlayer = CTFTeamManager:getCTFPlayer(player.userid);
+    if ctfPlayer then
+        ctfPlayer:setReady(true);
+    end
+end);
+
+AddPrefabPostInit('forest_network', function(inst)
+    CTFTeamManager:initNet(inst);
 end);

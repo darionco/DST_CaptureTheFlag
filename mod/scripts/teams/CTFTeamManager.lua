@@ -10,45 +10,55 @@ local CTF_TEAM_CONSTANTS = require('constants/CTFTeamConstants');
 CTFTeamManager = {
     teamCount = 0,
     teams = {},
-    userid2teamid = {},
     gameStarted = false,
     gameStartCount = 0,
+
+    players = {},
 };
 
-function CTFTeamManager:registerNetEvents(inst)
-    self._net_player_event = GLOBAL.net_string(inst.GUID, 'ctf_team_manager_net_player_event', 'ctf_team_manager_net_player_event');
+function CTFTeamManager:initNet(net)
+    self.net = net;
+    self.net.ctf_player_table = net_string(self.net.GUID, 'ctf_player_table', 'ctf_player_table');
     if not TheNet:IsDedicated() then
-        inst:ListenForEvent('ctf_team_manager_net_player_event', function()
-            local event = CTFTeamManager._net_player_event:value();
-            self:handleNetPlayerEvent(event);
-        end);
+        self.net:ListenForEvent('ctf_player_table', function() self:handleNetPlayerTable() end);
     end
 end
 
-function CTFTeamManager:netUpdateUserTable()
-    if self._net_player_event then
-        local serialized = '|';
-        for k, v in pairs(self.userid2teamid) do
-            serialized = serialized .. k .. ':' .. v .. '|';
-        end
-        self._net_player_event:set(serialized);
+function CTFTeamManager:netUpdatePlayerTable()
+    local serialized = '|';
+    for k, _ in pairs(self.players) do
+        serialized = serialized .. k .. '|';
     end
+    self.net.ctf_player_table:set(serialized);
 end
 
-function CTFTeamManager:handleNetPlayerEvent(event)
-    self.userid2teamid = {};
-    for pair in string.gmatch(event, '([^|]+)') do
-        if pair then
-            local userid, teamid = string.match(pair, '(.+):(.+)');
-            if userid ~= nil and teamid ~= nil then
-                self.userid2teamid[userid] = tonumber(teamid);
+function CTFTeamManager:handleNetPlayerTable()
+    local serialized = self.net.ctf_player_table:value();
+    local newList = {};
+    -- deserialize the table and add placeholders for missing players
+    for userid in string.gmatch(serialized, '([^|]+)') do
+        if userid then
+            newList[userid] = true;
+            if not self.players[userid] then
+                self.players[userid] = false;
             end
         end
     end
+
+    -- run through the local list and remove any players that have left
+    for k, _ in pairs(self.players) do
+        if not newList[k] then
+            self.players[k] = nil;
+        end
+    end
 end
 
-function CTFTeamManager:getUserTeamID(userid)
-    return self.userid2teamid[userid];
+function CTFTeamManager:getCTFPlayer(userid)
+    local player = self.players[userid];
+    if player then
+        return player;
+    end
+    return nil;
 end
 
 function CTFTeamManager:registerTeamObject(obj, data)
@@ -62,7 +72,7 @@ end
 
 function CTFTeamManager:getTeamWithLeastPlayers()
     local minPlayerCount = 9999999;
-    local team = nil;
+    local team;
     for _, v in ipairs(self.teams) do
         if v.playerCount < minPlayerCount then
             minPlayerCount = v.playerCount;
@@ -135,35 +145,47 @@ function CTFTeamManager:getObjectTeam(obj)
     return nil;
 end
 
-function CTFTeamManager:registerPlayer(player)
+function CTFTeamManager:registerCTFPlayer(ctfPlayer)
+    self.players[ctfPlayer.player.userid] = ctfPlayer;
+
     if TheWorld.ismastersim then
+        -- this should be useless
+        self:netUpdatePlayerTable();
+
         local team = self:getTeamWithLeastPlayers();
         if not team then
             c_regenerateworld();
         else
-            c_announce(player.name .. ' joins team ' .. team.id);
-            team:registerPlayer(player);
-            team:setPlayerInvincibility(player, true);
-            self.userid2teamid[player.userid] = team.id;
-            self:netUpdateUserTable();
-
-            if self.gameStarted then
-                team:teleportPlayerToBase(player);
-            elseif self:shouldStartGame() then
-                self:scheduleGameStart();
-            end
+            c_announce(ctfPlayer.player.name .. ' joins team ' .. team.id);
+            ctfPlayer:setTeamID(team.id);
+            team:registerPlayer(ctfPlayer.player);
+            team:setPlayerInvincibility(ctfPlayer.player, true);
         end
     end
 end
 
 function CTFTeamManager:removePlayer(player)
-    for _, v in ipairs(self.teams) do
-        v:removePlayer(player);
-    end
+    local ctfPlayer = self.players[player.userid];
+    if ctfPlayer then
+        local teamID = ctfPlayer:getTeamID();
+        local team = teamID ~= 0 and self.teams[teamID] or nil;
+        if team then
+            team:removePlayer(player);
+            TheWorld:PushEvent(CTF_TEAM_CONSTANTS.PLAYER_LEFT_TEAM_EVENT, player, team);
+        end
+        ctfPlayer:kill();
 
-    if TheWorld.ismastersim then
-        self.userid2teamid[player.userid] = nil;
-        self:netUpdateUserTable();
+        -- if all the players left, regenerate the world
+        local count = 0
+        for _, _ in pairs(self.players) do
+            count = count + 1
+        end
+
+        if count == 0 then
+            c_regenerateworld();
+        else
+            self:netUpdatePlayerTable();
+        end
     end
 end
 

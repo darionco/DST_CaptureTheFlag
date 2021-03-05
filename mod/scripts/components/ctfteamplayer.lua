@@ -11,20 +11,11 @@ require('teams/CTFTeam');
 
 local CTFTeamPlayer = Class(function(self, inst)
     self.inst = inst;
-    self.markerAnchor = nil;
-    self.marker = nil;
     self.net = nil;
-    self.idTask = nil;
-
-    self:initMarker();
 
     self.inst:DoTaskInTime(0, function()
         self:initializeNetwork();
     end);
-
-    if TheWorld.ismastersim then
-        CTFTeam.setPlayerInvincibility(CTFTeam, self.inst);
-    end
 end);
 
 function CTFTeamPlayer:initializeNetwork()
@@ -32,29 +23,12 @@ function CTFTeamPlayer:initializeNetwork()
     if player.player_classified then
         self.net = player.player_classified;
         self.net.ctf_spawn_event = net_event(self.net.GUID, 'ctf_spawn_event');
-        self.net.ctf_player_health = net_float(self.net.GUID, 'ctf_player_health', 'ctf_player_health');
 
         if not TheNet:IsDedicated() then
             if player == _G.ThePlayer then
                 self.net:ListenForEvent('ctf_spawn_event', function() self:netHandleSpawnedEvent() end);
             end
-
-            self.net:ListenForEvent('ctf_player_health', function() self:netHandleHealthChange() end);
-            self.net:ListenForEvent('healthdirty', function() self:netHandleHealthChange(); end);
         end
-
-        if player.components and player.components.health then
-            player:ListenForEvent('healthdelta', function(owner, data)
-                self.net.ctf_player_health:set(data.newpercent);
-            end);
-        end
-
-        self.idTask = player:DoPeriodicTask(0.2, function()
-            local teamID = CTFTeamManager:getUserTeamID(player.userid);
-            if teamID then
-                self:setTeamID(teamID);
-            end
-        end);
     end
 end
 

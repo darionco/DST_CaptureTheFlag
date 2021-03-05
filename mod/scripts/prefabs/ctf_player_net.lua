@@ -26,4 +26,4 @@ local function ctf()
     return inst;
 end
 
-return Prefab('ctf_player_net', ctf);
+return Prefab('common/ctf_player_net', ctf);

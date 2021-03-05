@@ -19,7 +19,9 @@ local CTFTeamPlayer = Class(function(self, inst)
     self:initializeNetwork();
     self:initMarker();
 
-    CTFTeam.setPlayerInvincibility(CTFTeam, self.inst);
+    if TheWorld.ismastersim then
+        CTFTeam.setPlayerInvincibility(CTFTeam, self.inst);
+    end
 end);
 
 function CTFTeamPlayer:initializeNetwork()
@@ -31,7 +33,10 @@ function CTFTeamPlayer:initializeNetwork()
     };
 
     if not TheNet:IsDedicated() then
-        player:ListenForEvent('ctf_spawned_event', function() self:netHandleSpawnedEvent() end);
+        if player == _G.ThePlayer then
+            player:ListenForEvent('ctf_spawned_event', function() self:netHandleSpawnedEvent() end);
+        end
+
         player:ListenForEvent('ctf_team_id', function() self:netHandleTeamID() end);
 
         if player.player_classified then

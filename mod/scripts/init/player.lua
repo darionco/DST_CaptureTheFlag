@@ -13,7 +13,7 @@ local function OnPlayerSpawned(player)
     if TheWorld.ismastersim then
         player:RemoveEventCallback('colourtweener_end', OnPlayerSpawned);
         if player.components and player.components.ctfteamplayer and player.components.ctfteamplayer.net then
-            player.components.ctfteamplayer.net.spawnEvent:push();
+            player.components.ctfteamplayer.net.ctf_spawn_event:push();
         end
     end
 end

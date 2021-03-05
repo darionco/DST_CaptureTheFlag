@@ -546,7 +546,7 @@ function CTFTeam:registerPlayer(player)
         end
 
         if player.components.ctfteamplayer and player.components.ctfteamplayer.net then
-            player.components.ctfteamplayer.net.teamID:set(self.id);
+            player.components.ctfteamplayer.net.ctf_team_id:set(self.id);
         end
     end
 

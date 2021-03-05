@@ -24,22 +24,19 @@ end);
 
 function CTFTeamPlayer:initializeNetwork()
     local player = self.inst;
+    if player.player_classified then
+        self.net = player.player_classified;
+        self.net.ctf_spawn_event = net_event(player.GUID, 'ctf_spawn_event');
+        self.net.ctf_team_id = net_tinybyte(player.GUID, 'ctf_team_id', 'ctf_team_id');
 
-    self.net = {
-        spawnEvent = net_event(player.GUID, 'ctf_spawned_event'),
-        teamID = net_tinybyte(player.GUID, 'ctf_team_id', 'ctf_team_id'),
-    };
+        if not TheNet:IsDedicated() then
+            if player == _G.ThePlayer then
+                self.net:ListenForEvent('ctf_spawn_event', function() self:netHandleSpawnedEvent() end);
+            end
 
-    if not TheNet:IsDedicated() then
-        if player == _G.ThePlayer then
-            player:ListenForEvent('ctf_spawned_event', function() self:netHandleSpawnedEvent() end);
-        end
-
-        player:ListenForEvent('ctf_team_id', function() self:netHandleTeamID() end);
-
-        if player.player_classified then
-            player.player_classified:ListenForEvent('isghostmodedirty', function() self:netHandleHealthChange() end);
-            player.player_classified:ListenForEvent('healthdirty', function() self:netHandleHealthChange(); end);
+            self.net:ListenForEvent('ctf_team_id', function() self:netHandleTeamID() end);
+            self.net:ListenForEvent('isghostmodedirty', function() self:netHandleHealthChange() end);
+            self.net:ListenForEvent('healthdirty', function() self:netHandleHealthChange(); end);
         end
     end
 end
@@ -54,7 +51,7 @@ function CTFTeamPlayer:netHandleTeamID()
     print('============================================== netHandleTeamID')
     local player = self.inst;
 
-    local teamID = self.net.teamID:value();
+    local teamID = self.net.ctf_team_id:value();
     local teamTag = CTFTeam.makeTeamTag(nil, teamID);
 
     if not player.data then

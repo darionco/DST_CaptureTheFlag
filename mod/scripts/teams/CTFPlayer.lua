@@ -7,11 +7,13 @@ local require = _G.require;
 local inventory = require('init/player_inventory');
 local ShowWelcomeScreen = require('screens/CTFInstructionsPopup');
 local CTF_TEAM_CONSTANTS = require('constants/CTFTeamConstants');
+local CTFTeamMarker = use('scripts/teams/CTFTeamMarker');
 
 CTFPlayer = Class(function(self, player)
     -- this is supposed to run on both server and client
     self.player = player;
-    self.net = player:SpawnChild('ctf_player_net');
+    self.net = nil;
+    self.marker = nil;
 
     self:initNet();
     self:initCommon();
@@ -36,11 +38,20 @@ function CTFPlayer:initMaster()
     local function OnPlayerSpawned(f_player)
         f_player:RemoveEventCallback('colourtweener_end', OnPlayerSpawned);
         self.net.spawn_event:push();
+        self.marker = CTFTeamMarker(self.player);
+        local teamID = self:getTeamID();
+        if teamID ~= 0 then
+            self.marker:setHue(CTFTeam:getTeamColor(teamID));
+        end
     end
     player:ListenForEvent('colourtweener_end', OnPlayerSpawned);
 end
 
 function CTFPlayer:initNet()
+    if TheWorld.ismastersim then
+        self.net = self.player:SpawnChild('ctf_player_net');
+    end
+
     if not TheNet:IsDedicated() then
         self:initNetEvents();
     end

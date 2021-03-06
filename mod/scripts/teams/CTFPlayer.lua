@@ -13,7 +13,7 @@ CTFPlayer = Class(function(self, player)
     print('======================================== CTFPlayer');
     -- this is supposed to run on both server and client
     self.player = player;
-    self.net = CTFTeamManager.net:addPlayerNetVars(player.userid);
+    self.net = self:createPlayerNet(CTFTeamManager.net, player.userid);
     self.marker = CTFTeamMarker(self.player);
 
     self:initNet();
@@ -91,4 +91,23 @@ function CTFPlayer:setReady(ready)
     if TheWorld.ismastersim then
         CTFTeamManager:playerReadyUpdated(self);
     end
+end
+
+function CTFPlayer:createPlayerNet(inst, userid)
+    print('=================================================== createPlayerNet', userid);
+    local spawn_event_key = 'ctf_spawn_event.' .. userid;
+    local team_id_key = 'ctf_team_id.' .. userid;
+    local ready_key = 'ctf_ready.' .. userid;
+
+    local ret = {
+        inst = inst,
+        spawn_event = { var = net_event(inst.GUID, spawn_event_key), event = spawn_event_key },
+        team_id = { var = net_tinybyte(inst.GUID, team_id_key, team_id_key), event = team_id_key },
+        ready = { var = net_bool(inst.GUID, ready_key, ready_key), event = ready_key },
+    };
+
+    ret.team_id.var:set(0);
+    ret.ready.var:set(false);
+
+    return ret;
 end

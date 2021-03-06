@@ -4,7 +4,7 @@
 --- DateTime: 2021-02-21 5:08 p.m.
 ---
 
-local require = GLOBAL.require;
+local require = _G.require;
 local CTF_STRINGS = require('constants/CTFStrings');
 local UserCommands = require('usercommands');
 local ChatInputScreen = require('screens/chatinputscreen');
@@ -19,8 +19,10 @@ ChatInputScreen.Run = function(self)
         UserCommands.RunTextUserCommand(string.sub(chat_string, 2), ThePlayer, false);
     elseif chat_string:utf8len() <= MAX_CHAT_INPUT_LENGTH then
         local prefix;
-        if self.whisper and ThePlayer.data and ThePlayer.data.ctf_team_tag then
-            prefix = CTF_STRINGS.CHAT_TEAM_DELIMITER .. ThePlayer.data.ctf_team_tag .. CTF_STRINGS.CHAT_TEAM_DELIMITER;
+        local player = CTFTeamManager:getCTFPlayer(ThePlayer.userid);
+        local teamID = player and player:getTeamID() or 0;
+        if self.whisper and teamID ~= 0 then
+            prefix = CTF_STRINGS.CHAT_TEAM_DELIMITER .. CTFTeam:makeTeamTag(teamID) .. CTF_STRINGS.CHAT_TEAM_DELIMITER;
         else
             prefix = '';
         end

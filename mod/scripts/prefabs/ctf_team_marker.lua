@@ -16,7 +16,7 @@ local function ctf()
     inst.entity:AddAnimState();
     inst.entity:AddNetwork();
     inst.entity:AddFollower();
-    inst:AddTag('FX');
+    --inst:AddTag('FX');
 
     inst.AnimState:SetBank('ctf_team_marker');
     inst.AnimState:SetBuild('ctf_team_marker');

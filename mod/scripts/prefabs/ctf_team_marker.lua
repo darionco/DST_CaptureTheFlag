@@ -3,17 +3,33 @@
 --- Created by darionco.
 --- DateTime: 2021-03-02 6:38 p.m.
 ---
+local require = _G.require;
+local CTF_TEAM_CONSTANTS = require('constants/CTFTeamConstants');
 
 local assets = {
     Asset('ANIM', 'anim/ctf_team_marker.zip'),
 };
 
-local function createMarkerInstance()
+local function createMarker(inst)
+    local marker = SpawnPrefab('ctf_team_marker');
+    marker.entity:AddFollower();
+    marker.Follower:FollowSymbol(inst.GUID, 'assets', 0, 0, 0);
+
+    marker.AnimState:PlayAnimation('health');
+    marker.AnimState:SetDeltaTimeMultiplier(0);
+    marker.AnimState:SetTime(0);
+    marker.AnimState:SetScale(-1, 1);
+
+    return marker;
+end
+
+local function ctf()
+    print('============================================ ctf_team_marker');
     local inst = CreateEntity();
 
     inst.entity:AddTransform();
-    inst.entity:AddNetwork();
     inst.entity:AddAnimState();
+    inst.entity:AddNetwork();
     inst:AddTag('FX');
 
     inst.AnimState:SetBank('ctf_team_marker');
@@ -21,62 +37,44 @@ local function createMarkerInstance()
     inst.AnimState:PlayAnimation('idle');
     inst.AnimState:SetOrientation(ANIM_ORIENTATION.OnGround);
 
-    inst.entity:SetPristine();
-    inst.persists = false;
+    inst.ctf_health = net_float(inst.GUID, 'ctf_health', 'ctf_health');
+    inst.ctf_team_id = net_float(inst.GUID, 'ctf_team_id', 'ctf_team_id');
+
+    inst:DoTaskInTime(0, function()
+        local owner = inst.entity:GetParent();
+        print('============================= ctf_team_marker owner:', owner);
+        if owner then
+            inst.Transform:SetPosition(0, -0.05, 0);
+            inst.AnimState:SetScale(0.5, 0.5);
+
+            if not TheNet:IsDedicated() then
+                inst.marker = createMarker(inst);
+
+                if inst.marker then
+                    inst:ListenForEvent('ctf_health', function()
+                        local percent = inst.ctf_health:value();
+                        inst.marker.AnimState:SetTime(3.61 * (1 - percent));
+                    end);
+
+                    inst:ListenForEvent('ctf_team_id', function()
+                        inst.marker.AnimState:SetMultColour(unpack(CTF_TEAM_CONSTANTS.TEAM_COLORS[math.min(id, 5)]));
+                    end);
+                end
+            end
+
+            if TheWorld.ismastersim and owner.components and owner.components.health then
+                owner:ListenForEvent('healthdelta', function(_, data)
+                    if owner:HasTag('playerghost') then
+                        inst.ctf_health:set(0);
+                    else
+                        inst.ctf_health:set(data.newpercent);
+                    end
+                end);
+            end
+        end
+    end);
 
     return inst;
-end
-
-local function ctf()
-    print('============================================ ctf_team_marker');
-    --local inst = CreateEntity();
-    --
-    --inst.entity:AddTransform();
-    --inst.entity:AddAnimState();
-    --inst.entity:AddNetwork();
-    --inst.entity:AddFollower();
-    ----inst:AddTag('FX');
-    --inst:AddTag("CLASSIFIED");
-    --
-    --inst.AnimState:SetBank('ctf_team_marker');
-    --inst.AnimState:SetBuild('ctf_team_marker');
-    --inst.AnimState:PlayAnimation('idle');
-    --inst.AnimState:SetOrientation(ANIM_ORIENTATION.OnGround);
-    --
-    --inst.ctf_owner = net_entity(inst.GUID, 'ctf_owner', 'ctf_owner');
-    --inst.ctf_health = net_float(inst.GUID, 'ctf_health', 'ctf_health');
-    --
-    ----if not TheNet:IsDedicated() then
-    ----    inst:ListenForEvent(inst.user_id.event, function()
-    ----        CTFPlayer(inst);
-    ----    end);
-    ----end
-    --
-    --if TheWorld.ismastersim then
-    --    inst:DoTaskInTime(0, function()
-    --        local owner = inst.entity:GetParent();
-    --        print('============================= ctf_team_marker owner:', owner);
-    --        inst.ctf_owner:set(owner);
-    --        if owner then
-    --            -- do something
-    --        end
-    --    end);
-    --end
-    --
-    --inst.entity:SetPristine();
-    --inst.persists = false;
-
-    local anchor = createMarkerInstance();
-    anchor.AnimState:SetScale(0.5, 0.5);
-
-    local marker = createMarkerInstance();
-    marker.entity:AddFollower();
-    marker.Follower:FollowSymbol(anchor.GUID, 'assets', 0, 0, 0);
-
-    --inst.ctf_owner = net_entity(inst.GUID, 'ctf_owner', 'ctf_owner');
-    --inst.ctf_health = net_float(inst.GUID, 'ctf_health', 'ctf_health');
-
-    return anchor;
 end
 
 return Prefab('ctf_team_marker', ctf, assets);

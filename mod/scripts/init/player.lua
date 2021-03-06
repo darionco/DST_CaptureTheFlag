@@ -4,17 +4,25 @@
 --- DateTime: 2021-01-17 2:10 p.m.
 ---
 
---AddPrefabPostInit('player_classified', function (inst)
---    inst:DoTaskInTime(0, function(pc)
---        print('======================================== player_classified');
---        local player = pc.entity:GetParent();
---        CTFPlayer(player);
---    end);
---end);
+local CTF_TEAM_CONSTANTS = use('scripts/constants/CTFTeamConstants');
 
-AddPlayerPostInit(function(inst)
-    print('======================================== AddPlayerPostInit');
-    inst:DoTaskInTime(0, function()
-        CTFPlayer(inst);
+local function handlePlayerJoined(world, player)
+    world:PushEvent(CTF_TEAM_CONSTANTS.PLAYER_CONNECTED_EVENT, player);
+end
+
+local function handlePlayerDisconnected(world, args)
+    world:PushEvent(CTF_TEAM_CONSTANTS.PLAYER_DISCONNECTED_EVENT, args.player);
+    CTFTeamManager:removePlayer(args.player);
+end
+
+local function handlePlayerSpawn(world, player)
+    player:ListenForEvent("setowner", function(...)
+        CTFPlayer(CTFPlayer.createPlayerNet(player));
     end);
+end
+
+AddPrefabPostInit('world', function(inst)
+    inst:ListenForEvent('ms_playerjoined', handlePlayerJoined);
+    inst:ListenForEvent('ms_playerdisconnected', handlePlayerDisconnected);
+    inst:ListenForEvent("ms_playerspawn", handlePlayerSpawn);
 end);

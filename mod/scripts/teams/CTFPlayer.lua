@@ -40,7 +40,7 @@ function CTFPlayer:initCommon()
 end
 
 function CTFPlayer:initMaster()
-    local player = self.getPlayer();
+    local player = self:getPlayer();
     if player then
         player:SpawnChild('ctf_team_marker');
 
@@ -119,7 +119,7 @@ function CTFPlayer.createPlayerNet(player)
 
     net.player.var:set(player);
     net.name.var:set(player.name);
-    net.user_id:set(player.user_id);
+    net.user_id.var:set(player.userid);
 
     return net;
 end

@@ -131,7 +131,7 @@ function CTFTeamManager:playerReadyUpdated(ctfPlayer)
     if ctfPlayer:isReady() and self.gameStarted then
         local team = self.teams[ctfPlayer:getTeamID()];
         if team then
-            team:teleportPlayerToBase(ctfPlayer.getPlayer());
+            team:teleportPlayerToBase(ctfPlayer:getPlayer());
         end
     elseif self:shouldStartGame() then
         self:scheduleGameStart();
@@ -154,7 +154,7 @@ function CTFTeamManager:getObjectTeam(obj)
 end
 
 function CTFTeamManager:registerCTFPlayer(ctfPlayer)
-    self.players[ctfPlayer.getUserID()] = ctfPlayer;
+    self.players[ctfPlayer:getUserID()] = ctfPlayer;
 
     if TheWorld.ismastersim then
         -- this should be useless
@@ -164,9 +164,9 @@ function CTFTeamManager:registerCTFPlayer(ctfPlayer)
         if not team then
             c_regenerateworld();
         else
-            c_announce(ctfPlayer.getName() .. ' joins team ' .. team.id);
+            c_announce(ctfPlayer:getName() .. ' joins team ' .. team.id);
             ctfPlayer:setTeamID(team.id);
-            local player = ctfPlayer.getPlayer();
+            local player = ctfPlayer:getPlayer();
             if player then
                 team:registerPlayer(player);
                 team:setPlayerInvincibility(player, true);

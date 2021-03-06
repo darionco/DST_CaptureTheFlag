@@ -53,9 +53,14 @@ local function ctf()
     inst.entity:AddNetwork();
     inst.entity:AddAnimState();
     --inst.entity:AddFollower();
-    
+
     --inst.entity:SetCanSleep(false);
     --inst:AddTag("CLASSIFIED");
+
+    inst.AnimState:SetBank('ctf_team_marker');
+    inst.AnimState:SetBuild('ctf_team_marker');
+    inst.AnimState:PlayAnimation('idle');
+    inst.AnimState:SetOrientation(ANIM_ORIENTATION.OnGround);
 
     --inst.ctf_owner = net_entity(inst.GUID, 'ctf_owner', 'ctf_owner');
     --inst.ctf_health = net_float(inst.GUID, 'ctf_health', 'ctf_health');

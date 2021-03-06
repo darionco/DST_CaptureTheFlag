@@ -39,9 +39,9 @@ local function ctf()
     local team_id_key = 'ctf_team_id';
     local ready_key = 'ctf_ready';
 
-    inst.spawn_event = { var = net_event(self.GUID, spawn_event_key), event = spawn_event_key };
-    inst.team_id = { var = net_tinybyte(self.GUID, team_id_key, team_id_key), event = team_id_key };
-    inst.ready = { var = net_bool(self.GUID, ready_key, ready_key), event = ready_key };
+    inst.spawn_event = { var = net_event(inst.GUID, spawn_event_key), event = spawn_event_key };
+    inst.team_id = { var = net_tinybyte(inst.GUID, team_id_key, team_id_key), event = team_id_key };
+    inst.ready = { var = net_bool(inst.GUID, ready_key, ready_key), event = ready_key };
 
     return inst;
 end

@@ -9,16 +9,16 @@ local ShowWelcomeScreen = require('screens/CTFInstructionsPopup');
 local CTF_TEAM_CONSTANTS = require('constants/CTFTeamConstants');
 local CTFTeamMarker = use('scripts/teams/CTFTeamMarker');
 
-CTFPlayer = Class(function(self, player)
-    print('======================================== CTFPlayer', player);
+CTFPlayer = Class(function(self, player, userid)
+    print('======================================== CTFPlayer');
     -- this is supposed to run on both server and client
-    self.player = player;
-    self.net = player:SpawnChild('ctf_player_net');
-    self.marker = CTFTeamMarker(self.player);
+    self.player = player; -- only available in master
+    self.userid = userid;
+    self.net = self:createPlayerNet(CTFTeamManager.net, player.userid);
 
     self:initNet();
     self:initCommon();
-    if TheWorld.ismastersim then
+    if TheWorld.ismastersim and self.player then
         self:initMaster();
     end
 end);
@@ -29,10 +29,6 @@ end
 
 function CTFPlayer:initCommon()
     CTFTeamManager:registerCTFPlayer(self);
-    local teamID = self:getTeamID();
-    if teamID ~= 0 then
-        self.marker:setHue(CTFTeam:getTeamColor(teamID));
-    end
 end
 
 function CTFPlayer:initMaster()
@@ -60,9 +56,11 @@ end
 
 function CTFPlayer:initNetEvents()
     print('======================================== initNetEvents');
-    print('======================================== _G.ThePlayer');
-    self.net:ListenForEvent(self.net.spawn_event.event, function() self:netHandleSpawnedEvent() end);
-    --self.player:DoTaskInTime(5, function() self:netHandleSpawnedEvent() end);
+    if self.player == _G.ThePlayer then
+        print('======================================== _G.ThePlayer');
+        self.net.inst:ListenForEvent(self.net.spawn_event.event, function() self:netHandleSpawnedEvent() end);
+        --self.player:DoTaskInTime(5, function() self:netHandleSpawnedEvent() end);
+    end
 end
 
 function CTFPlayer:netHandleSpawnedEvent()
@@ -92,7 +90,7 @@ function CTFPlayer:setReady(ready)
 end
 
 function CTFPlayer:createPlayerNet(inst, userid)
-    print('=================================================== createPlayerNet', userid);
+    print('=================================================== addPlayerNetVars', userid);
     local spawn_event_key = 'ctf_spawn_event.' .. userid;
     local team_id_key = 'ctf_team_id.' .. userid;
     local ready_key = 'ctf_ready.' .. userid;

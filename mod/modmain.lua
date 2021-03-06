@@ -30,9 +30,17 @@ local function handlePlayerDisconnected(world, args)
     CTFTeamManager:removePlayer(args.player);
 end
 
+local function handlePlayerSpawn(world, player)
+    print('========================================== handlePlayerSpawn', player);
+    player:ListenForEvent("setowner", function(...)
+        print('====================================== setowner', ...);
+    end);
+end
+
 AddPrefabPostInit('world', function(inst)
     inst:ListenForEvent('ms_playerjoined', handlePlayerJoined);
     inst:ListenForEvent('ms_playerdisconnected', handlePlayerDisconnected);
+    inst:ListenForEvent("ms_playerspawn", handlePlayerSpawn);
 
     -- check world completeness
     if inst.ismastersim then

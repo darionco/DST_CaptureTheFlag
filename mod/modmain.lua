@@ -43,12 +43,12 @@ AddPrefabPostInit('world', function(inst)
     inst:ListenForEvent("ms_playerspawn", handlePlayerSpawn);
 
     ---- check world completeness
-    --if inst.ismastersim then
-    --    inst:DoTaskInTime(0, function()
-    --        local team = CTFTeamManager:getTeamWithLeastPlayers();
-    --        if not team then
-    --            c_regenerateworld();
-    --        end
-    --    end);
-    --end
+    if inst.ismastersim then
+        inst:DoTaskInTime(0, function()
+            local team = CTFTeamManager:getTeamWithLeastPlayers();
+            if not team then
+                c_regenerateworld();
+            end
+        end);
+    end
 end);

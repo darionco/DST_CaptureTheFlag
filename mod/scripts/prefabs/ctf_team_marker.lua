@@ -29,14 +29,18 @@ local function applyTeamColor(inst, teamID)
     end
 end
 
+local function applyHealtPercent(inst, percent)
+    inst.AnimState:SetTime(3.61 * (1 - percent));
+end
+
 local function listenForDataChanges(inst)
     if not TheNet:IsDedicated() then
         inst.marker = createMarker(inst);
 
         if inst.marker then
+            applyHealtPercent(inst.marker, inst.ctf_health:value());
             inst:ListenForEvent('ctf_health', function()
-                local percent = inst.ctf_health:value();
-                inst.marker.AnimState:SetTime(3.61 * (1 - percent));
+                applyHealtPercent(inst.marker, inst.ctf_health:value());
             end);
 
             applyTeamColor(inst.marker, inst.ctf_team_id:value());
@@ -73,7 +77,9 @@ local function ctf()
     inst.AnimState:SetOrientation(ANIM_ORIENTATION.OnGround);
 
     inst.ctf_health = net_float(inst.GUID, 'ctf_health', 'ctf_health');
-    inst.ctf_team_id = net_float(inst.GUID, 'ctf_team_id', 'ctf_team_id');
+    inst.ctf_health:set(1);
+
+    inst.ctf_team_id = net_tinybyte(inst.GUID, 'ctf_team_id', 'ctf_team_id');
     inst.ctf_team_id:set(0);
 
     inst:DoTaskInTime(0, function()

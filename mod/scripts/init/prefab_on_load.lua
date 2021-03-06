@@ -18,6 +18,7 @@ modimport('scripts/prefabs/patcher/pigtorch');
 modimport('scripts/prefabs/patcher/bishop_nightmare');
 modimport('scripts/prefabs/patcher/pigguard');
 modimport('scripts/prefabs/patcher/skeleton_player');
+modimport('scripts/prefabs/patcher/tallbirdnest');
 
 --modimport('scripts/teams/CTFTeamManager');
 --

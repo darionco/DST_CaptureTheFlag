@@ -23,8 +23,43 @@ local function createMarker(inst)
     return marker;
 end
 
+local function applyTeamColor(inst, teamID)
+    if teamID ~= 0 then
+        inst.AnimState:SetMultColour(unpack(CTF_TEAM_CONSTANTS.TEAM_COLORS[math.min(teamID, 5)]));
+    end
+end
+
+local function listenForDataChanges(inst)
+    if not TheNet:IsDedicated() then
+        inst.marker = createMarker(inst);
+
+        if inst.marker then
+            inst:ListenForEvent('ctf_health', function()
+                local percent = inst.ctf_health:value();
+                inst.marker.AnimState:SetTime(3.61 * (1 - percent));
+            end);
+
+            applyTeamColor(inst.marker, inst.ctf_team_id:value());
+            inst:ListenForEvent('ctf_team_id', function()
+                applyTeamColor(inst.marker, inst.ctf_team_id:value());
+            end);
+        end
+    end
+end
+
+local function monitorOwnerHealth(inst, owner)
+    if TheWorld.ismastersim and owner.components and owner.components.health then
+        owner:ListenForEvent('healthdelta', function(_, data)
+            if owner:HasTag('playerghost') then
+                inst.ctf_health:set(0);
+            else
+                inst.ctf_health:set(data.newpercent);
+            end
+        end);
+    end
+end
+
 local function ctf()
-    print('============================================ ctf_team_marker');
     local inst = CreateEntity();
 
     inst.entity:AddTransform();
@@ -39,38 +74,16 @@ local function ctf()
 
     inst.ctf_health = net_float(inst.GUID, 'ctf_health', 'ctf_health');
     inst.ctf_team_id = net_float(inst.GUID, 'ctf_team_id', 'ctf_team_id');
+    inst.ctf_team_id:set(0);
 
     inst:DoTaskInTime(0, function()
         local owner = inst.entity:GetParent();
-        print('============================= ctf_team_marker owner:', owner);
         if owner then
             inst.Transform:SetPosition(0, -0.05, 0);
-            inst.AnimState:SetScale(0.5, 0.5);
+            inst.entity:Hide();
 
-            if not TheNet:IsDedicated() then
-                inst.marker = createMarker(inst);
-
-                if inst.marker then
-                    inst:ListenForEvent('ctf_health', function()
-                        local percent = inst.ctf_health:value();
-                        inst.marker.AnimState:SetTime(3.61 * (1 - percent));
-                    end);
-
-                    inst:ListenForEvent('ctf_team_id', function()
-                        inst.marker.AnimState:SetMultColour(unpack(CTF_TEAM_CONSTANTS.TEAM_COLORS[math.min(id, 5)]));
-                    end);
-                end
-            end
-
-            if TheWorld.ismastersim and owner.components and owner.components.health then
-                owner:ListenForEvent('healthdelta', function(_, data)
-                    if owner:HasTag('playerghost') then
-                        inst.ctf_health:set(0);
-                    else
-                        inst.ctf_health:set(data.newpercent);
-                    end
-                end);
-            end
+            listenForDataChanges(inst);
+            monitorOwnerHealth(inst, owner);
         end
     end);
 

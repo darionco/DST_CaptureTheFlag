@@ -38,7 +38,18 @@ end
 
 local function SpawnMinions(inst, team)
     if CTFTeamManager.gameStarted then
+        local modPrefab;
+        local modSpawn;
         if inst.components and inst.components.health and inst.components.health.currenthealth <= 0 then
+            modPrefab = 3;
+            modSpawn = 2;
+        else
+            modPrefab = 4;
+            modSpawn = 1;
+        end
+
+        if (inst.data.ctf_minion_count % modSpawn) ~= 0 then
+            inst.data.ctf_minion_count = inst.data.ctf_minion_count + 1;
             return;
         end
 
@@ -46,7 +57,7 @@ local function SpawnMinions(inst, team)
         for _, v in ipairs(CTFTeamManager.teams) do
             if v.id ~= team.id then
                 local target = FindSpawnerTarget(inst, v);
-                local minionPrefab = CTF_TEAM_CONSTANTS.MINION_PREFABS[(inst.data.ctf_minion_count % 4) + 1];
+                local minionPrefab = CTF_TEAM_CONSTANTS.MINION_PREFABS[(inst.data.ctf_minion_count % modPrefab) + 1];
                 local minion = inst.components.childspawner:DoSpawnChild(nil, minionPrefab, 5);
                 if minion ~= nil then
                     inst.data.ctf_minion_count = inst.data.ctf_minion_count + 1;

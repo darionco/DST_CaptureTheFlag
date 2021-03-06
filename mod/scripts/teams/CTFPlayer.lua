@@ -9,18 +9,17 @@ local ShowWelcomeScreen = require('screens/CTFInstructionsPopup');
 local CTF_TEAM_CONSTANTS = require('constants/CTFTeamConstants');
 local CTFTeamMarker = use('scripts/teams/CTFTeamMarker');
 
-CTFPlayer = Class(function(self, player, userid)
-    print('======================================== CTFPlayer');
+CTFPlayer = Class(function(self, player)
+    print('======================================== CTFPlayer', player);
     -- this is supposed to run on both server and client
     self.player = player; -- only available in master
-    self.userid = userid;
-    self.net = self:createPlayerNet(CTFTeamManager.net, player.userid);
+    self.net = player.ctf_net or self:createPlayerNet(player);
 
-    self:initNet();
-    self:initCommon();
-    if TheWorld.ismastersim and self.player then
-        self:initMaster();
-    end
+    --self:initNet();
+    --self:initCommon();
+    --if TheWorld.ismastersim and self.player then
+    --    self:initMaster();
+    --end
 end);
 
 function CTFPlayer:kill()
@@ -89,21 +88,13 @@ function CTFPlayer:setReady(ready)
     end
 end
 
-function CTFPlayer:createPlayerNet(inst, userid)
-    print('=================================================== addPlayerNetVars', userid);
-    local spawn_event_key = 'ctf_spawn_event.' .. userid;
-    local team_id_key = 'ctf_team_id.' .. userid;
-    local ready_key = 'ctf_ready.' .. userid;
+function CTFPlayer:createPlayerNet(player)
+    print('=================================================== createPlayerNet', player);
+    local ret = player:SpawnChild('ctf_player_net');
 
-    local ret = {
-        inst = inst,
-        spawn_event = { var = net_event(inst.GUID, spawn_event_key), event = spawn_event_key },
-        team_id = { var = net_tinybyte(inst.GUID, team_id_key, team_id_key), event = team_id_key },
-        ready = { var = net_bool(inst.GUID, ready_key, ready_key), event = ready_key },
-    };
-
-    ret.team_id.var:set(0);
-    ret.ready.var:set(false);
+    player:DoTaskInTime(0, function()
+        ret.player.var:set(player);
+    end);
 
     return ret;
 end

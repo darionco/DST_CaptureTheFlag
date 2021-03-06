@@ -5,10 +5,10 @@ modimport('use');
 
 --modimport('scripts/teams/CTFTeamManager');
 --modimport('scripts/teams/CTFTeam');
---modimport('scripts/teams/CTFPlayer');
+modimport('scripts/teams/CTFPlayer');
 --
 --modimport('scripts/init/screens');
---modimport('scripts/init/assets');
+modimport('scripts/init/assets');
 --modimport('scripts/init/prefab_on_load');
 --modimport('scripts/init/crafting');
 --modimport('scripts/init/crafting_descriptions');
@@ -19,6 +19,7 @@ modimport('use');
 --modimport('scripts/init/player');
 --modimport('scripts/init/chat');
 --modimport('scripts/init/network');
+
 
 
 local function handlePlayerJoined(world, player)
@@ -34,6 +35,7 @@ local function handlePlayerSpawn(world, player)
     print('========================================== handlePlayerSpawn', player);
     player:ListenForEvent("setowner", function(...)
         print('====================================== setowner', ...);
+        CTFPlayer(player);
     end);
 end
 

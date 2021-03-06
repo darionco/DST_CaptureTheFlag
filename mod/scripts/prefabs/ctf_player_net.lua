@@ -27,21 +27,31 @@
 --end
 
 local function ctf()
+    print('============================================ ctf_player_net');
     local inst = CreateEntity();
 
     inst.entity:AddTransform();
     inst.entity:AddNetwork();
     inst.entity:SetCanSleep(false);
     inst:AddTag("CLASSIFIED");
-    inst.entity:SetPristine();
 
-    local spawn_event_key = 'ctf_spawn_event';
+    local player_key = 'ctf_player';
+    local spawned_key = 'ctf_spawn_event';
     local team_id_key = 'ctf_team_id';
     local ready_key = 'ctf_ready';
 
-    inst.spawn_event = { var = net_event(inst.GUID, spawn_event_key), event = spawn_event_key };
+    inst.player = { var = net_entity(inst.GUID, player_key, player_key), event = player_key };
+    inst.spawned = { var = net_event(inst.GUID, spawned_key), event = spawned_key };
     inst.team_id = { var = net_tinybyte(inst.GUID, team_id_key, team_id_key), event = team_id_key };
     inst.ready = { var = net_bool(inst.GUID, ready_key, ready_key), event = ready_key };
+
+    if not TheWorld.ismastersim then
+        inst:ListenForEvent(inst.player.event, function()
+            print('============================================ net player!!', inst.player.var:value());
+        end);
+    end
+
+    inst.entity:SetPristine();
 
     return inst;
 end

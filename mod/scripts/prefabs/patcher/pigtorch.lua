@@ -3,17 +3,23 @@
 --- Created by darionco.
 --- DateTime: 2021-01-23 5:09 p.m.
 ---
-local require = _G.require;
-local CTF_TEAM_CONSTANTS = require('constants/CTFTeamConstants');
-
 CTFPrefabPatcher:registerPrefabPatcher('pigtorch', function(inst, data)
-    if inst.components and inst.components.spawner then
-        inst.components.spawner.delay = TUNING.TOTAL_DAY_TIME;
+    if inst.components then
+        if inst.components.spawner then
+            inst.components.spawner:Configure('pigguard', TUNING.TOTAL_DAY_TIME);
+            inst.components.spawner:SetOnlySpawnOffscreen(false);
+        end
+
+        if inst.components.fueled then
+            inst.components.fueled:SetDepletedFn(function()
+                inst.components.fueled:SetPercent(1);
+            end);
+        end
     end
 
     if TheWorld.ismastersim then
         if data.ctf_team then
-                CTFTeamManager:registerTeamObject(inst, data);
+            CTFTeamManager:registerTeamObject(inst, data);
         end
     end
 end)

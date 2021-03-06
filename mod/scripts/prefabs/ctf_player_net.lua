@@ -45,13 +45,6 @@ local function ctf()
     inst.team_id = { var = net_tinybyte(inst.GUID, team_id_key, team_id_key), event = team_id_key };
     inst.ready = { var = net_bool(inst.GUID, ready_key, ready_key), event = ready_key };
 
-    if not TheWorld.ismastersim then
-        inst:ListenForEvent(inst.player.event, function()
-            local player = inst.player.var:value();
-            print('============================================ net player!!', player, player.ctf_net);
-        end);
-    end
-
     inst.entity:SetPristine();
 
     return inst;

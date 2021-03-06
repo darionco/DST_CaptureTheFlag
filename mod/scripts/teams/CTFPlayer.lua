@@ -9,17 +9,26 @@ local ShowWelcomeScreen = require('screens/CTFInstructionsPopup');
 local CTF_TEAM_CONSTANTS = require('constants/CTFTeamConstants');
 local CTFTeamMarker = use('scripts/teams/CTFTeamMarker');
 
-CTFPlayer = Class(function(self, player)
-    print('======================================== CTFPlayer', player);
-    -- this is supposed to run on both server and client
-    self.player = player; -- only available in master
-    self.net = player.ctf_net or self:createPlayerNet(player);
+AddPrefabPostInit('ctf_player_net', function(inst)
+    if not TheWorld.ismastersim then
+        inst:ListenForEvent(inst.player.event, function()
+            local player = inst.player.var:value();
+            CTFPlayer(player, inst);
+        end);
+    end
+end);
 
-    --self:initNet();
-    --self:initCommon();
-    --if TheWorld.ismastersim and self.player then
-    --    self:initMaster();
-    --end
+CTFPlayer = Class(function(self, player, net)
+    print('======================================== CTFPlayer', player, net);
+    -- this is supposed to run on both server and client
+    self.player = player;
+    self.net = net or self:createPlayerNet(player);
+
+    self:initNet();
+    self:initCommon();
+    if TheWorld.ismastersim and self.player then
+        self:initMaster();
+    end
 end);
 
 function CTFPlayer:kill()
@@ -27,7 +36,7 @@ function CTFPlayer:kill()
 end
 
 function CTFPlayer:initCommon()
-    CTFTeamManager:registerCTFPlayer(self);
+    --CTFTeamManager:registerCTFPlayer(self);
 end
 
 function CTFPlayer:initMaster()
@@ -39,17 +48,15 @@ function CTFPlayer:initMaster()
     local function OnPlayerSpawned(f_player)
         print('======================================== OnPlayerSpawned', f_player);
         f_player:RemoveEventCallback('colourtweener_end', OnPlayerSpawned);
-        self.net.spawn_event.var:push();
+        self.net.spawned.var:push();
     end
     player:ListenForEvent('colourtweener_end', OnPlayerSpawned);
 end
 
 function CTFPlayer:initNet()
     if not TheNet:IsDedicated() then
-        self.player:DoTaskInTime(0, function ()
-            print('======================================== initNet');
-            self:initNetEvents();
-        end);
+        print('======================================== initNet');
+        self:initNetEvents();
     end
 end
 
@@ -57,7 +64,7 @@ function CTFPlayer:initNetEvents()
     print('======================================== initNetEvents');
     if self.player == _G.ThePlayer then
         print('======================================== _G.ThePlayer');
-        self.net.inst:ListenForEvent(self.net.spawn_event.event, function() self:netHandleSpawnedEvent() end);
+        self.net:ListenForEvent(self.net.spawned.event, function() self:netHandleSpawnedEvent() end);
         --self.player:DoTaskInTime(5, function() self:netHandleSpawnedEvent() end);
     end
 end
@@ -91,7 +98,6 @@ end
 function CTFPlayer:createPlayerNet(player)
     print('=================================================== createPlayerNet', player);
     local net = player:SpawnChild('ctf_player_net');
-    player.ctf_net = net;
 
     player:DoTaskInTime(0, function()
         net.player.var:set(player);
@@ -99,3 +105,5 @@ function CTFPlayer:createPlayerNet(player)
 
     return net;
 end
+
+_G.CTFPlayer = CTFPlayer;

@@ -6,6 +6,7 @@
 
 local require = _G.require;
 local CTF_STRINGS = require('constants/CTFStrings');
+local CTF_TEAM_CONSTANTS = require('constants/CTFTeamConstants');
 local UserCommands = require('usercommands');
 local ChatInputScreen = require('screens/chatinputscreen');
 local ChatQueue = require('widgets/chatqueue');
@@ -55,6 +56,12 @@ end
 
 local OldNetworking_Say = GLOBAL.Networking_Say;
 GLOBAL.Networking_Say = function(guid, userid, name, prefab, message, colour, whisper, isemote, user_vanity)
+    local player = CTFTeamManager:getCTFPlayer(userid);
+    local teamID = player and player:getTeamID() or 0;
+    if teamID ~= 0 then
+        colour = CTF_TEAM_CONSTANTS.TEAM_COLORS[teamID];
+    end
+
     local teamTag = string.match(message, CTF_STRINGS.CHAT_TEAM_DELIMITER .. '(.+)' .. CTF_STRINGS.CHAT_TEAM_DELIMITER);
     if teamTag then
         message = string.match(message, CTF_STRINGS.CHAT_TEAM_DELIMITER .. '.+' .. CTF_STRINGS.CHAT_TEAM_DELIMITER .. '(.+)');

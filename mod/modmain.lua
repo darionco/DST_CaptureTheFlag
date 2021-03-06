@@ -32,9 +32,7 @@ local function handlePlayerDisconnected(world, args)
 end
 
 local function handlePlayerSpawn(world, player)
-    print('========================================== handlePlayerSpawn', player);
     player:ListenForEvent("setowner", function(...)
-        print('====================================== setowner', ...);
         CTFPlayer(CTFPlayer.createPlayerNet(player));
     end);
 end

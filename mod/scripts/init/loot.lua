@@ -25,8 +25,9 @@ local LOOT_TABLE = {
 
 
     -- Secret Fight
-    frog = { other = { 'slurper', }, gold = 1 },
-    slurper = { other = { 'spider_dropper', }, gold = 2 },
+    frog = { other = { 'spider_dropper', }, gold = 1 }, -- hotfix
+    --frog = { other = { 'slurper', }, gold = 1 },
+    --slurper = { other = { 'spider_dropper', }, gold = 2 },
     spider_dropper = { other = { 'tentacle', }, gold = 3 },
     tentacle = { other = { 'knight', }, gold = 4 },
     knight = { other = { 'leif', }, gold = 5 },

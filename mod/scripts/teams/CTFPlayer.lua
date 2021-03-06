@@ -101,7 +101,7 @@ end
 
 function CTFPlayer:createPlayerNet(player)
     print('=================================================== createPlayerNet', player);
-    local net = player:SpawnChild('ctf_player_net');
+    local net = SpawnPrefab('ctf_player_net');
 
     player:DoTaskInTime(0, function()
         net.player.var:set(player);

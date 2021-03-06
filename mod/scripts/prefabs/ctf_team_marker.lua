@@ -17,6 +17,7 @@ local function ctf()
     inst.entity:AddNetwork();
     inst.entity:AddFollower();
     --inst:AddTag('FX');
+    inst:AddTag("CLASSIFIED");
 
     inst.AnimState:SetBank('ctf_team_marker');
     inst.AnimState:SetBuild('ctf_team_marker');

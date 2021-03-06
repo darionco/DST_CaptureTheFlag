@@ -37,6 +37,7 @@ end
 
 function CTFPlayer:initCommon()
     CTFTeamManager:registerCTFPlayer(self);
+    self:patchPlayerComponents();
 end
 
 function CTFPlayer:initMaster()

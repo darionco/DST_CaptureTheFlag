@@ -10,7 +10,6 @@ local function createNetVar(inst, name, type)
 end
 
 local function ctf()
-    print('============================================ ctf_player_net');
     local inst = CreateEntity();
 
     inst.entity:AddTransform();

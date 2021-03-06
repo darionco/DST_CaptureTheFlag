@@ -18,8 +18,6 @@ AddPrefabPostInit('ctf_player_net', function(inst)
 end);
 
 CTFPlayer = Class(function(self, net)
-    print('======================================== CTFPlayer', net, net.user_id.var:value(), net.name.var:value());
-    -- this is supposed to run on both server and client
     self.net = net;
 
     self.net:DoTaskInTime(0, function()
@@ -45,12 +43,10 @@ function CTFPlayer:initMaster()
     if player then
         player:SpawnChild('ctf_team_marker');
 
-        print('======================================== CTFPlayer:initMaster', player);
         inventory.removeAllItems(player);
         inventory.initializeInventory(player);
 
         local function OnPlayerSpawned(f_player)
-            print('======================================== OnPlayerSpawned', f_player);
             f_player:RemoveEventCallback('colourtweener_end', OnPlayerSpawned);
             self.net.spawned.var:push();
         end
@@ -60,19 +56,16 @@ end
 
 function CTFPlayer:initNet()
     if not TheNet:IsDedicated() then
-        print('======================================== initNet');
         self:initNetEvents();
     end
 end
 
 function CTFPlayer:initNetEvents()
-    print('======================================== initNetEvents');
     self.net:ListenForEvent(self.net.spawned.event, function() self:netHandleSpawnedEvent() end);
     self.net:ListenForEvent(self.net.player.event, function() self:patchPlayerComponents() end);
 end
 
 function CTFPlayer:netHandleSpawnedEvent()
-    print('======================================== netHandleSpawnedEvent');
     local player = self:getPlayer();
     if player and player == ThePlayer then
         ShowWelcomeScreen(function()
@@ -129,7 +122,6 @@ function CTFPlayer:setReady(ready)
 end
 
 function CTFPlayer.createPlayerNet(player)
-    print('=================================================== createPlayerNet', player);
     local net = SpawnPrefab('ctf_player_net');
 
     net.player.var:set(player);

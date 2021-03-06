@@ -47,7 +47,8 @@ local function ctf()
 
     if not TheWorld.ismastersim then
         inst:ListenForEvent(inst.player.event, function()
-            print('============================================ net player!!', inst.player.var:value());
+            local player = inst.player.var:value();
+            print('============================================ net player!!', player, player.ctf_net);
         end);
     end
 

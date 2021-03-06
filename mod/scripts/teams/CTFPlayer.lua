@@ -90,11 +90,12 @@ end
 
 function CTFPlayer:createPlayerNet(player)
     print('=================================================== createPlayerNet', player);
-    local ret = player:SpawnChild('ctf_player_net');
+    local net = player:SpawnChild('ctf_player_net');
+    player.ctf_net = net;
 
     player:DoTaskInTime(0, function()
-        ret.player.var:set(player);
+        net.player.var:set(player);
     end);
 
-    return ret;
+    return net;
 end

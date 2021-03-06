@@ -8,6 +8,25 @@ local assets = {
     Asset('ANIM', 'anim/ctf_team_marker.zip'),
 };
 
+local function createMarkerInstance()
+    local inst = CreateEntity();
+
+    inst.entity:AddTransform();
+    inst.entity:AddNetwork();
+    inst.entity:AddAnimState();
+    inst:AddTag('FX');
+
+    inst.AnimState:SetBank('ctf_team_marker');
+    inst.AnimState:SetBuild('ctf_team_marker');
+    inst.AnimState:PlayAnimation('idle');
+    inst.AnimState:SetOrientation(ANIM_ORIENTATION.OnGround);
+
+    inst.entity:SetPristine();
+    inst.persists = false;
+
+    return inst;
+end
+
 local function ctf()
     print('============================================ ctf_team_marker');
     --local inst = CreateEntity();
@@ -47,28 +66,17 @@ local function ctf()
     --inst.entity:SetPristine();
     --inst.persists = false;
 
-    local inst = CreateEntity();
+    local anchor = createMarkerInstance();
+    anchor.AnimState:SetScale(0.5, 0.5);
 
-    inst.entity:AddTransform();
-    inst.entity:AddNetwork();
-    inst.entity:AddAnimState();
-    inst.entity:AddFollower();
-
-    --inst.entity:SetCanSleep(false);
-    --inst:AddTag("CLASSIFIED");
-
-    inst.AnimState:SetBank('ctf_team_marker');
-    inst.AnimState:SetBuild('ctf_team_marker');
-    inst.AnimState:PlayAnimation('idle');
-    inst.AnimState:SetOrientation(ANIM_ORIENTATION.OnGround);
+    local marker = createMarkerInstance();
+    marker.entity:AddFollower();
+    marker.Follower:FollowSymbol(anchor.GUID, 'assets', 0, 0, 0);
 
     --inst.ctf_owner = net_entity(inst.GUID, 'ctf_owner', 'ctf_owner');
     --inst.ctf_health = net_float(inst.GUID, 'ctf_health', 'ctf_health');
 
-    inst.entity:SetPristine();
-    inst.persists = false;
-
-    return inst;
+    return anchor;
 end
 
 return Prefab('ctf_team_marker', ctf, assets);

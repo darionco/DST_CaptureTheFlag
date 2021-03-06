@@ -15,7 +15,7 @@ local function ctf()
     inst.entity:AddTransform();
     inst.entity:AddNetwork();
     inst.entity:SetCanSleep(false);
-    inst:AddTag("CLASSIFIED");
+    inst:AddTag('CLASSIFIED');
 
     createNetVar(inst, 'player', net_entity);
     createNetVar(inst, 'user_id', net_string);

@@ -6,7 +6,7 @@
 CTFPrefabPatcher:registerPrefabPatcher('pigtorch', function(inst, data)
     if inst.components then
         if inst.components.spawner then
-            inst.components.spawner:Configure('pigguard', TUNING.TOTAL_DAY_TIME);
+            inst.components.spawner:Configure('pigguard', TUNING.TOTAL_DAY_TIME * 2);
             inst.components.spawner:SetOnlySpawnOffscreen(false);
         end
 

@@ -3,22 +3,22 @@ local CTF_TEAM_CONSTANTS = require('constants/CTFTeamConstants');
 
 modimport('use');
 
---modimport('scripts/teams/CTFTeamManager');
---modimport('scripts/teams/CTFTeam');
+modimport('scripts/teams/CTFTeamManager');
+modimport('scripts/teams/CTFTeam');
 modimport('scripts/teams/CTFPlayer');
 --
---modimport('scripts/init/screens');
+modimport('scripts/init/screens');
 modimport('scripts/init/assets');
---modimport('scripts/init/prefab_on_load');
---modimport('scripts/init/crafting');
---modimport('scripts/init/crafting_descriptions');
---modimport('scripts/init/loot');
---modimport('scripts/init/food');
---modimport('scripts/init/characters');
---modimport('scripts/init/character_descriptions');
+modimport('scripts/init/prefab_on_load');
+modimport('scripts/init/crafting');
+modimport('scripts/init/crafting_descriptions');
+modimport('scripts/init/loot');
+modimport('scripts/init/food');
+modimport('scripts/init/characters');
+modimport('scripts/init/character_descriptions');
 --modimport('scripts/init/player');
---modimport('scripts/init/chat');
---modimport('scripts/init/network');
+modimport('scripts/init/chat');
+modimport('scripts/init/network');
 
 
 
@@ -28,7 +28,7 @@ end
 
 local function handlePlayerDisconnected(world, args)
     world:PushEvent(CTF_TEAM_CONSTANTS.PLAYER_DISCONNECTED_EVENT, args.player);
-    --CTFTeamManager:removePlayer(args.player);
+    CTFTeamManager:removePlayer(args.player);
 end
 
 local function handlePlayerSpawn(world, player)

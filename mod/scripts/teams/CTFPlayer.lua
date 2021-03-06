@@ -24,11 +24,13 @@ CTFPlayer = Class(function(self, player, net)
     self.player = player;
     self.net = net or self:createPlayerNet(player);
 
-    self:initNet();
-    self:initCommon();
-    if TheWorld.ismastersim and self.player then
-        self:initMaster();
-    end
+    player:DoTaskInTime(0, function()
+        self:initNet();
+        self:initCommon();
+        if TheWorld.ismastersim and self.player then
+            self:initMaster();
+        end
+    end);
 end);
 
 function CTFPlayer:kill()
@@ -36,11 +38,12 @@ function CTFPlayer:kill()
 end
 
 function CTFPlayer:initCommon()
-    --CTFTeamManager:registerCTFPlayer(self);
+    CTFTeamManager:registerCTFPlayer(self);
 end
 
 function CTFPlayer:initMaster()
     local player = self.player;
+
     print('======================================== CTFPlayer:initMaster', player);
     inventory.removeAllItems(player);
     inventory.initializeInventory(player);
@@ -65,7 +68,6 @@ function CTFPlayer:initNetEvents()
     if self.player == _G.ThePlayer then
         print('======================================== _G.ThePlayer');
         self.net:ListenForEvent(self.net.spawned.event, function() self:netHandleSpawnedEvent() end);
-        --self.player:DoTaskInTime(5, function() self:netHandleSpawnedEvent() end);
     end
 end
 

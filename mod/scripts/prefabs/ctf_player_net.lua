@@ -4,27 +4,10 @@
 --- DateTime: 2021-03-05 12:01 p.m.
 ---
 
---local function addFunctions(inst)
---    inst.addPlayerNetVars = function(self, userid)
---        local spawn_event_key = 'ctf_spawn_event.' .. userid;
---        local team_id_key = 'ctf_team_id.' .. userid;
---        local ready_key = 'ctf_ready.' .. userid;
---
---        local ret = {
---            inst = self,
---            spawn_event = { var = net_event(self.GUID, spawn_event_key), event = spawn_event_key },
---            team_id = { var = net_tinybyte(self.GUID, team_id_key, team_id_key), event = team_id_key },
---            ready = { var = net_bool(self.GUID, ready_key, ready_key), event = ready_key },
---        };
---
---        ret.team_id.var:set(0);
---        ret.ready.var:set(false);
---
---        self.entity:FlushLocalDirtyNetVars();
---
---        return ret;
---    end
---end
+local function createNetVar(inst, name, type)
+    local key = 'ctf_' .. name;
+    inst[name] = { var = type(inst.GUID, key, key), event = key };
+end
 
 local function ctf()
     print('============================================ ctf_player_net');
@@ -35,15 +18,12 @@ local function ctf()
     inst.entity:SetCanSleep(false);
     inst:AddTag("CLASSIFIED");
 
-    local player_key = 'ctf_player';
-    local spawned_key = 'ctf_spawn_event';
-    local team_id_key = 'ctf_team_id';
-    local ready_key = 'ctf_ready';
-
-    inst.player = { var = net_entity(inst.GUID, player_key, player_key), event = player_key };
-    inst.spawned = { var = net_event(inst.GUID, spawned_key), event = spawned_key };
-    inst.team_id = { var = net_tinybyte(inst.GUID, team_id_key, team_id_key), event = team_id_key };
-    inst.ready = { var = net_bool(inst.GUID, ready_key, ready_key), event = ready_key };
+    createNetVar(inst, 'player', net_entity);
+    createNetVar(inst, 'user_id', net_string);
+    createNetVar(inst, 'name', net_string);
+    createNetVar(inst, 'team_id', net_tinybyte);
+    createNetVar(inst, 'spawned', net_event);
+    createNetVar(inst, 'ready', net_bool);
 
     inst.entity:SetPristine();
 

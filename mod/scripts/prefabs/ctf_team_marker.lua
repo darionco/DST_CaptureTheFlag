@@ -51,6 +51,9 @@ local function ctf()
 
     inst.entity:AddTransform();
     inst.entity:AddNetwork();
+    inst.entity:AddAnimState();
+    --inst.entity:AddFollower();
+    
     --inst.entity:SetCanSleep(false);
     --inst:AddTag("CLASSIFIED");
 

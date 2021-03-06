@@ -10,10 +10,10 @@ local CTF_TEAM_CONSTANTS = require('constants/CTFTeamConstants');
 local CTFTeamMarker = use('scripts/teams/CTFTeamMarker');
 
 CTFPlayer = Class(function(self, player)
-    print('======================================== CTFPlayer');
+    print('======================================== CTFPlayer', player);
     -- this is supposed to run on both server and client
     self.player = player;
-    self.net = self:createPlayerNet(CTFTeamManager.net, player.userid);
+    self.net = self:createPlayerNet(player:SpawnChild('ctf_player_net'), player.userid);
     self.marker = CTFTeamMarker(self.player);
 
     self:initNet();
@@ -60,11 +60,9 @@ end
 
 function CTFPlayer:initNetEvents()
     print('======================================== initNetEvents');
-    if self.player == _G.ThePlayer then
-        print('======================================== _G.ThePlayer');
-        self.net.inst:ListenForEvent(self.net.spawn_event.event, function() self:netHandleSpawnedEvent() end);
-        --self.player:DoTaskInTime(5, function() self:netHandleSpawnedEvent() end);
-    end
+    print('======================================== _G.ThePlayer');
+    self.net.inst:ListenForEvent(self.net.spawn_event.event, function() self:netHandleSpawnedEvent() end);
+    --self.player:DoTaskInTime(5, function() self:netHandleSpawnedEvent() end);
 end
 
 function CTFPlayer:netHandleSpawnedEvent()

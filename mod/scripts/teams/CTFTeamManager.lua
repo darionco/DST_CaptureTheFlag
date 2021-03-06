@@ -18,7 +18,7 @@ CTFTeamManager = {
 
 function CTFTeamManager:initNet(net)
     self.net = net;
-    self.net.ctf_player_table = net_string(self.net.GUID, 'ctf_player_table', 'ctf_player_table');
+    self.ctf_player_table = net_string(self.net.GUID, 'ctf_player_table', 'ctf_player_table');
     if not TheNet:IsDedicated() then
         self.net:ListenForEvent('ctf_player_table', function() self:handleNetPlayerTable() end);
     end
@@ -29,11 +29,11 @@ function CTFTeamManager:netUpdatePlayerTable()
     for k, _ in pairs(self.players) do
         serialized = serialized .. k .. '|';
     end
-    self.net.ctf_player_table:set(serialized);
+    self.ctf_player_table:set(serialized);
 end
 
 function CTFTeamManager:handleNetPlayerTable()
-    local serialized = self.net.ctf_player_table:value();
+    local serialized = self.ctf_player_table:value();
     local newList = {};
     -- deserialize the table and add placeholders for missing players
     for userid in string.gmatch(serialized, '([^|]+)') do

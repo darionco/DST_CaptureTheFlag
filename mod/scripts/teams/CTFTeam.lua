@@ -184,11 +184,10 @@ function CTFTeam:patchSpawner(obj)
         local team = self;
         obj.components.spawner.TakeOwnership = function(inst, child)
             if inst.child ~= child then
+                OldTakeOwnership(inst, child);
                 child:AddTag(CTF_TEAM_CONSTANTS.TEAM_MINION_TAG);
                 CTFPrefabPatcher:patchStats(child, obj.data);
-
                 team:registerObject(child, nil);
-                OldTakeOwnership(inst, child);
             end
         end
         if obj.components.spawner.child then
@@ -261,6 +260,13 @@ function CTFTeam:patchCombat(obj, teamTag)
             end
             return OldIsValidTarget(inst, target);
         end
+
+        local OldEngageTarget = obj.components.combat.EngageTarget;
+        obj.components.combat.EngageTarget = function(inst, target)
+            if not target or not target:HasTag(teamTag) then
+                OldEngageTarget(inst, target);
+            end
+        end
     end
 
     if obj.replica and obj.replica.combat then
@@ -270,6 +276,14 @@ function CTFTeam:patchCombat(obj, teamTag)
                 return false;
             end
             return OldCanTarget(inst, target);
+        end
+
+        local OldSetTarget = obj.replica.combat.SetTarget;
+        obj.replica.combat.SetTarget = function(inst, target)
+            if not target or not target:HasTag(teamTag) then
+                OldSetTarget(inst, target);
+                OldSetTarget(inst, target);
+            end
         end
     end
 end

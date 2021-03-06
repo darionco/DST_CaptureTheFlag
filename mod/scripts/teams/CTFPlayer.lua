@@ -11,20 +11,18 @@ local CTFTeamMarker = use('scripts/teams/CTFTeamMarker');
 
 AddPrefabPostInit('ctf_player_net', function(inst)
     if not TheWorld.ismastersim then
-        inst:ListenForEvent(inst.player.event, function()
-            local player = inst.player.var:value();
-            CTFPlayer(player, inst);
+        inst:ListenForEvent(inst.user_id.event, function()
+            CTFPlayer(inst);
         end);
     end
 end);
 
-CTFPlayer = Class(function(self, player, net)
-    print('======================================== CTFPlayer', player, net);
+CTFPlayer = Class(function(self, net)
+    print('======================================== CTFPlayer', net, net.user_id.var:value());
     -- this is supposed to run on both server and client
-    self.player = player;
-    self.net = net or self:createPlayerNet(player);
+    self.net = net;
 
-    player:DoTaskInTime(0, function()
+    self.net:DoTaskInTime(0, function()
         self:initNet();
         self:initCommon();
         if TheWorld.ismastersim then
@@ -42,20 +40,21 @@ function CTFPlayer:initCommon()
 end
 
 function CTFPlayer:initMaster()
-    local player = self.player;
+    local player = self.getPlayer();
+    if player then
+        player:SpawnChild('ctf_team_marker');
 
-    self.player:SpawnChild('ctf_team_marker');
+        print('======================================== CTFPlayer:initMaster', player);
+        inventory.removeAllItems(player);
+        inventory.initializeInventory(player);
 
-    print('======================================== CTFPlayer:initMaster', player);
-    inventory.removeAllItems(player);
-    inventory.initializeInventory(player);
-
-    local function OnPlayerSpawned(f_player)
-        print('======================================== OnPlayerSpawned', f_player);
-        f_player:RemoveEventCallback('colourtweener_end', OnPlayerSpawned);
-        self.net.spawned.var:push();
+        local function OnPlayerSpawned(f_player)
+            print('======================================== OnPlayerSpawned', f_player);
+            f_player:RemoveEventCallback('colourtweener_end', OnPlayerSpawned);
+            self.net.spawned.var:push();
+        end
+        player:ListenForEvent('colourtweener_end', OnPlayerSpawned);
     end
-    player:ListenForEvent('colourtweener_end', OnPlayerSpawned);
 end
 
 function CTFPlayer:initNet()
@@ -67,17 +66,32 @@ end
 
 function CTFPlayer:initNetEvents()
     print('======================================== initNetEvents');
-    if self.player == _G.ThePlayer then
-        print('======================================== _G.ThePlayer');
-        self.net:ListenForEvent(self.net.spawned.event, function() self:netHandleSpawnedEvent() end);
-    end
+    self.net:ListenForEvent(self.net.spawned.event, function() self:netHandleSpawnedEvent() end);
+    self.net:ListenForEvent(self.net.player.event, function()
+        print('=========================================== new player:', self:getPlayer());
+    end);
 end
 
 function CTFPlayer:netHandleSpawnedEvent()
     print('======================================== netHandleSpawnedEvent');
-    ShowWelcomeScreen(function()
-        SendModRPCToServer(MOD_RPC[CTF_TEAM_CONSTANTS.RPC_NAMESPACE][CTF_TEAM_CONSTANTS.RPC.PLAYER_JOINED_CTF]);
-    end);
+    local player = self:getPlayer();
+    if player and player == ThePlayer then
+        ShowWelcomeScreen(function()
+            SendModRPCToServer(MOD_RPC[CTF_TEAM_CONSTANTS.RPC_NAMESPACE][CTF_TEAM_CONSTANTS.RPC.PLAYER_JOINED_CTF]);
+        end);
+    end
+end
+
+function CTFPlayer:getPlayer()
+    return self.net.player.var:value();
+end
+
+function CTFPlayer:getUserID()
+    return self.net.user_id.var:value();
+end
+
+function CTFPlayer:getName()
+    return self.net.name.var:value();
 end
 
 function CTFPlayer:getTeamID()
@@ -99,15 +113,13 @@ function CTFPlayer:setReady(ready)
     end
 end
 
-function CTFPlayer:createPlayerNet(player)
+function CTFPlayer.createPlayerNet(player)
     print('=================================================== createPlayerNet', player);
     local net = SpawnPrefab('ctf_player_net');
 
-    player:DoTaskInTime(0, function()
-        net.player.var:set(player);
-    end);
+    net.player.var:set(player);
+    net.name.var:set(player.name);
+    net.user_id:set(player.user_id);
 
     return net;
 end
-
-_G.CTFPlayer = CTFPlayer;

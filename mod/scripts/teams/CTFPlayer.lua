@@ -13,7 +13,7 @@ CTFPlayer = Class(function(self, player)
     print('======================================== CTFPlayer', player);
     -- this is supposed to run on both server and client
     self.player = player;
-    self.net = self:createPlayerNet(player:SpawnChild('ctf_player_net'), player.userid);
+    self.net = player:SpawnChild('ctf_player_net');
     self.marker = CTFTeamMarker(self.player);
 
     self:initNet();
@@ -61,7 +61,7 @@ end
 function CTFPlayer:initNetEvents()
     print('======================================== initNetEvents');
     print('======================================== _G.ThePlayer');
-    self.net.inst:ListenForEvent(self.net.spawn_event.event, function() self:netHandleSpawnedEvent() end);
+    self.net:ListenForEvent(self.net.spawn_event.event, function() self:netHandleSpawnedEvent() end);
     --self.player:DoTaskInTime(5, function() self:netHandleSpawnedEvent() end);
 end
 

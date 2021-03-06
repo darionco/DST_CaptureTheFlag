@@ -35,9 +35,15 @@ local function ctf()
     inst:AddTag("CLASSIFIED");
     inst.entity:SetPristine();
 
-    --addFunctions(inst);
+    local spawn_event_key = 'ctf_spawn_event';
+    local team_id_key = 'ctf_team_id';
+    local ready_key = 'ctf_ready';
+
+    inst.spawn_event = { var = net_event(self.GUID, spawn_event_key), event = spawn_event_key };
+    inst.team_id = { var = net_tinybyte(self.GUID, team_id_key, team_id_key), event = team_id_key };
+    inst.ready = { var = net_bool(self.GUID, ready_key, ready_key), event = ready_key };
 
     return inst;
 end
 
-return Prefab('common/ctf_player_net', ctf);
+return Prefab('ctf_player_net', ctf);

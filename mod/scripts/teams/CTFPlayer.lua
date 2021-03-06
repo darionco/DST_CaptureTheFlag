@@ -27,7 +27,7 @@ CTFPlayer = Class(function(self, player, net)
     player:DoTaskInTime(0, function()
         self:initNet();
         self:initCommon();
-        if TheWorld.ismastersim and self.player then
+        if TheWorld.ismastersim then
             self:initMaster();
         end
     end);
@@ -43,6 +43,8 @@ end
 
 function CTFPlayer:initMaster()
     local player = self.player;
+
+    self.player:SpawnChild('ctf_team_marker');
 
     print('======================================== CTFPlayer:initMaster', player);
     inventory.removeAllItems(player);

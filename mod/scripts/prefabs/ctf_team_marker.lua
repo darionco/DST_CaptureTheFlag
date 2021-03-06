@@ -9,6 +9,7 @@ local assets = {
 };
 
 local function ctf()
+    print('============================================ ctf_team_marker');
     local inst = CreateEntity();
 
     inst.entity:AddTransform();

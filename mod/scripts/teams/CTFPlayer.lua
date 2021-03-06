@@ -18,7 +18,7 @@ AddPrefabPostInit('ctf_player_net', function(inst)
 end);
 
 CTFPlayer = Class(function(self, net)
-    print('======================================== CTFPlayer', net, net.user_id.var:value());
+    print('======================================== CTFPlayer', net, net.user_id.var:value(), net.name.var:value());
     -- this is supposed to run on both server and client
     self.net = net;
 
@@ -67,9 +67,7 @@ end
 function CTFPlayer:initNetEvents()
     print('======================================== initNetEvents');
     self.net:ListenForEvent(self.net.spawned.event, function() self:netHandleSpawnedEvent() end);
-    self.net:ListenForEvent(self.net.player.event, function()
-        print('=========================================== new player:', self:getPlayer());
-    end);
+    self.net:ListenForEvent(self.net.player.event, function() self:patchPlayerComponents() end);
 end
 
 function CTFPlayer:netHandleSpawnedEvent()
@@ -79,6 +77,22 @@ function CTFPlayer:netHandleSpawnedEvent()
         ShowWelcomeScreen(function()
             SendModRPCToServer(MOD_RPC[CTF_TEAM_CONSTANTS.RPC_NAMESPACE][CTF_TEAM_CONSTANTS.RPC.PLAYER_JOINED_CTF]);
         end);
+    end
+end
+
+function CTFPlayer:patchPlayerComponents()
+    if not TheWorld.ismastersim then
+        local player = self:getPlayer();
+        print('=========================================== new player:', player);
+        if player then
+            local teamID = self:getTeamID();
+            if teamID ~= 0 then
+                print('============================================== patching player controllers');
+                local teamTag = CTFTeam:makeTeamTag(teamID);
+                CTFTeam:patchPlayerController(player, teamTag);
+                CTFTeam:patchCombat(player, teamTag);
+            end
+        end
     end
 end
 

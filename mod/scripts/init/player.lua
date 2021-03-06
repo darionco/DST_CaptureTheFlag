@@ -16,7 +16,7 @@ local function handlePlayerDisconnected(world, args)
 end
 
 local function handlePlayerSpawn(world, player)
-    player:ListenForEvent'setowner', function()
+    player:ListenForEvent('setowner', function()
         CTFPlayer(CTFPlayer.createPlayerNet(player));
         player:AddComponent('itemtyperestrictions');
     end);

@@ -9,6 +9,7 @@ local CTF_TEAM_CONSTANTS = require('constants/CTFTeamConstants');
 
 local function addPlayerNetFunctions(inst)
     inst.addPlayerNetVars = function(self, userid)
+        print('=================================================== addPlayerNetVars', userid);
         local spawn_event_key = 'ctf_spawn_event.' .. userid;
         local team_id_key = 'ctf_team_id.' .. userid;
         local ready_key = 'ctf_ready.' .. userid;
@@ -22,8 +23,6 @@ local function addPlayerNetFunctions(inst)
 
         ret.team_id.var:set(0);
         ret.ready.var:set(false);
-
-        self.entity:FlushLocalDirtyNetVars();
 
         return ret;
     end

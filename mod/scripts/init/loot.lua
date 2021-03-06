@@ -20,6 +20,9 @@ local LOOT_TABLE = {
     wasphive = { gold = 4 },
     skeleton_player = { gold = 10 },
     molebat = { gold = 2 },
+    worm = { gold = 3 },
+    
+
 
     -- Secret Fight
     frog = { other = { 'slurper', }, gold = 1 },
@@ -30,6 +33,14 @@ local LOOT_TABLE = {
     leif = { other = { 'warg', }, gold = 6 },
     warg = { other = { 'rabbit', }, gold = 7 },
     rabbit = { other = { 'tallbirdegg', 'tallbirdegg', 'tallbirdegg', 'orangestaff', 'beemine', 'beemine', 'beemine', 'beemine', 'beemine', 'cane', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', }, gold = 80 },
+
+
+    -- Other Secret Fight (Maze)
+    bat = { other = { 'spider_spitter', }, gold = 1 },
+    spider_spitter = { other = { 'spider_hider', 'spider_hider', 'spider_hider', 'walrus', }, gold = 2 },
+    walrus = { other = { 'spat', 'worm', 'worm', }, gold = 3 },
+    spat = { other = { 'carrat', }, gold = 4 },
+    carrat = { other = { 'tallbirdegg', 'tallbirdegg', 'tallbirdegg', 'orangestaff', 'beemine', 'beemine', 'beemine', 'beemine', 'beemine', 'cane', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', }, gold = 80 },
 };
 
 LootDropper.DropLoot = function(self, pt)

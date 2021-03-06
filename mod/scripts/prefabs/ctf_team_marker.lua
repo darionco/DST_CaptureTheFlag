@@ -44,6 +44,7 @@ local function ctf()
         end);
     end
 
+    inst.entity:SetPristine();
     inst.persists = false;
 
     return inst;

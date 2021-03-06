@@ -26,6 +26,7 @@ local function ctf()
     createNetVar(inst, 'ready', net_bool);
 
     inst.entity:SetPristine();
+    inst.persists = false;
 
     return inst;
 end

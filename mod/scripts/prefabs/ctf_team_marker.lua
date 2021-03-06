@@ -51,11 +51,11 @@ local function ctf()
 
     inst.entity:AddTransform();
     inst.entity:AddNetwork();
-    inst.entity:SetCanSleep(false);
-    inst:AddTag("CLASSIFIED");
+    --inst.entity:SetCanSleep(false);
+    --inst:AddTag("CLASSIFIED");
 
-    inst.ctf_owner = net_entity(inst.GUID, 'ctf_owner', 'ctf_owner');
-    inst.ctf_health = net_float(inst.GUID, 'ctf_health', 'ctf_health');
+    --inst.ctf_owner = net_entity(inst.GUID, 'ctf_owner', 'ctf_owner');
+    --inst.ctf_health = net_float(inst.GUID, 'ctf_health', 'ctf_health');
 
     inst.entity:SetPristine();
     inst.persists = false;

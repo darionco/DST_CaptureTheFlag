@@ -29,3 +29,10 @@ AddPrefabPostInit('world', function(inst)
         end);
     end
 end);
+
+GLOBAL.ctf_freecrafting = function()
+    for _, player in ipairs(AllPlayers) do
+        player.components.builder:GiveAllRecipes();
+        player:PushEvent('techlevelchange');
+    end
+end

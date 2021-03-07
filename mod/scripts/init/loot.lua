@@ -32,7 +32,8 @@ local LOOT_TABLE = {
     tentacle = { other = { 'knight', }, gold = 4 },
     knight = { other = { 'leif', }, gold = 5 },
     leif = { other = { 'warg', }, gold = 6 },
-    warg = { other = { 'rabbit', }, gold = 7 },
+    warg = { other = { 'deerclops', }, gold = 7 },
+    deerclops = { other = { 'rabbit', }, gold = 14 },
     rabbit = { other = { 'tallbirdegg', 'tallbirdegg', 'tallbirdegg', 'orangestaff', 'beemine', 'beemine', 'beemine', 'beemine', 'beemine', 'cane', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', }, gold = 80 },
 
 

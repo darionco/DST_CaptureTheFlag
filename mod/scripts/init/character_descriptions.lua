@@ -25,7 +25,7 @@ for k, _ in pairs(itemsList) do
 end
 
 
-STRINGS.CHARACTER_DESCRIPTIONS.wilson = 'WORK IN PROGRESS'; -- '\n*Is a well rounded character';
+STRINGS.CHARACTER_DESCRIPTIONS.wilson = 'I shall take your life force and use it to grow my stubble'; -- 'WORK IN PROGRESS'; -- '\n*Is a well rounded character';
 STRINGS.CHARACTER_DESCRIPTIONS.willow = 'WORK IN PROGRESS'; -- '*Can deploy bernie to battle';
 STRINGS.CHARACTER_DESCRIPTIONS.wendy = 'WORK IN PROGRESS'; -- '*Can place Abigail somewhere on the map\n*Abigail cannot move';
 STRINGS.CHARACTER_DESCRIPTIONS.wolfgang = '*Absorbs up to 60% damage when full\n*Gets slower on a full stomach\n*Is a literal tank';

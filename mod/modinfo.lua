@@ -1,4 +1,11 @@
-name = 'Warsak!'
+if folder_name == 'DST_CaptureTheFlag' then
+    name = 'Warsak! [LOCAL]'
+elseif folder_name == 'workshop-2417788343' then
+    name = 'Warsak! [STAGING]'
+else
+    name = 'Warsak!'
+end
+
 description = 'Capture the flag themed mod!'
 author = 'fibonacci618, JayLil & aligura'
 version = '0.8.4'

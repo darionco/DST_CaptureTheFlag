@@ -292,11 +292,11 @@ local function buildNewCrafting()
                     ingredients = { Ingredient('goldnugget', 10) },
                     count = 5
                 },
-				{
-                    prefab = 'slingshotammo_freeze',
-                    ingredients = { Ingredient('goldnugget', 15) },
-                    count = 5
-                },
+				--{
+                --    prefab = 'slingshotammo_freeze',
+                --    ingredients = { Ingredient('goldnugget', 15) },
+                --    count = 5
+                --},
 				{
                     prefab = 'slingshotammo_slow',
                     ingredients = { Ingredient('goldnugget', 15) },

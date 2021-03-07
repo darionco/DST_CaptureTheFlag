@@ -7,7 +7,6 @@ local require = _G.require;
 local inventory = require('init/player_inventory');
 local ShowWelcomeScreen = require('screens/CTFInstructionsPopup');
 local CTF_TEAM_CONSTANTS = require('constants/CTFTeamConstants');
-local CTFTeamMarker = use('scripts/teams/CTFTeamMarker');
 
 AddPrefabPostInit('ctf_player_net', function(inst)
     if not TheWorld.ismastersim then
@@ -78,7 +77,6 @@ function CTFPlayer:patchPlayerComponents(player)
     if player then
         local teamID = self:getTeamID();
         if teamID ~= 0 then
-            print('============================================== patching player controllers');
             local teamTag = CTFTeam:makeTeamTag(teamID);
             CTFTeam:patchPlayerController(player, teamTag);
             CTFTeam:patchCombat(player, teamTag);

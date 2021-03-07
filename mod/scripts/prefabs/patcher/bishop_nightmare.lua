@@ -8,12 +8,20 @@ CTFPrefabPatcher:registerPrefabPatcher('bishop_nightmare', function(inst, data)
     if TheWorld.ismastersim then
         CTFPrefabPatcher:patchStats(inst, data);
 
-        if inst.components.sleeper then
-            inst.components.sleeper:SetSleepTest(function() return false end);
-        end
+        if inst.components then
+            if inst.components.sleeper then
+                inst.components.sleeper:SetSleepTest(function() return false end);
+            end
 
-        local OldRetargetFunction = inst.components.combat.targetfn;
-        inst.components.combat:SetRetargetFunction(0.25, OldRetargetFunction);
+            if inst.components.combat then
+                local OldRetargetFunction = inst.components.combat.targetfn;
+                inst.components.combat:SetRetargetFunction(0.25, OldRetargetFunction);
+            end
+
+            if inst.components.freezable then
+                inst.components.freezable:SetResistance(10);
+            end
+        end
 
         if data.ctf_team then
             CTFTeamManager:registerTeamObject(inst, data);

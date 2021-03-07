@@ -19,7 +19,8 @@ CTFPrefabPatcher:registerPrefabPatcher('bishop_nightmare', function(inst, data)
             end
 
             if inst.components.freezable then
-                inst.components.freezable:SetResistance(10);
+                inst.components.freezable:SetResistance(5);
+                inst.components.freezable:SetDefaultWearOffTime(4);
             end
         end
 

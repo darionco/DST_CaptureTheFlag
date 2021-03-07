@@ -58,16 +58,16 @@ function CTFPrefabPatcher:patchStats(inst, data)
 end
 
 function CTFPrefabPatcher:registerPrefabPatcher(prefab, patcher)
-    AddPrefabPostInit(prefab, function(instance)
-        local OldOnLoad = instance.OnLoad or nil;
-        instance.OnLoad = function(inst, data)
-            if data and data.ctf_team then
+    AddPrefabPostInit(prefab, function(inst)
+        local OldOnLoad = inst.OnLoad or nil;
+        inst.OnLoad = function(f_inst, data)
+            if data then
                 --print(inst.prefab, 'CTF_TEAM', data.ctf_team);
                 -- CTFTeamManager:registerTeamObject(inst, data);
-                patcher(inst, data);
+                patcher(f_inst, data);
             end
             if OldOnLoad ~= nil then
-                OldOnLoad(inst, data);
+                OldOnLoad(f_inst, data);
             end
         end
     end);

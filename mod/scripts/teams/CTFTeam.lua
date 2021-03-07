@@ -244,9 +244,7 @@ function CTFTeam:patchBuilder(obj, teamTag)
 end
 
 function CTFTeam:patchCombat(obj, teamTag)
-    if obj.components and obj.components.combat and not obj.components.combat.ctf_patch then
-        obj.components.combat.ctf_patch = true;
-
+    if obj.components and obj.components.combat then
         obj.components.combat.IsAlly = function(inst, target)
             return target:HasTag(teamTag);
         end
@@ -300,8 +298,7 @@ function CTFTeam:patchCombat(obj, teamTag)
 end
 
 function CTFTeam:patchPlayerController(player, teamTag)
-    if player.components and player.components.playercontroller and not player.components.playercontroller.ctf_patch then
-        player.components.playercontroller.ctf_patch = true;
+    if player.components and player.components.playercontroller then
         local OldGetActionButtonAction = player.components.playercontroller.GetActionButtonAction;
         player.components.playercontroller.GetActionButtonAction = function(inst, force_target)
             local result = OldGetActionButtonAction(inst, force_target);

@@ -4,6 +4,8 @@
 --- DateTime: 2021-01-17 12:05 p.m.
 ---
 
+local player_list = {};
+
 local function removeAllItems(player)
     for _,v in pairs(player.components.inventory.itemslots) do
         v:Remove();
@@ -11,13 +13,17 @@ local function removeAllItems(player)
 end
 
 local function putInInventory(player, prefab, count)
-    for i = 1, count do
+    for _ = 1, count do
         player.components.inventory:GiveItem(SpawnPrefab(prefab))
     end
 end
 
 local function initializeInventory(player)
-    putInInventory(player, 'goldnugget', 12);
+    if not player_list[player.userid] then
+        player_list[player.userid] = true;
+        removeAllItems(player);
+        putInInventory(player, 'goldnugget', 12);
+    end
 end
 
 return {

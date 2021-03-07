@@ -42,7 +42,6 @@ function CTFPlayer:initMaster()
         local marker = player:SpawnChild('ctf_team_marker');
         marker.ctf_team_id:set(self:getTeamID());
 
-        inventory.removeAllItems(player);
         inventory.initializeInventory(player);
 
         local function OnPlayerSpawned(f_player)

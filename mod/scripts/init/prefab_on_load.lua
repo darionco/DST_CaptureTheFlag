@@ -20,6 +20,7 @@ modimport('scripts/prefabs/patcher/pigguard');
 modimport('scripts/prefabs/patcher/skeleton_player');
 modimport('scripts/prefabs/patcher/tallbirdnest');
 modimport('scripts/prefabs/patcher/wormhole');
+modimport('scripts/prefabs/patcher/abigail');
 
 --modimport('scripts/teams/CTFTeamManager');
 --

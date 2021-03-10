@@ -16,6 +16,7 @@ modimport('scripts/init/character_descriptions');
 modimport('scripts/init/player');
 modimport('scripts/init/chat');
 modimport('scripts/init/network');
+modimport('scripts/init/actions');
 
 
 AddPrefabPostInit('world', function(inst)

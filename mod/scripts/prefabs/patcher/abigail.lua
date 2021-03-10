@@ -92,7 +92,7 @@ AddStategraphState('abigail', State{
 
     events =
     {
-        EventHandler('animover', function(inst);
+        EventHandler('animover', function(inst)
             if inst.AnimState:AnimDone() then
                 inst.sg:GoToState('ctf_attack');
             end
@@ -123,7 +123,7 @@ AddStategraphState('abigail', State{
 
     events =
     {
-        EventHandler('animover', function(inst);
+        EventHandler('animover', function(inst)
             if inst.AnimState:AnimDone() then
                 inst.sg:GoToState('dissipate');
             end

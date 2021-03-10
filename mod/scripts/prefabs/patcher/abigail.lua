@@ -118,6 +118,9 @@ AddStategraphState('abigail', State{
         inst.AnimState:PlayAnimation('hit')
         inst.Physics:Stop()
         inst.sg.statemem.fx = SpawnPrefab('abigail_vex_hit');
+        inst.sg.statemem.fx.entity:AddNetwork();
+        inst.sg.statemem.fx:RemoveTag('CLASSIFIED');
+        inst.sg.statemem.fx.entity:SetPristine()
         --inst.sg.statemem.fx.Transform:SetPosition(inst.Transform:GetWorldPosition())
         inst.sg.statemem.fx.entity:SetParent(inst.entity)
         inst.sg.statemem.fx.Transform:SetRotation(inst.Transform:GetRotation())

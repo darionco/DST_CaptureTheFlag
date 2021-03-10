@@ -47,6 +47,7 @@ AddStategraphState('wilson', State{
     tags = { 'doing', 'busy', 'nodangle', 'canrotate' },
 
     onenter = function(inst)
+        inst.components.aoetargeting:SetEnabled(false);
         inst.components.locomotor:Stop()
         inst.AnimState:PlayAnimation('wendy_channel_pst')
 
@@ -97,7 +98,6 @@ AddStategraphState('wilson', State{
             end
         end),
         TimeEvent(22 * FRAMES, function(inst)
-            inst.sg:RemoveStateTag('busy')
             if inst.components.talker ~= nil then
                 inst.components.talker:ShutUp()
             end
@@ -114,6 +114,7 @@ AddStategraphState('wilson', State{
     },
 
     onexit = function(inst)
+        inst.components.aoetargeting:SetEnabled(true);
         inst.AnimState:ClearOverrideSymbol('flower')
         if inst.sg.statemem.fx ~= nil then
             inst.sg.statemem.fx:Remove()

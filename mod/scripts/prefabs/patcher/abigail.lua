@@ -118,9 +118,9 @@ AddStategraphState('abigail', State{
         inst.AnimState:PlayAnimation('hit')
         inst.Physics:Stop()
         inst.sg.statemem.fx = SpawnPrefab('abigail_vex_hit');
-        inst.sg.statemem.fx.Transform:SetPosition(inst.Transform:GetWorldPosition())
-        --inst.sg.statemem.fx.entity:SetParent(inst.entity)
-        --inst.sg.statemem.fx.Transform:SetRotation(inst.Transform:GetRotation())
+        --inst.sg.statemem.fx.Transform:SetPosition(inst.Transform:GetWorldPosition())
+        inst.sg.statemem.fx.entity:SetParent(inst.entity)
+        inst.sg.statemem.fx.Transform:SetRotation(inst.Transform:GetRotation())
         inst.sg.statemem.fx.AnimState:SetTime(0) -- hack to force update the initial facing direction
         --local fx = SpawnPrefab('abigail_vex_hit')
         --fx.Transform:SetPosition(inst.Transform:GetWorldPosition())

@@ -22,3 +22,7 @@ end
 AddStategraphActionHandler('wilson', _G.ActionHandler(_G.ACTIONS.CASTAOE, function (inst, action)
     return action.invobject ~= nil and (action.invobject:HasTag('abigail_flower') and 'ctf_summon_abigail')
 end));
+
+AddStategraphActionHandler('wilson_client', _G.ActionHandler(_G.ACTIONS.CASTAOE, function (inst, action)
+    return action.invobject ~= nil and (action.invobject:HasTag('abigail_flower') and 'ctf_summon_abigail')
+end));

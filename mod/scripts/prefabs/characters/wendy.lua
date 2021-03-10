@@ -125,3 +125,55 @@ AddStategraphState('wilson', State{
         end
     end,
 });
+
+AddStategraphState('wilson_client', State{
+    name = 'ctf_summon_abigail',
+    tags = { 'doing', 'busy', 'nodangle', 'canrotate' },
+
+    onenter = function(inst)
+        inst.components.locomotor:Stop()
+        inst.AnimState:PlayAnimation('wendy_channel')
+        inst.AnimState:PushAnimation('wendy_channel_pst', false)
+        inst.AnimState:SetTime(52 * FRAMES)
+
+        local buffaction = inst:GetBufferedAction()
+        if buffaction ~= nil then
+            inst:PerformPreviewBufferedAction()
+
+            local flower = inst.bufferedaction.invobject
+            if flower ~= nil and flower:IsValid() then
+                if flower.skin_id ~= 0 then
+                    inst.AnimState:OverrideItemSkinSymbol( 'flower', flower.AnimState:GetBuild(), 'flower', flower.GUID, flower.AnimState:GetBuild() )
+                else
+                    inst.AnimState:OverrideSymbol('flower', flower.AnimState:GetBuild(), 'flower')
+                end
+            end
+        end
+        inst.sg:SetTimeout(TIMEOUT)
+    end,
+
+    onupdate = function(inst)
+        if inst:HasTag('doing') then
+            if inst.entity:FlattenMovementPrediction() then
+                inst.sg:GoToState('idle', 'noanim')
+            end
+        elseif inst.bufferedaction == nil then
+            inst.sg:GoToState('idle')
+        end
+    end,
+
+    ontimeout = function(inst)
+        inst:ClearBufferedAction()
+        inst.sg:GoToState('idle')
+    end,
+
+    onexit = function(inst)
+        inst.AnimState:ClearOverrideSymbol('flower')
+        if inst.sg.statemem.fx ~= nil then
+            inst.sg.statemem.fx:Remove()
+        end
+        if inst.bufferedaction == inst.sg.statemem.action then
+            inst:ClearBufferedAction()
+        end
+    end,
+});

@@ -117,23 +117,22 @@ AddStategraphState('abigail', State{
         inst:PushEvent('ctf_attack');
         inst.AnimState:PlayAnimation('hit')
         inst.Physics:Stop()
-        inst.sg.statemem.fx = SpawnPrefab('abigail_vex_hit');
-        inst.sg.statemem.fx.entity:AddNetwork();
-        inst.sg.statemem.fx:RemoveTag('CLASSIFIED');
-        inst.sg.statemem.fx.entity:SetPristine()
+        --inst.sg.statemem.fx = SpawnPrefab('abigail_vex_hit');
+        --inst.sg.statemem.fx.entity:AddNetwork();
+        --inst.sg.statemem.fx:RemoveTag('CLASSIFIED');
+        --inst.sg.statemem.fx.entity:SetPristine()
         --inst.sg.statemem.fx.Transform:SetPosition(inst.Transform:GetWorldPosition())
-        inst.sg.statemem.fx.entity:SetParent(inst.entity)
-        inst.sg.statemem.fx.Transform:SetRotation(inst.Transform:GetRotation())
-        inst.sg.statemem.fx.AnimState:SetTime(0) -- hack to force update the initial facing direction
-        --local fx = SpawnPrefab('abigail_vex_hit')
-        --fx.Transform:SetPosition(inst.Transform:GetWorldPosition())
+        --inst.sg.statemem.fx.entity:SetParent(inst.entity)
+        --inst.sg.statemem.fx.Transform:SetRotation(inst.Transform:GetRotation())
+        --inst.sg.statemem.fx.AnimState:SetTime(0) -- hack to force update the initial facing direction
+        local fx = SpawnPrefab('ctf_abigail_hit');
+        fx.Transform:SetPosition(inst.Transform:GetWorldPosition());
     end,
 
     events =
     {
         EventHandler('animover', function(inst)
             if inst.AnimState:AnimDone() then
-                inst.sg.statemem.fx = nil;
                 inst.sg:GoToState('dissipate')
             end
         end),

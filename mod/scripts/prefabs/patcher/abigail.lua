@@ -46,13 +46,6 @@ AddPrefabPostInit('abigail_flower', function(inst)
     inst.components.aoetargeting.reticule.ease = true;
     inst.components.aoetargeting.reticule.mouseenabled = true;
 
-    inst:AddComponent('equippable');
-    inst.components.equippable:SetOnEquip(function(f_inst, owner)
-        if owner.data and owner.data.ctf_team_id then
-            f_inst.components.aoetargeting.reticule.validcolour = CTF_TEAM_CONSTANTS.TEAM_COLORS[owner.data.ctf_team_id];
-        end
-    end);
-
     inst:AddComponent('aoespell');
     inst.components.aoespell.cast_spell = castAOE;
     inst.components.aoespell.str = 'Summon Abigail';
@@ -63,6 +56,15 @@ AddPrefabPostInit('abigail_flower', function(inst)
         end
         return false;
     end;
+
+    if TheWorld.ismastersim then
+        inst:AddComponent('equippable');
+        inst.components.equippable:SetOnEquip(function(f_inst, owner)
+            if owner.data and owner.data.ctf_team_id then
+                f_inst.components.aoetargeting.reticule.validcolour = CTF_TEAM_CONSTANTS.TEAM_COLORS[owner.data.ctf_team_id];
+            end
+        end);
+    end
 
     inst:RemoveComponent('summoningitem');
 end);

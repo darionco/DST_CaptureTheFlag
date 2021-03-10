@@ -5,14 +5,13 @@
 ---
 
 ACTIONS.CASTAOE.stroverridefn = function(act)
-    if act.invobject and act.invobject.comopnents and act.invobject.components.aoespell then
-        return act.doer.components.aoespell.str;
+    if act.invobject and act.invobject.components and act.invobject.components.aoespell then
+        return act.invobject.components.aoespell.str;
     end
     return nil;
 end
 
 ACTIONS.CASTAOE.fn = function(act)
-    local act_pos = act:GetActionPoint()
     if act.invobject ~= nil and act.invobject.components.aoespell ~= nil and act.invobject.components.aoespell:CanCast(act) then
         act.invobject.components.aoespell:CastSpell(act)
         return true

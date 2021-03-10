@@ -48,9 +48,7 @@ AddStategraphState('wilson', State{
 
     onenter = function(inst)
         inst.components.locomotor:Stop()
-        inst.AnimState:PlayAnimation('wendy_channel')
-        inst.AnimState:PushAnimation('wendy_channel_pst', false)
-        inst.AnimState:SetTime(52 * FRAMES)
+        inst.AnimState:PlayAnimation('wendy_channel_pst')
 
         if inst.bufferedaction ~= nil then
             local flower = inst.bufferedaction.invobject
@@ -90,15 +88,15 @@ AddStategraphState('wilson', State{
             end
         end),
 
-        TimeEvent((53 - 52) * FRAMES, function(inst) inst.SoundEmitter:PlaySound('dontstarve/characters/wendy/summon') end),
-        TimeEvent((62 - 52) * FRAMES, function(inst)
+        TimeEvent(1 * FRAMES, function(inst) inst.SoundEmitter:PlaySound('dontstarve/characters/wendy/summon') end),
+        TimeEvent(10 * FRAMES, function(inst)
             if inst:PerformBufferedAction() then
                 inst.sg.statemem.fx = nil
             else
                 inst.sg:GoToState('idle')
             end
         end),
-        TimeEvent((74 - 52) * FRAMES, function(inst)
+        TimeEvent(22 * FRAMES, function(inst)
             inst.sg:RemoveStateTag('busy')
             if inst.components.talker ~= nil then
                 inst.components.talker:ShutUp()
@@ -126,15 +124,14 @@ AddStategraphState('wilson', State{
     end,
 });
 
+local TIMEOUT = 2;
 AddStategraphState('wilson_client', State{
     name = 'ctf_summon_abigail',
-    tags = { 'doing', 'busy', 'nodangle', 'canrotate' },
+    tags = { 'doing', 'busy' },
 
     onenter = function(inst)
         inst.components.locomotor:Stop()
-        inst.AnimState:PlayAnimation('wendy_channel')
-        inst.AnimState:PushAnimation('wendy_channel_pst', false)
-        inst.AnimState:SetTime(52 * FRAMES)
+        inst.AnimState:PlayAnimation('wendy_channel_pst')
 
         local buffaction = inst:GetBufferedAction()
         if buffaction ~= nil then
@@ -153,11 +150,7 @@ AddStategraphState('wilson_client', State{
     end,
 
     onupdate = function(inst)
-        if inst:HasTag('doing') then
-            if inst.entity:FlattenMovementPrediction() then
-                inst.sg:GoToState('idle', 'noanim')
-            end
-        elseif inst.bufferedaction == nil then
+        if not inst:HasTag('doing') then
             inst.sg:GoToState('idle')
         end
     end,

@@ -9,7 +9,7 @@ local CTF_SKELETON_MAX_HEALTH = 200;
 AddPrefabPostInit('skeleton_player', function(inst)
     local OldSetSkeletonAvatarData = inst.SetSkeletonAvatarData;
     inst.SetSkeletonAvatarData = function(f_inst, client_obj)
-        local team = CTFTeamManager:getPlayerTeam(client_obj.userid);
+        local team = client_obj and CTFTeamManager:getPlayerTeam(client_obj.userid) or nil;
         if team then
             team:registerObject(f_inst, nil);
         end

@@ -83,27 +83,27 @@ AddStategraphState('abigail', State{
     onenter = function(inst)
         inst.AnimState:PlayAnimation('appear')
         inst.AnimState:SetTime(0);
-        inst.Physics:Stop()
+        inst.Physics:Stop();
         -- inst.SoundEmitter:PlaySound('dontstarve/characters/wendy/abigail/howl_one_shot')
         if inst.components.health ~= nil then
-            inst.components.health:SetInvincible(true)
+            inst.components.health:SetInvincible(true);
         end
     end,
 
     events =
     {
-        EventHandler('animover', function(inst)
+        EventHandler('animover', function(inst);
             if inst.AnimState:AnimDone() then
-                inst.sg:GoToState('ctf_attack')
+                inst.sg:GoToState('ctf_attack');
             end
         end),
     },
 
     onexit = function(inst)
-        inst.components.aura:Enable(true)
-        inst.components.health:SetInvincible(false)
+        inst.components.aura:Enable(true);
+        inst.components.health:SetInvincible(false);
         if inst._playerlink ~= nil then
-            inst._playerlink.components.ghostlybond:SummonComplete()
+            inst._playerlink.components.ghostlybond:SummonComplete();
         end
     end,
 });
@@ -116,24 +116,16 @@ AddStategraphState('abigail', State{
         -- inst.SoundEmitter:PlaySound('dontstarve/characters/wendy/abigail/howl_one_shot')
         inst:PushEvent('ctf_attack');
         inst.AnimState:PlayAnimation('hit')
-        inst.Physics:Stop()
-        --inst.sg.statemem.fx = SpawnPrefab('abigail_vex_hit');
-        --inst.sg.statemem.fx.entity:AddNetwork();
-        --inst.sg.statemem.fx:RemoveTag('CLASSIFIED');
-        --inst.sg.statemem.fx.entity:SetPristine()
-        --inst.sg.statemem.fx.Transform:SetPosition(inst.Transform:GetWorldPosition())
-        --inst.sg.statemem.fx.entity:SetParent(inst.entity)
-        --inst.sg.statemem.fx.Transform:SetRotation(inst.Transform:GetRotation())
-        --inst.sg.statemem.fx.AnimState:SetTime(0) -- hack to force update the initial facing direction
+        inst.Physics:Stop();
         local fx = SpawnPrefab('ctf_abigail_hit');
         fx.Transform:SetPosition(inst.Transform:GetWorldPosition());
     end,
 
     events =
     {
-        EventHandler('animover', function(inst)
+        EventHandler('animover', function(inst);
             if inst.AnimState:AnimDone() then
-                inst.sg:GoToState('dissipate')
+                inst.sg:GoToState('dissipate');
             end
         end),
     },

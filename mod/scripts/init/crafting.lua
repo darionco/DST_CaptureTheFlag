@@ -167,12 +167,6 @@ local function buildNewCrafting()
             icon = 'ctf_tab_hats.tex',
             icon_atlas = 'images/ctf_crafting_tabs.xml',
             recipes = {
-                {
-                    prefab = 'beehat',
-                    ingredients = { Ingredient('goldnugget', 20) },
-                    level = TECH.SCIENCE_ONE,
-                    count = 1
-                },
 				{
                     prefab = 'cookiecutterhat',
                     ingredients = { Ingredient('goldnugget', 20) },
@@ -426,7 +420,7 @@ local function buildNewCrafting()
             recipes = {
                 {
                     prefab = 'shadowduelist_builder',
-                    ingredients = { Ingredient('goldnugget', 20), Ingredient('spear', 1) },
+                    ingredients = { Ingredient('goldnugget', 10), Ingredient('spear', 1) },
                     count = 1
                 },
 			}
@@ -440,6 +434,19 @@ local function buildNewCrafting()
                 {
                     prefab = 'gears',
                     ingredients = { Ingredient('goldnugget', 10) },
+                    count = 1
+                },
+			}
+		},
+        {
+            tab = 'Flowers',
+            order = 10,
+            icon = 'tab_arcane.tex',
+			owner_tag = 'elixirbrewer',
+            recipes = {
+                {
+                    prefab = 'abigail_flower',
+                    ingredients = { Ingredient('goldnugget', 40) },
                     count = 1
                 },
 			}

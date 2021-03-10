@@ -82,6 +82,7 @@ AddStategraphState('abigail', State{
 
     onenter = function(inst)
         inst.AnimState:PlayAnimation('appear')
+        inst.AnimState:SetTime(0);
         inst.Physics:Stop()
         -- inst.SoundEmitter:PlaySound('dontstarve/characters/wendy/abigail/howl_one_shot')
         if inst.components.health ~= nil then

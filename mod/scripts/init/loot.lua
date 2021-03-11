@@ -23,26 +23,20 @@ local LOOT_TABLE = {
     worm = { gold = 3 },
     
 
-
     -- Secret Fight
-    frog = { other = { 'spider_dropper', }, gold = 1 }, -- hotfix
-    --frog = { other = { 'slurper', }, gold = 1 },
-    --slurper = { other = { 'spider_dropper', }, gold = 2 },
-    spider_dropper = { other = { 'tentacle', }, gold = 3 },
-    tentacle = { other = { 'knight', }, gold = 4 },
+    frog = { other = { 'spider_dropper', }, gold = 1 },
+    spider_dropper = { other = { 'walrus', }, gold = 3 },
+    walrus = { other = { 'knight', }, gold = 4 },
     knight = { other = { 'leif', }, gold = 5 },
     leif = { other = { 'warg', }, gold = 6 },
-    warg = { other = { 'deerclops', }, gold = 7 },
-    deerclops = { other = { 'rabbit', }, gold = 14 },
+    warg = { other = { 'spiderqueen', }, gold = 7 },
+    spiderqueen = { other = { 'deerclops', }, gold = 7 },
+    deerclops = { other = { 'rabbit', }, gold = 7 },
     rabbit = { other = { 'tallbirdegg', 'tallbirdegg', 'tallbirdegg', 'orangestaff', 'beemine', 'beemine', 'beemine', 'beemine', 'beemine', 'cane', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', }, gold = 80 },
-
 
     -- Other Secret Fight (Maze)
     bat = { other = { 'spider_spitter', }, gold = 1 },
-    spider_spitter = { other = { 'spider_hider', 'spider_hider', 'spider_hider', 'walrus', }, gold = 2 },
-    walrus = { other = { 'spat', 'worm', 'worm', }, gold = 3 },
-    spat = { other = { 'carrat', }, gold = 4 },
-    carrat = { other = { 'tallbirdegg', 'tallbirdegg', 'tallbirdegg', 'orangestaff', 'beemine', 'beemine', 'beemine', 'beemine', 'beemine', 'cane', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', }, gold = 80 },
+    spider_spitter = { gold = 2 },
 };
 
 LootDropper.DropLoot = function(self, pt)

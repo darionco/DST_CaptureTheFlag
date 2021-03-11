@@ -46,13 +46,6 @@ AddPrefabPostInit('abigail_flower', function(inst)
     inst.components.aoetargeting.reticule.ease = true;
     inst.components.aoetargeting.reticule.mouseenabled = true;
 
-    inst:AddComponent('equippable');
-    inst.components.equippable:SetOnEquip(function(f_inst, owner)
-        if owner.data and owner.data.ctf_team_id then
-            f_inst.components.aoetargeting.reticule.validcolour = CTF_TEAM_CONSTANTS.TEAM_COLORS[owner.data.ctf_team_id];
-        end
-    end);
-
     inst:AddComponent('aoespell');
     inst.components.aoespell.cast_spell = castAOE;
     inst.components.aoespell.str = 'Summon Abigail';
@@ -63,6 +56,15 @@ AddPrefabPostInit('abigail_flower', function(inst)
         end
         return false;
     end;
+
+    if TheWorld.ismastersim then
+        inst:AddComponent('equippable');
+        inst.components.equippable:SetOnEquip(function(f_inst, owner)
+            if owner.data and owner.data.ctf_team_id then
+                f_inst.components.aoetargeting.reticule.validcolour = CTF_TEAM_CONSTANTS.TEAM_COLORS[owner.data.ctf_team_id];
+            end
+        end);
+    end
 
     inst:RemoveComponent('summoningitem');
 end);
@@ -80,10 +82,11 @@ AddStategraphState('abigail', State{
 
     onenter = function(inst)
         inst.AnimState:PlayAnimation('appear')
-        inst.Physics:Stop()
+        inst.AnimState:SetTime(0);
+        inst.Physics:Stop();
         -- inst.SoundEmitter:PlaySound('dontstarve/characters/wendy/abigail/howl_one_shot')
         if inst.components.health ~= nil then
-            inst.components.health:SetInvincible(true)
+            inst.components.health:SetInvincible(true);
         end
     end,
 
@@ -91,16 +94,16 @@ AddStategraphState('abigail', State{
     {
         EventHandler('animover', function(inst)
             if inst.AnimState:AnimDone() then
-                inst.sg:GoToState('ctf_attack')
+                inst.sg:GoToState('ctf_attack');
             end
         end),
     },
 
     onexit = function(inst)
-        inst.components.aura:Enable(true)
-        inst.components.health:SetInvincible(false)
+        inst.components.aura:Enable(true);
+        inst.components.health:SetInvincible(false);
         if inst._playerlink ~= nil then
-            inst._playerlink.components.ghostlybond:SummonComplete()
+            inst._playerlink.components.ghostlybond:SummonComplete();
         end
     end,
 });
@@ -113,16 +116,16 @@ AddStategraphState('abigail', State{
         -- inst.SoundEmitter:PlaySound('dontstarve/characters/wendy/abigail/howl_one_shot')
         inst:PushEvent('ctf_attack');
         inst.AnimState:PlayAnimation('hit')
-        inst.Physics:Stop()
-        local fx = SpawnPrefab('abigail_vex_hit')
-        fx.Transform:SetPosition(inst.Transform:GetWorldPosition())
+        inst.Physics:Stop();
+        local fx = SpawnPrefab('ctf_abigail_hit');
+        fx.Transform:SetPosition(inst.Transform:GetWorldPosition());
     end,
 
     events =
     {
         EventHandler('animover', function(inst)
             if inst.AnimState:AnimDone() then
-                inst.sg:GoToState('dissipate')
+                inst.sg:GoToState('dissipate');
             end
         end),
     },

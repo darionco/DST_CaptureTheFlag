@@ -48,9 +48,7 @@ AddStategraphState('wilson', State{
 
     onenter = function(inst)
         inst.components.locomotor:Stop()
-        inst.AnimState:PlayAnimation('wendy_channel')
-        inst.AnimState:PushAnimation('wendy_channel_pst', false)
-        inst.AnimState:SetTime(52 * FRAMES)
+        inst.AnimState:PlayAnimation('wendy_channel_pst')
 
         if inst.bufferedaction ~= nil then
             local flower = inst.bufferedaction.invobject
@@ -90,16 +88,15 @@ AddStategraphState('wilson', State{
             end
         end),
 
-        TimeEvent((53 - 52) * FRAMES, function(inst) inst.SoundEmitter:PlaySound('dontstarve/characters/wendy/summon') end),
-        TimeEvent((62 - 52) * FRAMES, function(inst)
+        TimeEvent(1 * FRAMES, function(inst) inst.SoundEmitter:PlaySound('dontstarve/characters/wendy/summon') end),
+        TimeEvent(10 * FRAMES, function(inst)
             if inst:PerformBufferedAction() then
                 inst.sg.statemem.fx = nil
             else
                 inst.sg:GoToState('idle')
             end
         end),
-        TimeEvent((74 - 52) * FRAMES, function(inst)
-            inst.sg:RemoveStateTag('busy')
+        TimeEvent(22 * FRAMES, function(inst)
             if inst.components.talker ~= nil then
                 inst.components.talker:ShutUp()
             end
@@ -114,6 +111,53 @@ AddStategraphState('wilson', State{
             end
         end),
     },
+
+    onexit = function(inst)
+        inst.AnimState:ClearOverrideSymbol('flower')
+        if inst.sg.statemem.fx ~= nil then
+            inst.sg.statemem.fx:Remove()
+        end
+        if inst.bufferedaction == inst.sg.statemem.action then
+            inst:ClearBufferedAction()
+        end
+    end,
+});
+
+local TIMEOUT = 2;
+AddStategraphState('wilson_client', State{
+    name = 'ctf_summon_abigail',
+    tags = { 'doing', 'busy' },
+
+    onenter = function(inst)
+        inst.components.locomotor:Stop()
+        inst.AnimState:PlayAnimation('wendy_channel_pst')
+
+        local buffaction = inst:GetBufferedAction()
+        if buffaction ~= nil then
+            inst:PerformPreviewBufferedAction()
+
+            local flower = inst.bufferedaction.invobject
+            if flower ~= nil and flower:IsValid() then
+                if flower.skin_id ~= 0 then
+                    inst.AnimState:OverrideItemSkinSymbol( 'flower', flower.AnimState:GetBuild(), 'flower', flower.GUID, flower.AnimState:GetBuild() )
+                else
+                    inst.AnimState:OverrideSymbol('flower', flower.AnimState:GetBuild(), 'flower')
+                end
+            end
+        end
+        inst.sg:SetTimeout(TIMEOUT)
+    end,
+
+    onupdate = function(inst)
+        if not inst:HasTag('doing') then
+            inst.sg:GoToState('idle')
+        end
+    end,
+
+    ontimeout = function(inst)
+        inst:ClearBufferedAction()
+        inst.sg:GoToState('idle')
+    end,
 
     onexit = function(inst)
         inst.AnimState:ClearOverrideSymbol('flower')

@@ -7,7 +7,7 @@
 local CTF_CHARACTER_CONSTANTS = {
     WENDY = {
         ABI_REGEN_PERIOD = 1,
-        ABI_REGEN_AMOUNT = 1;
+        ABI_REGEN_AMOUNT = 3;
     }
 }
 

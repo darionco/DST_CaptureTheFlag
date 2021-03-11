@@ -9,6 +9,9 @@ local CTF_TEAM_CONSTANTS = {
 
     MINION_PREFABS = { 'spider', 'spider', 'spider', 'spider_warrior' },
 
+    ITEM_LOCKED_TAG = 'CTF_ITEM_LOCKED',
+
+    TEAM_FLAG_GUARD_PREFAB = 'bishop_nightmare',
     TEAM_FLAG_PREFAB = 'piggyback',
     TEAM_FLAG_WALK_SPEED_MULT = 0.45,
 

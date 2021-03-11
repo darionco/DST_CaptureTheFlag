@@ -398,6 +398,7 @@ function CTFTeam:registerObject(obj, data)
 
     if obj.prefab == CTF_TEAM_CONSTANTS.TEAM_FLAG_PREFAB then
         self.flag = obj;
+        self.flag:AddTag(CTF_TEAM_CONSTANTS.ITEM_LOCKED_TAG);
         self.flag:AddTag(CTF_TEAM_CONSTANTS.TEAM_FLAG_TAG);
         self.flag:AddTag(self.noTeamTag);
 
@@ -414,6 +415,12 @@ function CTFTeam:registerObject(obj, data)
             if self.winTask then
                 self.winTask:Cancel();
                 self.winTask = nil;
+            end
+        end);
+    elseif obj.prefab == CTF_TEAM_CONSTANTS.TEAM_FLAG_GUARD_PREFAB then
+        obj:ListenForEvent('death', function()
+            if self.flag and self.flag:HasTag(CTF_TEAM_CONSTANTS.ITEM_LOCKED_TAG) then
+                self.flag:RemoveTag(CTF_TEAM_CONSTANTS.ITEM_LOCKED_TAG);
             end
         end);
     end

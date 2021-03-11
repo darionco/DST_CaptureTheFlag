@@ -169,7 +169,7 @@ function CTFTeamManager:registerCTFPlayer(ctfPlayer)
             local player = ctfPlayer:getPlayer();
             if player then
                 team:registerPlayer(player);
-                team:setPlayerInvincibility(player, true);
+                team:setPlayerInvincibility(player, self.gameStarted == false);
             end
         end
     end

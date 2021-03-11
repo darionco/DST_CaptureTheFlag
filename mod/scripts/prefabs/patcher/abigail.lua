@@ -59,6 +59,7 @@ AddPrefabPostInit('abigail_flower', function(inst)
 
     if TheWorld.ismastersim then
         inst:AddComponent('equippable');
+        inst.components.equippable.restrictedtag = 'ghostlyfriend';
         inst.components.equippable:SetOnEquip(function(f_inst, owner)
             if owner.data and owner.data.ctf_team_id then
                 f_inst.components.aoetargeting.reticule.validcolour = CTF_TEAM_CONSTANTS.TEAM_COLORS[owner.data.ctf_team_id];

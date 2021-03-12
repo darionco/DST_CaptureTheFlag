@@ -3,6 +3,16 @@
 --- Created by darionco.
 --- DateTime: 2021-01-23 5:10 p.m.
 ---
+local require = _G.require;
+local clockwork_common = require('prefabs/clockwork_common');
+
+local OldOnAttacked = clockwork_common.OnAttacked;
+clockwork_common.OnAttacked = function(inst, data)
+    local currentTarget = inst.components.combat.target;
+    if not currentTarget or not currentTarget:IsValid() or currentTarget.components.health:IsDead() then
+        OldOnAttacked(inst, data);
+    end
+end
 
 CTFPrefabPatcher:registerPrefabPatcher('bishop_nightmare', function(inst, data)
     if TheWorld.ismastersim then

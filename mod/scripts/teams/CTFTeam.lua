@@ -270,10 +270,53 @@ function CTFTeam:patchCombat(obj, teamTag)
             return OldIsValidTarget(inst, target);
         end
 
-        local OldEngageTarget = obj.components.combat.EngageTarget;
-        obj.components.combat.EngageTarget = function(inst, target)
-            if not target or not target:HasTag(teamTag) then
-                OldEngageTarget(inst, target);
+        if not obj:HasTag('player') then
+            local OldDropTarget = obj.components.combat.DropTarget;
+            obj.components.combat.DropTarget = function(inst, hasnexttarget)
+                OldDropTarget(inst, hasnexttarget);
+            end
+
+            local NewSetTarget = function(inst, target, fn)
+                local currentTarget = obj.components.combat.target;
+                if not currentTarget or
+                        not currentTarget:IsValid() or
+                        currentTarget.components.health:IsDead() then
+
+                    if target and target:HasTag('player') then
+                        -- try to find a target that is not the player
+                        local enemy = CTFTeamCombat.findEnemy(obj, obj.components.combat.attackrange, teamTag);
+                        if enemy and enemy ~= target and not enemy:HasTag('player') then
+                            target = enemy;
+                        end
+                    end
+                    fn(inst, target);
+                end
+            end
+
+            -- make sure mobs keep their target until it drops or they kill it
+            local OldEngageTarget = obj.components.combat.EngageTarget;
+            obj.components.combat.EngageTarget = function(inst, target)
+                NewSetTarget(inst, target, OldEngageTarget);
+            end
+
+            local OldSetTarget = obj.components.combat.SetTarget;
+            obj.components.combat.SetTarget = function(inst, target)
+                NewSetTarget(inst, target, OldSetTarget);
+            end
+
+            local OldShareTarget = obj.components.combat.ShareTarget;
+            obj.components.combat.ShareTarget = function(inst, target, range, fn, maxnum, musttags)
+                local currentTarget = obj.components.combat.target;
+                if not currentTarget or currentTarget == target then
+                    OldShareTarget(inst, target, range, fn, maxnum, musttags);
+                end
+            end
+        else
+            local OldEngageTarget = obj.components.combat.EngageTarget;
+            obj.components.combat.EngageTarget = function(inst, target)
+                if not target or not target:HasTag(teamTag) then
+                    OldEngageTarget(inst, target);
+                end
             end
         end
     end

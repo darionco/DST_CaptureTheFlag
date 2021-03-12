@@ -9,7 +9,23 @@ local CTF_TEAM_CONSTANTS = require('constants/CTFTeamConstants');
 local RETARGET_ONEOF_TAGS = { CTF_TEAM_CONSTANTS.TEAM_MINION_TAG, CTF_TEAM_CONSTANTS.TEAM_PLAYER_TAG, CTF_TEAM_CONSTANTS.TEAM_MINION_SPAWNER_TAG };
 
 local findEnemy = function(inst, radius, teamTag)
-    return FindEntity(inst, radius, nil, { "_combat", "_health" }, { teamTag, 'INLIMBO', 'playerskeleton' }, RETARGET_ONEOF_TAGS);
+    local playerTarget = nil;
+    if inst ~= nil and inst:IsValid() then
+        local x, y, z = inst.Transform:GetWorldPosition();
+        local ents = TheSim:FindEntities(x, y, z, radius, { "_combat", "_health" }, { teamTag, 'INLIMBO', 'playerskeleton', 'playerghost' }, RETARGET_ONEOF_TAGS) -- or we could include a flag to the search?
+        for _, v in ipairs(ents) do
+            if v ~= inst and v.entity:IsVisible() then
+                if v:HasTag(CTF_TEAM_CONSTANTS.TEAM_PLAYER_TAG) then
+                    if playerTarget == nil then
+                        playerTarget = v;
+                    end
+                else
+                    return v;
+                end
+            end
+        end
+    end
+    return playerTarget;
 end
 
 return {

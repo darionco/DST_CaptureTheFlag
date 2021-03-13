@@ -6,14 +6,14 @@
 local require = _G.require;
 local CTF_TEAM_CONSTANTS = require('constants/CTFTeamConstants');
 
-local WICKERBOTTOM_BOOK_RANGE = 30;
-
 STRINGS.NAMES.BOOK_SILVICULTURE = 'Heart Tart Art';
 local WICKERBOTTOM_BOOK_SILVICULTURE_HEAL = 150;
 local WICKERBOTTOM_BOOK_SILVICULTURE_HUNGER = 60;
+local WICKERBOTTOM_BOOK_SILVICULTURE_RANGE = 30;
 
 STRINGS.NAMES.BOOK_BRIMSTONE = 'Humpty Dumpty';
 local WICKERBOTTOM_BOOK_BRIMSTONE_DAMAGE = 0.3;
+local WICKERBOTTOM_BOOK_BRIMSTONE_RANGE = 10;
 local WICKERBOTTOM_BOOK_BRIMSTONE_DAMAGE_ALLIES = 0.2;
 local WICKERBOTTOM_BOOK_BRIMSTONE_TAGS = { '_combat', '_health' };
 
@@ -23,7 +23,7 @@ AddPrefabPostInit('book_silviculture', function(inst)
             if reader:HasTag(CTF_TEAM_CONSTANTS.TEAM_PLAYER_TAG) and reader.data and reader.data.ctf_team_tag then
                 local teamTag = reader.data.ctf_team_tag;
                 local x, y, z = reader.Transform:GetWorldPosition();
-                local ents = TheSim:FindEntities(x, y, z, WICKERBOTTOM_BOOK_RANGE, { teamTag });
+                local ents = TheSim:FindEntities(x, y, z, WICKERBOTTOM_BOOK_SILVICULTURE_RANGE, { teamTag });
                 for _, v in ipairs(ents) do
                     if v.components then
                         if v.components.health then
@@ -47,7 +47,7 @@ AddPrefabPostInit('book_brimstone', function(inst)
             if reader:HasTag(CTF_TEAM_CONSTANTS.TEAM_PLAYER_TAG) and reader.data and reader.data.ctf_team_tag then
                 local teamTag = reader.data.ctf_team_tag;
                 local x, y, z = reader.Transform:GetWorldPosition();
-                local ents = TheSim:FindEntities(x, y, z, WICKERBOTTOM_BOOK_RANGE, WICKERBOTTOM_BOOK_BRIMSTONE_TAGS);
+                local ents = TheSim:FindEntities(x, y, z, WICKERBOTTOM_BOOK_BRIMSTONE_RANGE, WICKERBOTTOM_BOOK_BRIMSTONE_TAGS);
                 for _, v in ipairs(ents) do
                     if v:IsValid() and not v:IsInLimbo() then
                         local maxHealth = v.components.health:GetMaxWithPenalty();

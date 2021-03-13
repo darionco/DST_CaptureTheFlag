@@ -244,104 +244,7 @@ function CTFTeam:patchBuilder(obj, teamTag)
 end
 
 function CTFTeam:patchCombat(obj, teamTag)
-    if obj.components and obj.components.combat then
-        obj.components.combat.IsAlly = function(inst, target)
-            return target:HasTag(teamTag);
-        end
-
-        local OldCanTarget = obj.components.combat.CanTarget;
-        obj.components.combat.CanTarget = function(inst, target)
-            if target and target:HasTag(teamTag) then
-                return false;
-            end
-            return OldCanTarget(inst, target);
-        end
-
-        
-        local OldIsValidTarget = obj.components.combat.IsValidTarget;
-        obj.components.combat.IsValidTarget = function(inst, target)
-            if target then
-                if target:HasTag(teamTag) then
-                    return false;
-                elseif target:HasTag(CTF_TEAM_CONSTANTS.TEAM_MINION_TAG) then
-                    return true;
-                end
-            end
-            return OldIsValidTarget(inst, target);
-        end
-
-        if not obj:HasTag('player') then
-            local NewSetTarget = function(inst, target, fn)
-                local currentTarget = obj.components.combat.target;
-                if not currentTarget or
-                        not currentTarget:IsValid() or
-                        currentTarget.components.health:IsDead() then
-
-                    if target and target:HasTag('player') and target.components.combat.target and not target.components.combat.target:HasTag('player') then
-                        -- try to find a target that is not the player
-                        local enemy = CTFTeamCombat.findEnemy(obj, obj.components.combat.attackrange, teamTag);
-                        if enemy and enemy ~= target and not enemy:HasTag('player') then
-                            target = enemy;
-                        end
-                    end
-                    fn(inst, target);
-                end
-            end
-
-            -- make sure mobs keep their target until it drops or they kill it
-            local OldEngageTarget = obj.components.combat.EngageTarget;
-            obj.components.combat.EngageTarget = function(inst, target)
-                NewSetTarget(inst, target, OldEngageTarget);
-            end
-
-            local OldSetTarget = obj.components.combat.SetTarget;
-            obj.components.combat.SetTarget = function(inst, target)
-                NewSetTarget(inst, target, OldSetTarget);
-            end
-
-            local OldShareTarget = obj.components.combat.ShareTarget;
-            obj.components.combat.ShareTarget = function(inst, target, range, fn, maxnum, musttags)
-                local currentTarget = obj.components.combat.target;
-                if obj:HasTag('player') or not currentTarget or currentTarget == target then
-                    OldShareTarget(inst, target, range, fn, maxnum, musttags);
-                end
-            end
-
-            local OldSuggestTarget = obj.components.combat.SuggestTarget;
-            obj.components.combat.SuggestTarget = function(inst, target)
-                if target and target:HasTag('player') and target.components.combat.target and target.components.combat.target:HasTag('player') then
-                    inst:SetTarget(target);
-                    return true;
-                end
-                return OldSuggestTarget(inst, target);
-            end
-        else
-            local OldEngageTarget = obj.components.combat.EngageTarget;
-            obj.components.combat.EngageTarget = function(inst, target)
-                if not target or not target:HasTag(teamTag) then
-                    OldEngageTarget(inst, target);
-                end
-            end
-        end
-    end
-
-    if obj.replica and obj.replica.combat then
-        local OldCanTarget = obj.replica.combat.CanTarget;
-        obj.replica.combat.CanTarget = function(inst, target)
-            if target and target:HasTag(teamTag) then
-                return false;
-            end
-            return OldCanTarget(inst, target);
-        end
-
-        local OldSetTarget = obj.replica.combat.SetTarget;
-        obj.replica.combat.SetTarget = function(inst, target)
-            if not target or not target:HasTag(teamTag) then
-                OldSetTarget(inst, target);
-                OldSetTarget(inst, target);
-            end
-        end
-    end
+    CTFTeamCombat.patchCombat(obj, teamTag);
 end
 
 function CTFTeam:patchPlayerController(player, teamTag)
@@ -632,7 +535,7 @@ function CTFTeam:registerPlayer(player)
             player:ListenForEvent('attacked', function(inst, data)
                 if data.attacker and data.attacker:HasTag('player') then
                     inst.components.combat:ShareTarget(data.attacker, 15, function(candidate)
-                        return candidate:HasTag(self.teamTag) and not candidate.components.health:IsDead();
+                        return candidate and candidate:HasTag(self.teamTag) and candidate.components.health and not candidate.components.health:IsDead();
                     end, 50);
                 end
             end);

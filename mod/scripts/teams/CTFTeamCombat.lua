@@ -28,6 +28,123 @@ local findEnemy = function(inst, radius, teamTag)
     return playerTarget;
 end
 
+local _patchCombatIsAlly = function(combat, teamTag)
+    combat.IsAlly = function(_, target)
+        return target:HasTag(teamTag);
+    end
+end
+
+local _patchCombatCanTarget = function(combat, teamTag)
+    local OldCanTarget = combat.CanTarget;
+    combat.CanTarget = function(self, target)
+        if target and target:HasTag(teamTag) then
+            return false;
+        end
+        return OldCanTarget(self, target);
+    end
+end
+
+local _patchCombatIsValidTarget = function(combat, teamTag)
+    local OldIsValidTarget = combat.IsValidTarget;
+    combat.IsValidTarget = function(self, target)
+        if target and target:HasTag(teamTag) then
+            return false;
+        end
+        return OldIsValidTarget(self, target);
+    end
+end
+
+local DEFAULT_SHARE_TARGET_MUST_TAGS = { '_combat' };
+local _patchCombatShareTarget = function(combat, teamTag)
+    combat.ShareTarget = function(self, target, range, fn, maxnum, musttags)
+        if maxnum <= 0 or target:HasTag(teamTag) then
+            return
+        end
+
+        local x, y, z = self.inst.Transform:GetWorldPosition();
+        local ents = TheSim:FindEntities(x, y, z, range, musttags or DEFAULT_SHARE_TARGET_MUST_TAGS);
+
+        local inst = self.inst;
+        local num_helpers = 0
+        for _, v in ipairs(ents) do
+            if v ~= self.inst
+                    and not (v.components.health ~= nil and
+                    v.components.health:IsDead())
+                    and (fn == nil or fn(v)) then
+
+                local shared = false;
+
+                if inst:HasTag('player') then
+                    v.components.combat:SetTarget(target, true); -- second argument forces the target
+                    shared = true;
+                else
+                    shared = v.components.combat:SuggestTarget(target);
+                end
+
+                if shared then
+                    num_helpers = num_helpers + 1;
+                    if num_helpers >= maxnum then
+                        return;
+                    end
+                end
+            end
+        end
+    end
+end
+
+local _patchCombatSetTarget = function(combat, teamTag)
+    local OldSetTarget = combat.SetTarget;
+    combat.SetTarget = function(self, target, force)
+        if not target then
+            OldSetTarget(self, target);
+        elseif not target:HasTag(teamTag) and
+                not self.forcedTarget and
+                (
+                        force or
+                        self.inst:HasTag('player') or
+                        not target:HasTag('player') or
+                        self.target == nil
+                ) then
+            OldSetTarget(self, target);
+            self.forcedTarget = force;
+        end
+    end
+end
+
+local _patchCombatDropTarget = function(combat)
+    local OldDropTarget = combat.DropTarget;
+    combat.DropTarget = function(self, hasnexttarget)
+        self.forcedTarget = nil;
+        OldDropTarget(self, hasnexttarget);
+    end
+end
+
+local _patchCombat = function(combat, teamTag)
+    _patchCombatIsAlly(combat, teamTag);
+    _patchCombatCanTarget(combat, teamTag);
+    _patchCombatIsValidTarget(combat, teamTag);
+    _patchCombatSetTarget(combat, teamTag);
+
+    if combat.ShareTarget then
+        _patchCombatShareTarget(combat, teamTag);
+    end
+
+    if combat.DropTarget then
+        _patchCombatDropTarget(combat);
+    end
+end
+
+local patchCombat = function(inst, teamTag)
+    if inst.components and inst.components.combat then
+        _patchCombat(inst.components.combat, teamTag);
+    end
+
+    if inst.replica and inst.replica.combat then
+        _patchCombat(inst.replica.combat, teamTag);
+    end
+end
+
 return {
     findEnemy = findEnemy,
+    patchCombat = patchCombat,
 }

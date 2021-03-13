@@ -101,4 +101,4 @@ local function ctf()
     return inst;
 end
 
-return Prefab('ctf_team_marker', ctf, assets);
+return Prefab('ctf_team_marker', ctf);

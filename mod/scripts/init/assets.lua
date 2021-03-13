@@ -4,10 +4,15 @@
 --- DateTime: 2021-02-15 11:58 p.m.
 ---
 
-Assets = {
+local Assets = {
     Asset('ATLAS', 'images/ctf_crafting_tabs.xml'),
     Asset('IMAGE', 'images/ctf_crafting_tabs.tex'),
 }
+
+if not TheNet:IsDedicated() then
+    RegisterPrefabs(Prefab('MOD_WARSAK_ASSETS', function() end, Assets, nil));
+    TheSim:LoadPrefabs({ 'MOD_WARSAK_ASSETS' });
+end
 
 PrefabFiles = {
     'ctf_team_marker',

@@ -56,6 +56,10 @@ end
 
 local OldNetworking_Say = GLOBAL.Networking_Say;
 GLOBAL.Networking_Say = function(guid, userid, name, prefab, message, colour, whisper, isemote, user_vanity)
+    if not message then
+        return;
+    end
+    
     local player = CTFTeamManager:getCTFPlayer(userid);
     local teamID = player and player:getTeamID() or 0;
     if teamID ~= 0 then

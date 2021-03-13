@@ -10,11 +10,6 @@ local assets = {
     Asset('ANIM', 'anim/ctf_team_marker.zip'),
 };
 
-if not TheNet:IsDedicated() then
-    RegisterPrefabs(Prefab('MOD_WARSAK_ASSETS_ctf_team_marker', function() end, assets, nil));
-    TheSim:LoadPrefabs({ 'MOD_WARSAK_ASSETS_ctf_team_marker' });
-end
-
 local function createMarker(inst)
     local marker = SpawnPrefab('ctf_team_marker');
     marker.entity:AddFollower();
@@ -101,4 +96,4 @@ local function ctf()
     return inst;
 end
 
-return Prefab('ctf_team_marker', ctf);
+return Prefab('ctf_team_marker', ctf, assets);

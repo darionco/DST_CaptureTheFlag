@@ -13540,11 +13540,11 @@ return {
           visible = true,
           properties = {
             ["data.ctf_armour_player"] = 0.5,
-            ["data.ctf_attack_damage"] = 150,
+            ["data.ctf_attack_damage"] = 135,
             ["data.ctf_attack_range_max"] = 14,
             ["data.ctf_attack_range_min"] = 8,
             ["data.ctf_attack_speed"] = 1.1,
-            ["data.ctf_health"] = 900,
+            ["data.ctf_health"] = 1800,
             ["data.ctf_movement_speed"] = 5,
             ["data.ctf_team"] = 2
           }
@@ -14297,11 +14297,11 @@ return {
           visible = true,
           properties = {
             ["data.ctf_armour_player"] = 0.5,
-            ["data.ctf_attack_damage"] = 150,
+            ["data.ctf_attack_damage"] = 135,
             ["data.ctf_attack_range_max"] = 14,
             ["data.ctf_attack_range_min"] = 8,
             ["data.ctf_attack_speed"] = 1.1,
-            ["data.ctf_health"] = 900,
+            ["data.ctf_health"] = 1800,
             ["data.ctf_movement_speed"] = 5,
             ["data.ctf_team"] = 1
           }
@@ -14319,11 +14319,11 @@ return {
           visible = true,
           properties = {
             ["data.ctf_armour_player"] = 0.5,
-            ["data.ctf_attack_damage"] = 150,
+            ["data.ctf_attack_damage"] = 135,
             ["data.ctf_attack_range_max"] = 14,
             ["data.ctf_attack_range_min"] = 8,
             ["data.ctf_attack_speed"] = 1.1,
-            ["data.ctf_health"] = 900,
+            ["data.ctf_health"] = 1800,
             ["data.ctf_movement_speed"] = 5,
             ["data.ctf_team"] = 1
           }
@@ -14341,11 +14341,11 @@ return {
           visible = true,
           properties = {
             ["data.ctf_armour_player"] = 0.5,
-            ["data.ctf_attack_damage"] = 150,
+            ["data.ctf_attack_damage"] = 135,
             ["data.ctf_attack_range_max"] = 14,
             ["data.ctf_attack_range_min"] = 8,
             ["data.ctf_attack_speed"] = 1.1,
-            ["data.ctf_health"] = 900,
+            ["data.ctf_health"] = 1800,
             ["data.ctf_movement_speed"] = 5,
             ["data.ctf_team"] = 2
           }
@@ -15663,8 +15663,8 @@ return {
           name = "Batilisk",
           type = "bat",
           shape = "point",
-          x = 2198.49,
-          y = 2161.76,
+          x = 3616.99,
+          y = 4394.76,
           width = 0,
           height = 0,
           rotation = 0,

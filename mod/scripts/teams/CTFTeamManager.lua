@@ -19,9 +19,41 @@ CTFTeamManager = {
 function CTFTeamManager:initNet(net)
     self.net = net;
     self.ctf_player_table = net_string(self.net.GUID, 'ctf_player_table', 'ctf_player_table');
+
+    self.ctf_winning_team_id = net_tinybyte(self.net.GUID, 'ctf_winning_team_id', 'ctf_winning_team_id');
+    self.ctf_winning_team_tag = net_string(self.net.GUID, 'ctf_winning_team_tag', 'ctf_winning_team_tag');
+    self.ctf_game_reset_timer = net_smallbyte(self.net.GUID, 'ctf_game_reset_timer', 'ctf_game_reset_timer');
+    self.ctf_game_ended = net_bool(self.net.GUID, 'ctf_game_ended', 'ctf_game_ended');
+    self.ctf_game_ended:set(false);
+
     if not TheNet:IsDedicated() then
         self.net:ListenForEvent('ctf_player_table', function() self:handleNetPlayerTable() end);
+        self.net:ListenForEvent('ctf_game_ended', function()
+            if self.ctf_game_ended:value() then
+                TheWorld:PushEvent('showworldreset');
+            end
+        end);
+
+        self.net:ListenForEvent('ctf_game_reset_timer', function()
+            TheWorld:PushEvent('worldresettick', { time = self.ctf_game_reset_timer:value() });
+        end);
     end
+
+    TheWorld:ListenForEvent(CTF_TEAM_CONSTANTS.GAME_ENDED, function(_, data)
+        self.ctf_winning_team_id:set(data.teamID);
+        self.ctf_winning_team_tag:set(data.teamTag);
+        self.ctf_game_reset_timer:set(CTF_TEAM_CONSTANTS.GAME_RESTART_TIME);
+        self.ctf_game_ended:set(true);
+
+        self.ctf_reset_task = TheWorld:DoPeriodicTask(1, function()
+            local currentTimer = self.ctf_game_reset_timer:value();
+            self.ctf_game_reset_timer:set(currentTimer - 1);
+            if currentTimer - 1 <= 0 then
+                self.ctf_reset_task:Cancel();
+                c_regenerateworld();
+            end
+        end);
+    end);
 end
 
 function CTFTeamManager:netUpdatePlayerTable()
@@ -199,3 +231,6 @@ function CTFTeamManager:removePlayer(player)
         end
     end
 end
+
+-- register in global context
+_G.CTFTeamManager = CTFTeamManager;

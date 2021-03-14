@@ -29,7 +29,7 @@ local function applyTeamColor(inst, teamID)
     end
 end
 
-local function applyHealtPercent(inst, percent)
+local function applyHealthPercent(inst, percent)
     inst.AnimState:SetTime(3.61 * (1 - percent));
 end
 
@@ -38,9 +38,9 @@ local function listenForDataChanges(inst)
         inst.marker = createMarker(inst);
 
         if inst.marker then
-            applyHealtPercent(inst.marker, inst.ctf_health:value());
+            applyHealthPercent(inst.marker, inst.ctf_health:value());
             inst:ListenForEvent('ctf_health', function()
-                applyHealtPercent(inst.marker, inst.ctf_health:value());
+                applyHealthPercent(inst.marker, inst.ctf_health:value());
             end);
 
             applyTeamColor(inst.marker, inst.ctf_team_id:value());
@@ -69,12 +69,16 @@ local function ctf()
     inst.entity:AddTransform();
     inst.entity:AddAnimState();
     inst.entity:AddNetwork();
+
     inst:AddTag('FX');
+    inst:AddTag('NOCLICK');
 
     inst.AnimState:SetBank('ctf_team_marker');
     inst.AnimState:SetBuild('ctf_team_marker');
     inst.AnimState:PlayAnimation('idle');
-    inst.AnimState:SetOrientation(ANIM_ORIENTATION.OnGround);
+    inst.AnimState:SetOrientation(ANIM_ORIENTATION.OnGroundFixed);
+    inst.AnimState:SetLayer(LAYER_WORLD_BACKGROUND);
+    inst.AnimState:SetSortOrder(3);
 
     inst.ctf_health = net_float(inst.GUID, 'ctf_health', 'ctf_health');
     inst.ctf_health:set(1);
@@ -85,13 +89,15 @@ local function ctf()
     inst:DoTaskInTime(0, function()
         local owner = inst.entity:GetParent();
         if owner then
-            inst.Transform:SetPosition(0, -0.05, 0);
+            --inst.Transform:SetPosition(0, -0.05, 0);
             inst.entity:Hide();
 
             listenForDataChanges(inst);
             monitorOwnerHealth(inst, owner);
         end
     end);
+
+    inst.entity:SetPristine();
 
     return inst;
 end

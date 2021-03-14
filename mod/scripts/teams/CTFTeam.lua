@@ -21,9 +21,7 @@ local function TestWinState(inst, self)
     for _, v in ipairs(ents) do
         if v:HasTag(CTF_TEAM_CONSTANTS.TEAM_FLAG_TAG) and not v:HasTag(self.teamTag) then
             c_announce('Team ' .. self.id .. ' wins!');
-            c_announce('Game restarting in 10 seconds!');
-            TheWorld:DoTaskInTime(10, c_regenerateworld);
-            TheWorld:PushEvent(CTF_TEAM_CONSTANTS.GAME_ENDED);
+            TheWorld:PushEvent(CTF_TEAM_CONSTANTS.GAME_ENDED, { teamID = self.id, teamTag = self.teamTag });
         end
     end
 end
@@ -482,6 +480,9 @@ function CTFTeam:schedulePlayerRevive(player, seconds)
     player:DoTaskInTime(seconds, function ()
         self:teleportPlayerToBase(player);
         self:revivePlayer(player);
+        if CTFTeamManager.gameEnded and player.HUD and player.HUD.controls then
+            player.HUD.controls:HideCraftingAndInventory();
+        end
     end);
 end
 
@@ -559,7 +560,9 @@ function CTFTeam:registerPlayer(player)
 
     self.playerCount = self.playerCount + 1;
     player:ListenForEvent('death', function()
-        self:schedulePlayerRevive(player, 15);
+        if not CTFTeamManager.gameEnded then
+            self:schedulePlayerRevive(player, 15);
+        end
     end);
 
     local team = self;

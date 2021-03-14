@@ -53,9 +53,9 @@ AddPrefabPostInit('wes', function(inst)
             local OldDoDelta = inst.components.health.DoDelta;
             inst.components.health.DoDelta = function (self, amount, overtime, cause, ignore_invincible, afflicter, ignore_absorb)
                 if amount < 0 then
-                    amount = math.min(math.max(amount, self.currenthealth * WES_MAX_DAMAGE_TAKEN_PERCENT), WES_MIN_DAMAGE_TAKEN);
+                    amount = math.min(math.max(amount, -(self.currenthealth * WES_MAX_DAMAGE_TAKEN_PERCENT)), -WES_MIN_DAMAGE_TAKEN);
                 end
-                OldDoDelta(self, amount, overtime, cause, ignore_invincible, afflicter, ignore_absorb);
+                return OldDoDelta(self, amount, overtime, cause, ignore_invincible, afflicter, ignore_absorb);
             end
         end
     end

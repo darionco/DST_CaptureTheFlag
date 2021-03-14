@@ -18,6 +18,7 @@ Armor.GetAbsorption = function(self, attacker, weapon)
     local absorption = OldArmorGetAbsorption(self, attacker, weapon);
     if
         absorption and
+        absorption ~= TUNING.FULL_ABSORPTION and
         self.inst.components.inventoryitem and
         self.inst.components.inventoryitem.owner and
         self.inst.components.inventoryitem.owner.prefab == 'wes'

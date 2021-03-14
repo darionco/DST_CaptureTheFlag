@@ -11,7 +11,7 @@ local WES_MAX_HUNGER = 75;
 local WES_MAX_SANITY = 75;
 local WES_UNARMED_DAMAGE = 25;
 local WES_DAMAGE_MULTIPLIER = 1.55;
-local WES_ARMOR_MULTIPLIER = 0.3;
+local WES_ARMOR_MULTIPLIER = 0.5;
 
 local OldArmorGetAbsorption = Armor.GetAbsorption;
 Armor.GetAbsorption = function(self, attacker, weapon)

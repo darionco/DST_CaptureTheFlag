@@ -5,14 +5,28 @@
 ---
 local require = _G.require;
 local clockwork_common = require('prefabs/clockwork_common');
+local CTFTeamCombat = require('teams/CTFTeamCombat');
 
 local OldOnAttacked = clockwork_common.OnAttacked;
 clockwork_common.OnAttacked = function(inst, data)
     local currentTarget = inst.components.combat.target;
     if not currentTarget or not currentTarget:IsValid() or currentTarget.components.health:IsDead() then
+        if data ~= nil and data.attacker and data.attacker:HasTag('player') then
+            local retarget = inst.components.combat.targetfn(inst);
+            if retarget and not retarget:HasTag('player') then
+                inst.components.combat:SetTarget(retarget);
+                return;
+            end
+        end
         OldOnAttacked(inst, data);
     end
 end
+
+AddPrefabPostInit('bishop_charge', function(inst)
+    if inst.components and inst.components.projectile then
+        inst.components.projectile:SetHoming(true);
+    end
+end);
 
 CTFPrefabPatcher:registerPrefabPatcher('bishop_nightmare', function(inst, data)
     if TheWorld.ismastersim then
@@ -24,8 +38,18 @@ CTFPrefabPatcher:registerPrefabPatcher('bishop_nightmare', function(inst, data)
             end
 
             if inst.components.combat then
-                local OldRetargetFunction = inst.components.combat.targetfn;
-                inst.components.combat:SetRetargetFunction(0.25, OldRetargetFunction);
+                inst.components.combat:SetRetargetFunction(0.25, function(self)
+                    local range = TUNING.BISHOP_TARGET_DIST;
+                    local homePos = self.components.knownlocations:GetLocation("home")
+                    if (
+                            homePos ~= nil and
+                            self:GetDistanceSqToPoint(homePos:Get()) >= range * range and
+                            (self.components.follower == nil or self.components.follower.leader == nil)
+                    ) then
+                        return nil;
+                    end
+                    return CTFTeamCombat.findEnemy(self, range, self.data.ctf_team_tag);
+                end);
             end
 
             if inst.components.freezable then

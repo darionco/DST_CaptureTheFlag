@@ -34,6 +34,12 @@ end
 
 function CTFPlayer:initCommon()
     CTFTeamManager:registerCTFPlayer(self);
+    TheWorld:ListenForEvent('showworldreset', function()
+        local player = self:getPlayer();
+        if player and player.HUD and player.HUD.controls then
+            player.HUD.controls:HideCraftingAndInventory();
+        end
+    end);
 end
 
 function CTFPlayer:initMaster()

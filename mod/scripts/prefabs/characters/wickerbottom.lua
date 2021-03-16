@@ -27,7 +27,7 @@ AddPrefabPostInit('book_silviculture', function(inst)
                 for _, v in ipairs(ents) do
                     if v.components then
                         if v.components.health then
-                            v.components.health:DoDelta(WICKERBOTTOM_BOOK_SILVICULTURE_HEAL, nil, f_inst.prefab);
+                            v.components.health:DoDelta(WICKERBOTTOM_BOOK_SILVICULTURE_HEAL, nil, CTF_TEAM_CONSTANTS.TEAMMATE_HEAL, nil, inst);
                         end
 
                         if v.components.hunger then

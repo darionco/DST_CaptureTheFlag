@@ -5,13 +5,39 @@
 ---
 
 local WEBBER_SPIDER_ABSORPTION = 0.45;
+local WEBBER_PLAYER_MULTIPLIER = 0.15;
+
+-- spiders won't take food from anyone
+AddComponentPostInit('trader', function(self)
+    if self.inst and self.inst:HasTag('spider') then
+        self.inst:DoTaskInTime(0, function()
+            self:SetAcceptTest(function() return false end);
+        end);
+    end
+end);
+
+-- spider dropper is not a spider so it won't follow the spiderhat
+AddPrefabPostInit('spider_dropper', function(inst)
+    inst:RemoveTag('spider');
+end);
+
+-- spiderhat can only be worn by webber
+AddPrefabPostInit('spiderhat', function(inst)
+    if inst.components and inst.components.equippable then
+        inst.components.equippable.restrictedtag = 'spiderwhisperer';
+    end
+end);
 
 AddPrefabPostInit('webber', function(inst)
     if inst.components and inst.components.health then
         local OldDoDelta = inst.components.health.DoDelta;
         inst.components.health.DoDelta = function (self, amount, overtime, cause, ignore_invincible, afflicter, ignore_absorb)
-            if afflicter and afflicter:HasTag('spider') then
-                amount = amount * (1.0 - WEBBER_SPIDER_ABSORPTION);
+            if afflicter then
+                if afflicter:HasTag('spider') then
+                    amount = amount * (1.0 - WEBBER_SPIDER_ABSORPTION);
+                elseif afflicter:HasTag('player') then
+                    amount = amount + amount * WEBBER_PLAYER_MULTIPLIER;
+                end
             end
             return OldDoDelta(self, amount, overtime, cause, ignore_invincible, afflicter, ignore_absorb);
         end

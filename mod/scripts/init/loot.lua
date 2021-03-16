@@ -20,7 +20,10 @@ local LOOT_TABLE = {
     wasphive = { gold = 4 },
     skeleton_player = { gold = 10 },
     molebat = { gold = 2 },
+    koalefant_summer = { gold = 40 },
     worm = { gold = 3 },
+    bishop = { gold = 5 },
+    krampus = { gold = 3 },
     
 
     -- Secret Fight
@@ -29,14 +32,21 @@ local LOOT_TABLE = {
     walrus = { other = { 'knight', }, gold = 4 },
     knight = { other = { 'leif', }, gold = 5 },
     leif = { other = { 'warg', }, gold = 6 },
-    warg = { other = { 'spiderqueen', }, gold = 7 },
-    spiderqueen = { other = { 'deerclops', }, gold = 7 },
+    warg = { other = { 'deerclops', }, gold = 7 },
     deerclops = { other = { 'rabbit', }, gold = 7 },
-    rabbit = { other = { 'tallbirdegg', 'tallbirdegg', 'tallbirdegg', 'orangestaff', 'beemine', 'beemine', 'beemine', 'beemine', 'beemine', 'cane', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', }, gold = 80 },
+    rabbit = { other = { 'tallbirdegg', 'tallbirdegg', 'tallbirdegg', 'orangestaff', 'beemine', 'beemine', 'beemine', 'beemine', 'beemine', 'cane', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'greenamulet', }, gold = 80 },
 
     -- Other Secret Fight (Maze)
-    bat = { other = { 'spider_spitter', }, gold = 1 },
-    spider_spitter = { gold = 2 },
+    bat = { other = { 'spider_spitter', }, gold = 10 },
+    spider_spitter = { other = { 'koalefant_winter', }, gold = 3 }, -- walking cane
+    koalefant_winter = { other = { 'worm', 'worm', 'slurtle', }, gold = 3 }, -- Deconstruction Staff
+    slurtle = { other = { 'spat', }, gold = 5 }, -- The Lazy Forager
+    spat = { other = { 'rook', 'bishop', }, gold = 5 }, -- Houndius Shootius
+    rook = { other = { 'glommer', }, gold = 10 },
+    glommer = { other = { 'bearger', }, gold = 10 }, -- Magiluminescence
+    bearger = { other = { 'antlion', }, gold = 10 }, -- dessert stone 1x
+    antlion = { other = { 'carrat', }, gold = 10 }, -- dessert stone 2x
+    carrat = { gold = 10 }, -- The Lazy Deserter bluprint
 };
 
 LootDropper.DropLoot = function(self, pt)

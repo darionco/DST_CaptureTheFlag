@@ -18,7 +18,7 @@ local LOOT_TABLE = {
     spiderqueen = { gold = 20 },
     tallbird = { gold = 3 },
     wasphive = { gold = 4 },
-    skeleton_player = { gold = 10 },
+    skeleton_player = { gold = 5 },
     molebat = { gold = 2 },
     koalefant_summer = { gold = 40 },
     worm = { gold = 3 },

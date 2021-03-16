@@ -348,6 +348,7 @@ function CTFTeam:registerObject(obj, data)
         self.flag = obj;
         self.flag:AddTag(CTF_TEAM_CONSTANTS.ITEM_LOCKED_TAG);
         self.flag:AddTag(CTF_TEAM_CONSTANTS.TEAM_FLAG_TAG);
+        self.flag:AddTag('irreplaceable');
         self.flag:AddTag(self.noTeamTag);
 
         self:patchFlagEquippable(self.flag);

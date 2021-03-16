@@ -8,7 +8,7 @@ end
 
 description = 'Capture the flag themed mod!'
 author = 'fibonacci618, JayLil & aligura'
-version = '0.10.1'
+version = '0.11.0'
 
 forumthread = ''
 

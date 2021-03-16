@@ -23,6 +23,10 @@ local function ctf()
     createNetVar(inst, 'team_id', net_tinybyte);
     createNetVar(inst, 'spawned', net_event);
     createNetVar(inst, 'ready', net_bool);
+    createNetVar(inst, 'kills', net_ushortint);
+    createNetVar(inst, 'deaths', net_ushortint);
+    createNetVar(inst, 'assists', net_ushortint);
+    createNetVar(inst, 'bounty', net_ushortint);
 
     inst.entity:SetPristine();
     inst.persists = false;

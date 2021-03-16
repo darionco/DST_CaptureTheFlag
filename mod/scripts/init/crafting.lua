@@ -451,6 +451,19 @@ local function buildNewCrafting()
                 },
 			}
 		},
+        {
+            tab = 'Spiders',
+            order = 10,
+            icon = 'tab_fight.tex',
+			owner_tag = 'spiderwhisperer',
+            recipes = {
+                {
+                    prefab = 'spiderhat',
+                    ingredients = { Ingredient('goldnugget', 25) },
+                    count = 1
+                },
+			}
+		},
     }
 
     registerRecipes(content);

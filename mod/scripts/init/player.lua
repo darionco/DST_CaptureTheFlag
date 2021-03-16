@@ -19,6 +19,9 @@ local function handlePlayerSpawn(world, player)
     player:ListenForEvent('setowner', function()
         CTFPlayer(CTFPlayer.createPlayerNet(player));
         player:AddComponent('itemtyperestrictions');
+        if TheWorld.ismastersim then
+            player:AddComponent('ctf_stats');
+        end
     end);
 end
 

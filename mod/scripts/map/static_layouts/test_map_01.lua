@@ -13540,7 +13540,7 @@ return {
           visible = true,
           properties = {
             ["data.ctf_armour_player"] = 0.5,
-            ["data.ctf_attack_damage"] = 135,
+            ["data.ctf_attack_damage"] = 70,
             ["data.ctf_attack_range_max"] = 14,
             ["data.ctf_attack_range_min"] = 8,
             ["data.ctf_attack_speed"] = 1.1,
@@ -14297,7 +14297,7 @@ return {
           visible = true,
           properties = {
             ["data.ctf_armour_player"] = 0.5,
-            ["data.ctf_attack_damage"] = 135,
+            ["data.ctf_attack_damage"] = 70,
             ["data.ctf_attack_range_max"] = 14,
             ["data.ctf_attack_range_min"] = 8,
             ["data.ctf_attack_speed"] = 1.1,
@@ -14319,7 +14319,7 @@ return {
           visible = true,
           properties = {
             ["data.ctf_armour_player"] = 0.5,
-            ["data.ctf_attack_damage"] = 135,
+            ["data.ctf_attack_damage"] = 70,
             ["data.ctf_attack_range_max"] = 14,
             ["data.ctf_attack_range_min"] = 8,
             ["data.ctf_attack_speed"] = 1.1,
@@ -14341,7 +14341,7 @@ return {
           visible = true,
           properties = {
             ["data.ctf_armour_player"] = 0.5,
-            ["data.ctf_attack_damage"] = 135,
+            ["data.ctf_attack_damage"] = 70,
             ["data.ctf_attack_range_max"] = 14,
             ["data.ctf_attack_range_min"] = 8,
             ["data.ctf_attack_speed"] = 1.1,

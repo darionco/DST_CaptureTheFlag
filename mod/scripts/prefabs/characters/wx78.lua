@@ -4,8 +4,6 @@
 --- DateTime: 2021-03-16 9:32 p.m.
 ---
 
-local debug = _G.debug;
-
 local function ctf_ondeath(inst)
     if inst.level > 0 then
         local dropgears = math.ceil(inst.level / 2);

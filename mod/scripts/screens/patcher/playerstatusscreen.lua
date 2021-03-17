@@ -203,7 +203,7 @@ AddClassPostConstruct('widgets/scrollablelist', function(self, items, _, _, _, _
 
         for _, v in ipairs(widgetstoupdate) do
             patchListingLayout(v);
-            if v.userid then
+            if v.userid and v.viewprofile:IsVisible() then
                 v.stats:setUser(v.userid);
             end
         end

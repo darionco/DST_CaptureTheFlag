@@ -192,7 +192,12 @@ AddClassPostConstruct('widgets/scrollablelist', function(self, items, _, _, _, _
         self.updatefn = function(playerListing, client, i)
             updatefn(playerListing, client, i);
             if playerListing.stats then
-                playerListing.stats:setUser(client.userid);
+                local this_user_is_dedicated_server = client.performance ~= nil and not TheNet:GetServerIsClientHosted();
+                if not this_user_is_dedicated_server then
+                    playerListing.stats:setUser(client.userid);
+                else
+                    playerListing.stats:setUser(nil);
+                end
             end
         end
 

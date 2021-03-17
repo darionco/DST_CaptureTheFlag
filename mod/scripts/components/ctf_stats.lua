@@ -40,7 +40,7 @@ function CTFStats:updateTableEntry(t, id)
     table.insert(t, 1,{
         id = id,
         task = self.inst:DoTaskInTime(CTF_TEAM_CONSTANTS.PLAYER_INTERACTION_SPAN, function()
-            local i = self:findInRelationTable(t, userid);
+            local i = self:findInRelationTable(t, id);
             if i ~= nil then
                 table.remove(t, i);
             end

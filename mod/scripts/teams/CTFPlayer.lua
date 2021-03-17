@@ -29,7 +29,8 @@ CTFPlayer = Class(function(self, net)
 end);
 
 function CTFPlayer:kill()
-    print('============================================ CTFPlayer:kill');
+    self:stopBountyTask();
+    self:removeNetEvents();
 end
 
 function CTFPlayer:initCommon()
@@ -67,7 +68,17 @@ function CTFPlayer:initNet()
 end
 
 function CTFPlayer:initNetEvents()
-    self.net:ListenForEvent(self.net.spawned.event, function() self:netHandleSpawnedEvent() end);
+    if not self.net.spawned.handler then
+        self.net.spawned.handler = function() self:netHandleSpawnedEvent() end;
+        self.net:ListenForEvent(self.net.spawned.event, self.net.spawned.handler);
+    end
+end
+
+function CTFPlayer:removeNetEvents()
+    if self.net.spawned.handler then
+        self.net:RemoveEventCallback(self.net.spawned.event, self.net.spawned.handler);
+        self.net.spawned.handler = nil;
+    end
 end
 
 function CTFPlayer:netHandleSpawnedEvent()
@@ -92,9 +103,7 @@ function CTFPlayer:patchPlayerComponents(player)
 end
 
 function CTFPlayer:handleDeath(player)
-    print('=================================== player death', player);
     self:addDeaths(1);
-    print('deaths:', self:getDeaths());
     if player.components and player.components.ctf_stats then
         local stats = player.components.ctf_stats;
         local attackers = stats:getAttackers();
@@ -124,7 +133,6 @@ function CTFPlayer:handleDeath(player)
 
                 local killerPlayer = killer:getPlayer();
                 if killerPlayer then
-                    print('============================= killed by:', killerPlayer);
                     if killerPlayer.components and killerPlayer.components.ctf_stats then
                         local helpers = killerPlayer.components.ctf_stats:getHelpers();
                         for _, v in pairs(helpers) do
@@ -149,7 +157,6 @@ function CTFPlayer:handleDeath(player)
                     v:setBounty(v:getBounty() + CTF_TEAM_CONSTANTS.PLAYER_BOUNTY_ASSIST);
                     local assistPlayer = v:getPlayer();
                     if assistPlayer then
-                        print('=========================== assisted by:', assistPlayer);
                         inventory.putInInventory(assistPlayer, 'goldnugget', perAssistBounty);
                     end
                 end
@@ -235,8 +242,14 @@ function CTFPlayer:startBountyTask()
     if not self.net.bountyTask then
         self.net.bountyTask = self.net:DoPeriodicTask(CTF_TEAM_CONSTANTS.PLAYER_BOUNTY_PERIOD, function()
             self.net.bounty.var:set(self.net.bounty.var:value() + CTF_TEAM_CONSTANTS.PLAYER_BOUNTY_INCREASE);
-            print('======================================== bounty hb', self.net.bounty.var:value());
         end);
+    end
+end
+
+function CTFPlayer:stopBountyTask()
+    if self.net.bountyTask then
+        self.net.bountyTask:Cancel();
+        self.net.bountyTask = nil;
     end
 end
 
@@ -250,6 +263,16 @@ function CTFPlayer.createPlayerNet(player)
     net.deaths.var:set(0);
     net.assists.var:set(0);
     net.bounty.var:set(CTF_TEAM_CONSTANTS.PLAYER_BOUNTY_INITIAL);
+
+    return net;
+end
+function CTFPlayer.copyPlayerNet(player, oldNet)
+    local net = CTFPlayer.createPlayerNet(player);
+
+    net.kills.var:set(oldNet.kills.var:value());
+    net.deaths.var:set(oldNet.deaths.var:value());
+    net.assists.var:set(oldNet.assists.var:value());
+    net.bounty.var:set(oldNet.bounty.vat:value());
 
     return net;
 end

@@ -24,6 +24,9 @@ AddPrefabPostInit('skeleton_player', function(inst)
                 f_inst:AddComponent('combat');
             end
             f_inst.components.combat.onkilledbyother = function (ff_inst, attacker)
+                if not attacker or not attacker:HasTag('player') then
+                    f_inst.components.lootdropper.DropLoot = function() end;
+                end
                 f_inst.components.workable.onfinish(ff_inst);
                 if f_inst.data and f_inst.data.ctf_despawnTimer then
                     f_inst.data.ctf_despawnTimer:Cancel();
@@ -34,7 +37,7 @@ AddPrefabPostInit('skeleton_player', function(inst)
             if not f_inst.components.lootdropper then
                 f_inst:AddComponent('lootdropper');
             end
-            f_inst.components.lootdropper:SetLoot({ 'goldnugget' })
+            f_inst.components.lootdropper:SetLoot({ 'goldnugget' });
             f_inst.components.lootdropper.numrandomloot = 0
 
             -- schedule auto death

@@ -17,7 +17,13 @@ end
 
 local function handlePlayerSpawn(world, player)
     player:ListenForEvent('setowner', function()
-        CTFPlayer(CTFPlayer.createPlayerNet(player));
+        local existing = CTFTeamManager:getDisconnectedCTFPlayer(player.userid);
+        if existing then
+            CTFTeamManager:removeDisconnectedCTFPlayer(player.userid);
+            CTFPlayer(CTFPlayer.copyPlayerNet(player, existing.net));
+        else
+            CTFPlayer(CTFPlayer.createPlayerNet(player));
+        end
         player:AddComponent('itemtyperestrictions');
         if TheWorld.ismastersim then
             player:AddComponent('ctf_stats');

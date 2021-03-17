@@ -14,6 +14,7 @@ CTFTeamManager = {
     gameStartCount = 0,
 
     players = {},
+    disconnected = {},
 };
 
 function CTFTeamManager:initNet(net)
@@ -78,8 +79,11 @@ function CTFTeamManager:handleNetPlayerTable()
     end
 
     -- run through the local list and remove any players that have left
-    for k, _ in pairs(self.players) do
+    for k, v in pairs(self.players) do
         if not newList[k] then
+            if v then
+                v:kill();
+            end
             self.players[k] = nil;
         end
     end
@@ -91,6 +95,18 @@ function CTFTeamManager:getCTFPlayer(userid)
         return player;
     end
     return nil;
+end
+
+function CTFTeamManager:getDisconnectedCTFPlayer(userid)
+    local player = self.disconnected[userid];
+    if player then
+        return player;
+    end
+    return nil;
+end
+
+function CTFTeamManager:removeDisconnectedCTFPlayer(userid)
+    self.disconnected[userid] = nil;
 end
 
 function CTFTeamManager:registerTeamObject(obj, data)
@@ -216,7 +232,10 @@ function CTFTeamManager:removePlayer(player)
             team:removePlayer(player);
             TheWorld:PushEvent(CTF_TEAM_CONSTANTS.PLAYER_LEFT_TEAM_EVENT, player, team);
         end
+
         ctfPlayer:kill();
+        self.disconnected[player.userid] = ctfPlayer();
+        self.players[player.userid] = nil;
 
         -- if all the players left, regenerate the world
         local count = 0

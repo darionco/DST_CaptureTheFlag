@@ -213,6 +213,13 @@ function CTFPlayer:setReady(ready)
     self.net.ready.var:set(ready);
     if TheWorld.ismastersim then
         CTFTeamManager:playerReadyUpdated(self);
+        if ready then
+            if CTFTeamManager.gameStarted then
+                self:startBountyTask();
+            else
+                TheWorld:ListenForEvent(CTF_TEAM_CONSTANTS.GAME_STARTED, function() self:startBountyTask() end);
+            end
+        end
     end
 end
 
@@ -222,6 +229,15 @@ end
 
 function CTFPlayer:setBounty(v)
     self.net.bounty.var:set(v);
+end
+
+function CTFPlayer:startBountyTask()
+    if not self.net.bountyTask then
+        self.net.bountyTask = self.net:DoPeriodicTask(CTF_TEAM_CONSTANTS.PLAYER_BOUNTY_PERIOD, function()
+            self.net.bounty.var:set(self.net.bounty.var:value() + CTF_TEAM_CONSTANTS.PLAYER_BOUNTY_INCREASE);
+            print('======================================== bounty hb', self.net.bounty.var:value());
+        end);
+    end
 end
 
 function CTFPlayer.createPlayerNet(player)
@@ -234,11 +250,6 @@ function CTFPlayer.createPlayerNet(player)
     net.deaths.var:set(0);
     net.assists.var:set(0);
     net.bounty.var:set(CTF_TEAM_CONSTANTS.PLAYER_BOUNTY_INITIAL);
-
-    net.bountyTask = net:DoPeriodicTask(CTF_TEAM_CONSTANTS.PLAYER_BOUNTY_PERIOD, function()
-        net.bounty.var:set(net.bounty.var:value() + CTF_TEAM_CONSTANTS.PLAYER_BOUNTY_INCREASE);
-        print('======================================== bounty hb', net.bounty.var:value());
-    end);
 
     return net;
 end

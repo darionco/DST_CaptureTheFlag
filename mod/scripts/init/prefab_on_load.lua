@@ -21,6 +21,8 @@ modimport('scripts/prefabs/patcher/skeleton_player');
 modimport('scripts/prefabs/patcher/tallbirdnest');
 modimport('scripts/prefabs/patcher/wormhole');
 modimport('scripts/prefabs/patcher/abigail');
+modimport('scripts/prefabs/patcher/poop');
+modimport('scripts/prefabs/patcher/armor_skeleton');
 
 --modimport('scripts/teams/CTFTeamManager');
 --

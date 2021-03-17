@@ -217,11 +217,11 @@ function CTFPlayer:setReady(ready)
 end
 
 function CTFPlayer:getBounty()
-    return net.bounty.var:value();
+    return self.net.bounty.var:value();
 end
 
 function CTFPlayer:setBounty(v)
-    net.bounty.var:set(v);
+    self.net.bounty.var:set(v);
 end
 
 function CTFPlayer.createPlayerNet(player)

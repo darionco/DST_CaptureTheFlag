@@ -58,7 +58,7 @@ end
 
 function CTFStats:clearRelationTable(t)
     for i, v in pairs(t) do
-        v:Cancel();
+        v.task:Cancel();
         t[i] = nil;
     end
 end

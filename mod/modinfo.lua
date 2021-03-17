@@ -35,3 +35,17 @@ configuration_options = {
         hover = 'The game will start when the specified number of players join the game'
     },
 }
+
+game_modes =
+{
+    {
+        name = 'warsak',
+        label = 'Warsak!',
+        description = '',
+        settings =
+        {
+            level_type = 'CUSTOM',
+            ghost_sanity_drain = false,
+        }
+    }
+}

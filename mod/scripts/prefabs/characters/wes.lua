@@ -12,8 +12,8 @@ local WES_MAX_SANITY = 75;
 local WES_UNARMED_DAMAGE = 25;
 local WES_DAMAGE_MULTIPLIER = 1.55;
 local WES_ARMOR_MULTIPLIER = 0.5;
-local WES_MAX_DAMAGE_TAKEN_PERCENT = 0.5;
-local WES_MIN_DAMAGE_TAKEN = 5;
+local WES_MAX_DAMAGE_TAKEN_PERCENT = 0.6;
+local WES_MIN_DAMAGE_TAKEN = 10;
 
 local OldArmorGetAbsorption = Armor.GetAbsorption;
 Armor.GetAbsorption = function(self, attacker, weapon)

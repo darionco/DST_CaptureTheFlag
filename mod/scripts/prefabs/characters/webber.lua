@@ -29,17 +29,31 @@ AddPrefabPostInit('spiderhat', function(inst)
 end);
 
 AddPrefabPostInit('webber', function(inst)
-    if inst.components and inst.components.health then
-        local OldDoDelta = inst.components.health.DoDelta;
-        inst.components.health.DoDelta = function (self, amount, overtime, cause, ignore_invincible, afflicter, ignore_absorb)
-            if afflicter then
-                if afflicter:HasTag('spider') then
-                    amount = amount * (1.0 - WEBBER_SPIDER_ABSORPTION);
-                elseif afflicter:HasTag('player') then
-                    amount = amount + amount * WEBBER_PLAYER_MULTIPLIER;
+    if inst.components then
+        if inst.components.health then
+            local OldDoDelta = inst.components.health.DoDelta;
+            inst.components.health.DoDelta = function (self, amount, overtime, cause, ignore_invincible, afflicter, ignore_absorb)
+                if afflicter then
+                    if afflicter:HasTag('spider') then
+                        amount = amount * (1.0 - WEBBER_SPIDER_ABSORPTION);
+                    elseif afflicter:HasTag('player') then
+                        amount = amount + amount * WEBBER_PLAYER_MULTIPLIER;
+                    end
                 end
+                return OldDoDelta(self, amount, overtime, cause, ignore_invincible, afflicter, ignore_absorb);
             end
-            return OldDoDelta(self, amount, overtime, cause, ignore_invincible, afflicter, ignore_absorb);
+        end
+
+        if inst.components.leader then
+            local OldIsFollower = inst.components.leader.IsFollower;
+            inst.components.leader.IsFollower = function(self, guy)
+                if inst.data and inst.data.ctf_team_tag and guy:HasTag(inst.data.ctf_team_tag) then
+                    return OldIsFollower(self, guy);
+                end
+                -- everything that cannot become a follower should be reported as already a follower to short circuit
+                -- the algos that try to add them
+                return true;
+            end
         end
     end
 end);

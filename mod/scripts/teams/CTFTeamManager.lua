@@ -234,7 +234,7 @@ function CTFTeamManager:removePlayer(player)
         end
 
         ctfPlayer:kill();
-        self.disconnected[player.userid] = ctfPlayer();
+        self.disconnected[player.userid] = ctfPlayer;
         self.players[player.userid] = nil;
 
         -- if all the players left, regenerate the world

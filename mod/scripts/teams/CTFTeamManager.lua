@@ -3,8 +3,8 @@
 --- Created by darionco.
 --- DateTime: 2021-01-16 4:45 p.m.
 ---
-local require = _G.require;
 
+local require = _G.require;
 local CTF_TEAM_CONSTANTS = require('constants/CTFTeamConstants');
 
 CTFTeamManager = {
@@ -221,6 +221,8 @@ function CTFTeamManager:registerCTFPlayer(ctfPlayer)
             end
         end
     end
+
+    TheWorld:PushEvent(CTF_TEAM_CONSTANTS.PLAYER_REGISTERED_EVENT, ctfPlayer);
 end
 
 function CTFTeamManager:removePlayer(player)

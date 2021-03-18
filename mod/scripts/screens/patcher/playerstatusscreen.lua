@@ -99,12 +99,13 @@ function PlayerStats:showStats()
 end
 
 function PlayerStats:setUser(userid)
-    if userid ~= self.userid then
+    local ctfPlayer = userid and CTFTeamManager:getCTFPlayer(userid) or nil;
+    if ctfPlayer ~= self.ctfPlayer then
         if self.ctfPlayer then
             self:unregisterStatsEvents(self.ctfPlayer);
         end
         self.userid = userid;
-        self.ctfPlayer = self.userid and CTFTeamManager:getCTFPlayer(self.userid) or nil;
+        self.ctfPlayer = ctfPlayer;
 
         if self.ctfPlayer then
             self:showStats();

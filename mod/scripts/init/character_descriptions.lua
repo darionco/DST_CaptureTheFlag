@@ -25,19 +25,19 @@ for k, _ in pairs(itemsList) do
 end
 
 
-STRINGS.CHARACTER_DESCRIPTIONS.wilson = 'NEWEST CHARACTER RELEASE (almost)\n*Uses your life force to grow his stubble';
+STRINGS.CHARACTER_DESCRIPTIONS.wilson = 'NEWEST CHARACTER RELEASE\n*Uses your life force to grow his stubble\n*Bounty is tied to his stats\n*Resets after death';
 STRINGS.CHARACTER_DESCRIPTIONS.willow = 'WORK IN PROGRESS'; -- '*Can deploy bernie to battle';
 STRINGS.CHARACTER_DESCRIPTIONS.wendy = '*Can use Abigail for a quick burst of damage\n*Abigails health becomes her damage\n*Resets after each use';
 STRINGS.CHARACTER_DESCRIPTIONS.wolfgang = '*Absorbs damage when full\n*Gets slower on a full stomach\n*Is a literal tank';
 STRINGS.CHARACTER_DESCRIPTIONS.wx78 = '*Can buy gears to upgrade from the store\n*Can get very tanky';
 STRINGS.CHARACTER_DESCRIPTIONS.wickerbottom = '*Can craft Heart Tart Art\n*Can also craft Humpty Dumpty';
-STRINGS.CHARACTER_DESCRIPTIONS.wes = '*Armor effectiveness reduced\n*Does more damage\n*Can\'t be insta-killed\n*Has little health, hunger and sanity';
+STRINGS.CHARACTER_DESCRIPTIONS.wes = '*Armor effectiveness reduced\n*Does more damage\n*Can\'t be insta-killed\n*Has less health, hunger and sanity';
 STRINGS.CHARACTER_DESCRIPTIONS.waxwell = '*Can spawn up to 5 shadow duelists';
 STRINGS.CHARACTER_DESCRIPTIONS.woodie = '*Can transform into the weremoose';
 STRINGS.CHARACTER_DESCRIPTIONS.woodie_us = '*Can transform into the weremoose\n*Will beat thisguyizgood at hockey';
 STRINGS.CHARACTER_DESCRIPTIONS.woodie_canada = '*Can transform into the weremoose\n*Comes from the true north\n*Oh Ca.na.daaaa...';
 STRINGS.CHARACTER_DESCRIPTIONS.wathgrithr = '*Same old, same old';
-STRINGS.CHARACTER_DESCRIPTIONS.webber = '*Can be played as a tank\n*Takes less damage from spiders\n*Can craft a spiderhat';
+STRINGS.CHARACTER_DESCRIPTIONS.webber = '*Takes less damage from spiders\n*Can craft a spiderhat';
 STRINGS.CHARACTER_DESCRIPTIONS.winona = '*Can build catapults\n*And generators\n*And craft gems';
 STRINGS.CHARACTER_DESCRIPTIONS.wortox = '*Souls drop by last hitting enemy players\n*Also beehives and pigs\n*Cannot soulhop when wearing the piggyback\n*Gets less hunger and health from food';
 STRINGS.CHARACTER_DESCRIPTIONS.wormwood = '*Can craft bramble items\n*And compost wrap\n*Cannot heal from food\n*With the exception of jellybeans';

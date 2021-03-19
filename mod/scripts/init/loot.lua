@@ -24,6 +24,7 @@ local LOOT_TABLE = {
     worm = { gold = 3 },
     bishop = { gold = 5 },
     krampus = { gold = 3 },
+    knight_nightmare = { gold = 5 },
     
 
     -- Secret Fight
@@ -34,19 +35,19 @@ local LOOT_TABLE = {
     leif = { other = { 'warg', }, gold = 6 },
     warg = { other = { 'deerclops', }, gold = 7 },
     deerclops = { other = { 'rabbit', }, gold = 7 },
-    rabbit = { other = { 'tallbirdegg', 'tallbirdegg', 'tallbirdegg', 'orangestaff', 'beemine', 'beemine', 'beemine', 'beemine', 'beemine', 'cane', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'greenamulet', }, gold = 80 },
+    rabbit = { other = { 'tallbirdegg', 'tallbirdegg', 'tallbirdegg', 'beemine', 'beemine', 'beemine', 'beemine', 'beemine', 'cane', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'greenamulet', }, gold = 80 },
 
     -- Other Secret Fight (Maze)
     bat = { other = { 'spider_spitter', }, gold = 10 },
-    spider_spitter = { other = { 'koalefant_winter', }, gold = 3 }, -- walking cane
-    koalefant_winter = { other = { 'worm', 'worm', 'slurtle', }, gold = 3 }, -- Deconstruction Staff
-    slurtle = { other = { 'spat', }, gold = 5 }, -- The Lazy Forager
-    spat = { other = { 'rook', 'bishop', }, gold = 5 }, -- Houndius Shootius
-    rook = { other = { 'glommer', }, gold = 10 },
-    glommer = { other = { 'bearger', }, gold = 10 }, -- Magiluminescence
-    bearger = { other = { 'antlion', }, gold = 10 }, -- dessert stone 1x
-    antlion = { other = { 'carrat', }, gold = 10 }, -- dessert stone 2x
-    carrat = { gold = 10 }, -- The Lazy Deserter bluprint
+    spider_spitter = { other = { 'koalefant_winter', 'cane', }, gold = 3 },
+    koalefant_winter = { other = { 'worm', 'worm', 'slurtle', 'greenstaff', }, gold = 3 },
+    slurtle = { other = { 'spat', 'orangeamulet', }, gold = 5 },
+    spat = { other = { 'rook', 'bishop', 'eyeturret_item', }, gold = 5 },
+    rook = { other = { 'glommer', 'yellowamulet', }, gold = 10 },
+    glommer = { other = { 'knight_nightmare', 'knight_nightmare', 'knight_nightmare', 'rook_nightmare', }, gold = 10 },
+    rook_nightmare = { other = { 'bearger', 'townportaltalisman', }, gold = 10 },
+    bearger = { other = { 'carrat', 'townportaltalisman', 'townportaltalisman', }, gold = 10 },
+    carrat = { other = { 'tallbirdegg', 'tallbirdegg', 'tallbirdegg', 'beemine', 'beemine', 'beemine', 'beemine', 'beemine', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'greenamulet', 'townportal_blueprint', 'townportaltalisman_blueprint', }, gold = 50 },
 };
 
 LootDropper.DropLoot = function(self, pt)

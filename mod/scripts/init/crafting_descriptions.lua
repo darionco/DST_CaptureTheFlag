@@ -31,10 +31,10 @@ STRINGS.RECIPE_DESC.GLASSCUTTER = 'Damage: 68\n Durability: 75';
 STRINGS.RECIPE_DESC.ICESTAFF = 'Damage: 0\n Durability: 20';
 STRINGS.RECIPE_DESC.NIGHTSWORD = 'Damage: 68\n Durability: 100';
 STRINGS.RECIPE_DESC.RUINS_BAT = 'Damage: 59.5\n Durability: 200';
+STRINGS.RECIPE_DESC.TOWNPORTAL = 'Teleport using a desert stone!'
 
 
 --ARMOR
-STRINGS.RECIPE_DESC.ARMORGRASS = 'Absorbtion: 60%\n Durability: 158';
 STRINGS.RECIPE_DESC.ARMORWOOD = 'Absorbtion: 80%\n Durability: 315';
 STRINGS.RECIPE_DESC.ARMORMARBLE = 'Absorbtion: 95%\n Durability: 735';
 STRINGS.RECIPE_DESC.ARMOR_SANITY = 'Absorbtion: 95%\n Durability: 525';
@@ -44,9 +44,7 @@ STRINGS.RECIPE_DESC.ARMORSKELETON = 'Blocks all damage every 5 seconds';
 
 
 --HATS
-STRINGS.RECIPE_DESC.BEEHAT = 'Bee Absorbtion: 80%\n Durability: 1050';
 STRINGS.RECIPE_DESC.COOKIECUTTERHAT = 'Absorbtion: 70%\n Durability: 525';
-STRINGS.RECIPE_DESC.FOOTBALLHAT = 'Absorbtion: 80%\n Durability: 315';
 STRINGS.RECIPE_DESC.WATHGRITHRHAT = 'Absorbtion: 80%\n Durability: 525';
 STRINGS.RECIPE_DESC.SLURTLEHAT = 'Absorbtion: 90%\n Durability: 525';
 STRINGS.RECIPE_DESC.RUINSHAT = 'Absorbtion: 90-100%\n Durability: 840';
@@ -64,7 +62,7 @@ STRINGS.RECIPE_DESC.SLINGSHOTAMMO_SLOW = 'Amount: 5\n Slow your enemies!';
 --WORMWOOD
 STRINGS.RECIPE_DESC.ARMOR_BRAMBLE = 'Damage nearby enemies when hit!';
 STRINGS.RECIPE_DESC.TRAP_BRAMBLE = 'Damage: 40\n Durability: 10';
-STRINGS.RECIPE_DESC.COMPOSTWRAP = '+40 health over 32 seconds';
+STRINGS.RECIPE_DESC.COMPOSTWRAP = '+40 health, speeds up blooming';
 
 
 --WOODIE
@@ -82,7 +80,7 @@ STRINGS.RECIPE_DESC.PORTABLECOOKPOT_ITEM = 'Cook on the go!';
 STRINGS.RECIPE_DESC.PORTABLESPICER_ITEM = 'Gain unique abilities!';
 STRINGS.RECIPE_DESC.SPICE_GARLIC = '33% absorbtion\n Duration: 4 minutes';
 STRINGS.RECIPE_DESC.SPICE_CHILI = '20% more damage\n Duration: 4 minutes';
-STRINGS.RECIPE_DESC.SPICE_SALT = '25% more healing\n Duration: 4 minutes';
+STRINGS.RECIPE_DESC.SPICE_SALT = '25% more healing to any food';
 
 --WICKERBOTTOM
 STRINGS.RECIPE_DESC.BOOK_SILVICULTURE = 'Heal the heart, tart, art.';
@@ -95,3 +93,6 @@ STRINGS.RECIPE_DESC.SHADOWDUELIST_BUILDER = 'Build up to 5 minions!';
 
 --WX-78
 STRINGS.RECIPE_DESC.GEARS = 'Eat up to 15 and gain up to 400 health!';
+
+--WEBBER
+STRINGS.RECIPE_DESC.SPIDERHAT = 'Have up to 10 spider followers!';

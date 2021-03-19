@@ -111,7 +111,7 @@ local function buildNewCrafting()
                 },
                 {
                     prefab = 'townportal',
-                    ingredients = { Ingredient('goldnugget', 40) },
+                    ingredients = { Ingredient('goldnugget', 40), Ingredient('log', 5) },
                     level = TECH.SCIENCE_THREE,
                     count = 1,
                     placer = 'townportal_placer',
@@ -124,15 +124,9 @@ local function buildNewCrafting()
             icon = 'ctf_tab_armour.tex',
             icon_atlas = 'images/ctf_crafting_tabs.xml',
             recipes = {
-                {
-                    prefab = 'armorgrass',
-                    ingredients = { Ingredient('goldnugget', 20) },
-                    level = TECH.SCIENCE_ONE,
-                    count = 1
-                },
 				{
                     prefab = 'armorwood',
-                    ingredients = { Ingredient('goldnugget', 20), Ingredient('armorgrass', 1) },
+                    ingredients = { Ingredient('goldnugget', 20), },
                     level = TECH.SCIENCE_ONE,
                     count = 1
                 },
@@ -181,14 +175,8 @@ local function buildNewCrafting()
                     count = 1
                 },
 				{
-                    prefab = 'footballhat',
-                    ingredients = { Ingredient('goldnugget', 20), Ingredient('cookiecutterhat', 1) },
-                    level = TECH.SCIENCE_ONE,
-                    count = 1
-                },
-				{
                     prefab = 'wathgrithrhat',
-                    ingredients = { Ingredient('goldnugget', 20), Ingredient('footballhat', 1) },
+                    ingredients = { Ingredient('goldnugget', 20), Ingredient('cookiecutterhat', 1) },
                     level = TECH.SCIENCE_ONE,
                     count = 1
                 },

@@ -15,7 +15,7 @@ local CTFStats = Class(function(self, inst)
 
     self.inst:ListenForEvent('attacked', function(_, data) self:handleAttacked(data) end);
     self.inst:ListenForEvent('healthdelta', function(_, data) self:handleHealthDelta(data) end);
-    self.inst:ListenForEvent('death', function() self:handleDeath() end);
+    --self.inst:ListenForEvent('death', function() self:handleDeath() end);
 end);
 
 function CTFStats:handleAttacked(data)

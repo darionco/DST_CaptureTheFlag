@@ -104,65 +104,70 @@ end
 
 function CTFPlayer:handleDeath(player)
     self:addDeaths(1);
-    if player.components and player.components.ctf_stats then
-        local stats = player.components.ctf_stats;
-        local attackers = stats:getAttackers();
-        if #attackers > 0 then
-            local bounty = self:getBounty();
-            self:setBounty(CTF_TEAM_CONSTANTS.PLAYER_BOUNTY_INITIAL);
+    -- wait until the next loop so the attacker gets registered
+    player:DoTaskInTime(0, function()
+        if player.components and player.components.ctf_stats then
+            local stats = player.components.ctf_stats;
+            local attackers = stats:getAttackers();
+            if #attackers > 0 then
+                local bounty = self:getBounty();
+                self:setBounty(CTF_TEAM_CONSTANTS.PLAYER_BOUNTY_INITIAL);
 
-            local killer;
-            local assistants = {};
-            local assistantCount = 0;
+                local killer;
+                local assistants = {};
+                local assistantCount = 0;
 
-            for i, v in pairs(attackers) do
-                if i == 1 then
-                    killer = CTFTeamManager:getCTFPlayer(v);
-                else
-                    local p = CTFTeamManager:getCTFPlayer(v);
-                    if p and not assistants[v] then
-                        assistants[v] = p;
-                        assistantCount = assistantCount + 1;
-                    end
-                end
-            end
-
-            if killer then
-                killer:addKills(1);
-                killer:setBounty(killer:getBounty() + CTF_TEAM_CONSTANTS.PLAYER_BOUNTY_KILL);
-
-                local killerPlayer = killer:getPlayer();
-                if killerPlayer then
-                    if killerPlayer.components and killerPlayer.components.ctf_stats then
-                        local helpers = killerPlayer.components.ctf_stats:getHelpers();
-                        for _, v in pairs(helpers) do
-                            local p = CTFTeamManager:getCTFPlayer(v);
-                            if p and not assistants[v] then
-                                assistants[v] = p;
-                                assistantCount = assistantCount + 1;
-                            end
+                for i, v in pairs(attackers) do
+                    if i == 1 then
+                        killer = CTFTeamManager:getCTFPlayer(v);
+                    else
+                        local p = CTFTeamManager:getCTFPlayer(v);
+                        if p and not assistants[v] then
+                            assistants[v] = p;
+                            assistantCount = assistantCount + 1;
                         end
                     end
-
-                    local killerBounty = assistantCount == 0 and bounty or math.ceil(bounty * 0.5);
-                    inventory.putInInventory(killerPlayer, 'goldnugget', killerBounty);
-                    bounty = bounty - killerBounty;
                 end
-            end
 
-            if assistantCount > 0 then
-                local perAssistBounty = math.max(1, math.floor(bounty / assistantCount));
-                for _, v in ipairs(assistants) do
-                    v:addAssists(1);
-                    v:setBounty(v:getBounty() + CTF_TEAM_CONSTANTS.PLAYER_BOUNTY_ASSIST);
-                    local assistPlayer = v:getPlayer();
-                    if assistPlayer then
-                        inventory.putInInventory(assistPlayer, 'goldnugget', perAssistBounty);
+                if killer then
+                    killer:addKills(1);
+                    killer:setBounty(killer:getBounty() + CTF_TEAM_CONSTANTS.PLAYER_BOUNTY_KILL);
+
+                    local killerPlayer = killer:getPlayer();
+                    if killerPlayer then
+                        if killerPlayer.components and killerPlayer.components.ctf_stats then
+                            local helpers = killerPlayer.components.ctf_stats:getHelpers();
+                            for _, v in pairs(helpers) do
+                                local p = CTFTeamManager:getCTFPlayer(v);
+                                if p and not assistants[v] then
+                                    assistants[v] = p;
+                                    assistantCount = assistantCount + 1;
+                                end
+                            end
+                        end
+
+                        local killerBounty = assistantCount == 0 and bounty or math.ceil(bounty * 0.5);
+                        inventory.putInInventory(killerPlayer, 'goldnugget', killerBounty);
+                        bounty = bounty - killerBounty;
+                    end
+                end
+
+                if assistantCount > 0 then
+                    local perAssistBounty = math.max(1, math.floor(bounty / assistantCount));
+                    for _, v in ipairs(assistants) do
+                        v:addAssists(1);
+                        v:setBounty(v:getBounty() + CTF_TEAM_CONSTANTS.PLAYER_BOUNTY_ASSIST);
+                        local assistPlayer = v:getPlayer();
+                        if assistPlayer then
+                            inventory.putInInventory(assistPlayer, 'goldnugget', perAssistBounty);
+                        end
                     end
                 end
             end
+            -- tell the ctf_stats that the player has died
+            player.components.ctf_stats:handleDeath();
         end
-    end
+    end);
 end
 
 function CTFPlayer:getPlayer()

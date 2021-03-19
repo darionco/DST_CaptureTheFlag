@@ -9,7 +9,7 @@ return {
   tilewidth = 64,
   tileheight = 64,
   nextlayerid = 3,
-  nextobjectid = 2276,
+  nextobjectid = 2298,
   properties = {},
   tilesets = {
     {
@@ -13540,11 +13540,11 @@ return {
           visible = true,
           properties = {
             ["data.ctf_armour_player"] = 0.5,
-            ["data.ctf_attack_damage"] = 70,
+            ["data.ctf_attack_damage"] = 100,
             ["data.ctf_attack_range_max"] = 14,
             ["data.ctf_attack_range_min"] = 8,
             ["data.ctf_attack_speed"] = 1.1,
-            ["data.ctf_health"] = 1800,
+            ["data.ctf_health"] = 900,
             ["data.ctf_movement_speed"] = 5,
             ["data.ctf_team"] = 2
           }
@@ -14297,11 +14297,11 @@ return {
           visible = true,
           properties = {
             ["data.ctf_armour_player"] = 0.5,
-            ["data.ctf_attack_damage"] = 70,
+            ["data.ctf_attack_damage"] = 100,
             ["data.ctf_attack_range_max"] = 14,
             ["data.ctf_attack_range_min"] = 8,
             ["data.ctf_attack_speed"] = 1.1,
-            ["data.ctf_health"] = 1800,
+            ["data.ctf_health"] = 900,
             ["data.ctf_movement_speed"] = 5,
             ["data.ctf_team"] = 1
           }
@@ -14319,11 +14319,11 @@ return {
           visible = true,
           properties = {
             ["data.ctf_armour_player"] = 0.5,
-            ["data.ctf_attack_damage"] = 70,
+            ["data.ctf_attack_damage"] = 100,
             ["data.ctf_attack_range_max"] = 14,
             ["data.ctf_attack_range_min"] = 8,
             ["data.ctf_attack_speed"] = 1.1,
-            ["data.ctf_health"] = 1800,
+            ["data.ctf_health"] = 900,
             ["data.ctf_movement_speed"] = 5,
             ["data.ctf_team"] = 1
           }
@@ -14341,11 +14341,11 @@ return {
           visible = true,
           properties = {
             ["data.ctf_armour_player"] = 0.5,
-            ["data.ctf_attack_damage"] = 70,
+            ["data.ctf_attack_damage"] = 100,
             ["data.ctf_attack_range_max"] = 14,
             ["data.ctf_attack_range_min"] = 8,
             ["data.ctf_attack_speed"] = 1.1,
-            ["data.ctf_health"] = 1800,
+            ["data.ctf_health"] = 900,
             ["data.ctf_movement_speed"] = 5,
             ["data.ctf_team"] = 2
           }
@@ -15663,8 +15663,8 @@ return {
           name = "Batilisk",
           type = "bat",
           shape = "point",
-          x = 3616.99,
-          y = 4394.76,
+          x = 3614.49,
+          y = 4381.76,
           width = 0,
           height = 0,
           rotation = 0,
@@ -15702,6 +15702,103 @@ return {
             ["data.ctf_wormhole"] = "ToBoss01",
             ["data.ctf_wormhole_target"] = "FromBoss01"
           }
+        },
+        {
+          id = 2276,
+          name = "Wormhole",
+          type = "wormhole",
+          shape = "point",
+          x = 3808,
+          y = 2976,
+          width = 0,
+          height = 0,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["data.ctf_wormhole"] = "ToBoss02",
+            ["data.ctf_wormhole_target"] = "FromBoss02"
+          }
+        },
+        {
+          id = 2277,
+          name = "Wormhole",
+          type = "wormhole",
+          shape = "point",
+          x = 3616,
+          y = 4191.33,
+          width = 0,
+          height = 0,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["data.ctf_wormhole"] = "FromBoss02",
+            ["data.ctf_wormhole_target"] = "ToBoss02"
+          }
+        },
+        {
+          id = 2279,
+          name = "TreeTall",
+          type = "evergreen_tall",
+          shape = "point",
+          x = 3702,
+          y = 4494,
+          width = 0,
+          height = 0,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 2281,
+          name = "TreeTall",
+          type = "evergreen_tall",
+          shape = "point",
+          x = 3639.25,
+          y = 4485.25,
+          width = 0,
+          height = 0,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 2282,
+          name = "TreeTall",
+          type = "evergreen_tall",
+          shape = "point",
+          x = 3645.75,
+          y = 4426,
+          width = 0,
+          height = 0,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 2283,
+          name = "TreeTall",
+          type = "evergreen_tall",
+          shape = "point",
+          x = 3717.25,
+          y = 4434,
+          width = 0,
+          height = 0,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 2284,
+          name = "TreeTall",
+          type = "evergreen_tall",
+          shape = "point",
+          x = 3676.5,
+          y = 4456.25,
+          width = 0,
+          height = 0,
+          rotation = 0,
+          visible = true,
+          properties = {}
         }
       }
     }

@@ -111,7 +111,7 @@ local function buildNewCrafting()
                 },
                 {
                     prefab = 'townportal',
-                    ingredients = { Ingredient('goldnugget', 40), Ingredient('log', 5) },
+                    ingredients = { Ingredient('goldnugget', 40) },
                     level = TECH.SCIENCE_THREE,
                     count = 1,
                     placer = 'townportal_placer',

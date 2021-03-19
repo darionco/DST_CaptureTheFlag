@@ -25,16 +25,18 @@ local LOOT_TABLE = {
     bishop = { gold = 5 },
     krampus = { gold = 3 },
     knight_nightmare = { gold = 5 },
+    mutated_penguin = { gold = 3 },
     
 
     -- Secret Fight
     frog = { other = { 'spider_dropper', }, gold = 1 },
-    spider_dropper = { other = { 'walrus', }, gold = 3 },
-    walrus = { other = { 'knight', }, gold = 4 },
-    knight = { other = { 'leif', }, gold = 5 },
+    spider_dropper = { other = { 'walrus', }, gold = 2 },
+    walrus = { other = { 'knight', }, gold = 3 },
+    knight = { other = { 'mutated_penguin', 'mutated_penguin', 'penguin', 'mutated_penguin', 'mutated_penguin', }, gold = 4 },
+    penguin = { other = { 'leif', }, gold = 5 },
     leif = { other = { 'warg', }, gold = 6 },
     warg = { other = { 'deerclops', }, gold = 7 },
-    deerclops = { other = { 'rabbit', }, gold = 7 },
+    deerclops = { other = { 'rabbit', }, gold = 8 },
     rabbit = { other = { 'tallbirdegg', 'tallbirdegg', 'tallbirdegg', 'beemine', 'beemine', 'beemine', 'beemine', 'beemine', 'cane', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'greenamulet', }, gold = 80 },
 
     -- Other Secret Fight (Maze)

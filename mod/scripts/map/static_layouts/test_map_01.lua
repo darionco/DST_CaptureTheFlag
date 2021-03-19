@@ -9,7 +9,7 @@ return {
   tilewidth = 64,
   tileheight = 64,
   nextlayerid = 3,
-  nextobjectid = 2298,
+  nextobjectid = 2299,
   properties = {},
   tilesets = {
     {
@@ -15650,8 +15650,8 @@ return {
           name = "Frog",
           type = "frog",
           shape = "point",
-          x = 3807,
-          y = 411,
+          x = 3811,
+          y = 417,
           width = 0,
           height = 0,
           rotation = 0,
@@ -15736,69 +15736,19 @@ return {
           }
         },
         {
-          id = 2279,
-          name = "TreeTall",
-          type = "evergreen_tall",
+          id = 2298,
+          name = "Spawner1",
+          type = "gdjgkx",
           shape = "point",
-          x = 3702,
-          y = 4494,
+          x = 3810,
+          y = 417,
           width = 0,
           height = 0,
           rotation = 0,
           visible = true,
-          properties = {}
-        },
-        {
-          id = 2281,
-          name = "TreeTall",
-          type = "evergreen_tall",
-          shape = "point",
-          x = 3639.25,
-          y = 4485.25,
-          width = 0,
-          height = 0,
-          rotation = 0,
-          visible = true,
-          properties = {}
-        },
-        {
-          id = 2282,
-          name = "TreeTall",
-          type = "evergreen_tall",
-          shape = "point",
-          x = 3645.75,
-          y = 4426,
-          width = 0,
-          height = 0,
-          rotation = 0,
-          visible = true,
-          properties = {}
-        },
-        {
-          id = 2283,
-          name = "TreeTall",
-          type = "evergreen_tall",
-          shape = "point",
-          x = 3717.25,
-          y = 4434,
-          width = 0,
-          height = 0,
-          rotation = 0,
-          visible = true,
-          properties = {}
-        },
-        {
-          id = 2284,
-          name = "TreeTall",
-          type = "evergreen_tall",
-          shape = "point",
-          x = 3676.5,
-          y = 4456.25,
-          width = 0,
-          height = 0,
-          rotation = 0,
-          visible = true,
-          properties = {}
+          properties = {
+            ["ctf_boss_spawner"] = "middle01"
+          }
         }
       }
     }

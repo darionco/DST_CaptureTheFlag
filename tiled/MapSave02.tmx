@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="121" height="121" tilewidth="64" tileheight="64" infinite="0" nextlayerid="3" nextobjectid="2278">
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="121" height="121" tilewidth="64" tileheight="64" infinite="0" nextlayerid="3" nextobjectid="2299">
  <editorsettings>
   <export target="../mod/scripts/map/static_layouts/test_map_01.lua" format="lua"/>
  </editorsettings>
@@ -3226,11 +3226,11 @@
   <object id="1955" name="Bishop" type="bishop_nightmare" x="5474.3" y="2016.97">
    <properties>
     <property name="data.ctf_armour_player" type="float" value="0.5"/>
-    <property name="data.ctf_attack_damage" type="int" value="70"/>
+    <property name="data.ctf_attack_damage" type="int" value="100"/>
     <property name="data.ctf_attack_range_max" type="int" value="14"/>
     <property name="data.ctf_attack_range_min" type="int" value="8"/>
     <property name="data.ctf_attack_speed" type="float" value="1.1"/>
-    <property name="data.ctf_health" type="int" value="1800"/>
+    <property name="data.ctf_health" type="int" value="900"/>
     <property name="data.ctf_movement_speed" type="int" value="5"/>
     <property name="data.ctf_team" type="int" value="2"/>
    </properties>
@@ -3520,11 +3520,11 @@
   <object id="2067" name="Bishop" type="bishop_nightmare" x="2142.67" y="2000">
    <properties>
     <property name="data.ctf_armour_player" type="float" value="0.5"/>
-    <property name="data.ctf_attack_damage" type="int" value="70"/>
+    <property name="data.ctf_attack_damage" type="int" value="100"/>
     <property name="data.ctf_attack_range_max" type="int" value="14"/>
     <property name="data.ctf_attack_range_min" type="int" value="8"/>
     <property name="data.ctf_attack_speed" type="float" value="1.1"/>
-    <property name="data.ctf_health" type="int" value="1800"/>
+    <property name="data.ctf_health" type="int" value="900"/>
     <property name="data.ctf_movement_speed" type="int" value="5"/>
     <property name="data.ctf_team" type="int" value="1"/>
    </properties>
@@ -3533,11 +3533,11 @@
   <object id="2068" name="Bishop" type="bishop_nightmare" x="2140" y="2270.67">
    <properties>
     <property name="data.ctf_armour_player" type="float" value="0.5"/>
-    <property name="data.ctf_attack_damage" type="int" value="70"/>
+    <property name="data.ctf_attack_damage" type="int" value="100"/>
     <property name="data.ctf_attack_range_max" type="int" value="14"/>
     <property name="data.ctf_attack_range_min" type="int" value="8"/>
     <property name="data.ctf_attack_speed" type="float" value="1.1"/>
-    <property name="data.ctf_health" type="int" value="1800"/>
+    <property name="data.ctf_health" type="int" value="900"/>
     <property name="data.ctf_movement_speed" type="int" value="5"/>
     <property name="data.ctf_team" type="int" value="1"/>
    </properties>
@@ -3546,11 +3546,11 @@
   <object id="2069" name="Bishop" type="bishop_nightmare" x="5469.33" y="2276">
    <properties>
     <property name="data.ctf_armour_player" type="float" value="0.5"/>
-    <property name="data.ctf_attack_damage" type="int" value="70"/>
+    <property name="data.ctf_attack_damage" type="int" value="100"/>
     <property name="data.ctf_attack_range_max" type="int" value="14"/>
     <property name="data.ctf_attack_range_min" type="int" value="8"/>
     <property name="data.ctf_attack_speed" type="float" value="1.1"/>
-    <property name="data.ctf_health" type="int" value="1800"/>
+    <property name="data.ctf_health" type="int" value="900"/>
     <property name="data.ctf_movement_speed" type="int" value="5"/>
     <property name="data.ctf_team" type="int" value="2"/>
    </properties>
@@ -3865,10 +3865,10 @@
   <object id="2263" name="EvilLamp" type="cavelightmoon" x="3553" y="163.5">
    <point/>
   </object>
-  <object id="2266" name="Frog" type="frog" x="3807" y="411">
+  <object id="2266" name="Frog" type="frog" x="3811" y="417">
    <point/>
   </object>
-  <object id="2267" name="Batilisk" type="bat" x="3613.96" y="4388.7">
+  <object id="2267" name="Batilisk" type="bat" x="3614.49" y="4381.76">
    <point/>
   </object>
   <object id="2274" name="Wormhole" type="wormhole" x="3804" y="670">
@@ -3885,17 +3885,23 @@
    </properties>
    <point/>
   </object>
-  <object id="2276" name="Wormhole" type="wormhole" x="3807.33" y="2977.33">
+  <object id="2276" name="Wormhole" type="wormhole" x="3808" y="2976">
    <properties>
     <property name="data.ctf_wormhole" value="ToBoss02"/>
     <property name="data.ctf_wormhole_target" value="FromBoss02"/>
    </properties>
    <point/>
   </object>
-  <object id="2277" name="Wormhole" type="wormhole" x="3616.5" y="4196.5">
+  <object id="2277" name="Wormhole" type="wormhole" x="3616" y="4191.33">
    <properties>
     <property name="data.ctf_wormhole" value="FromBoss02"/>
     <property name="data.ctf_wormhole_target" value="ToBoss02"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="2298" name="Spawner1" type="gdjgkx" x="3810" y="417">
+   <properties>
+    <property name="ctf_boss_spawner" value="middle01"/>
    </properties>
    <point/>
   </object>

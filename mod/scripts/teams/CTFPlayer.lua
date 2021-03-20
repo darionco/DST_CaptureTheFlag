@@ -277,7 +277,7 @@ function CTFPlayer.copyPlayerNet(player, oldNet)
     net.kills.var:set(oldNet.kills.var:value());
     net.deaths.var:set(oldNet.deaths.var:value());
     net.assists.var:set(oldNet.assists.var:value());
-    net.bounty.var:set(oldNet.bounty.vat:value());
+    net.bounty.var:set(oldNet.bounty.var:value());
 
     return net;
 end

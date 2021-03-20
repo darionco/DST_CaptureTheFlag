@@ -151,10 +151,10 @@ function CTFPlayer:handleDeath(player)
                         bounty = bounty - killerBounty;
                     end
                 end
-
+                
                 if assistantCount > 0 then
                     local perAssistBounty = math.max(1, math.floor(bounty / assistantCount));
-                    for _, v in ipairs(assistants) do
+                    for _, v in pairs(assistants) do
                         v:addAssists(1);
                         v:setBounty(v:getBounty() + CTF_TEAM_CONSTANTS.PLAYER_BOUNTY_ASSIST);
                         local assistPlayer = v:getPlayer();
@@ -277,7 +277,7 @@ function CTFPlayer.copyPlayerNet(player, oldNet)
     net.kills.var:set(oldNet.kills.var:value());
     net.deaths.var:set(oldNet.deaths.var:value());
     net.assists.var:set(oldNet.assists.var:value());
-    net.bounty.var:set(oldNet.bounty.vat:value());
+    net.bounty.var:set(oldNet.bounty.var:value());
 
     return net;
 end

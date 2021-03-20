@@ -9,7 +9,7 @@ return {
   tilewidth = 64,
   tileheight = 64,
   nextlayerid = 3,
-  nextobjectid = 2299,
+  nextobjectid = 2317,
   properties = {},
   tilesets = {
     {
@@ -15647,21 +15647,23 @@ return {
         },
         {
           id = 2266,
-          name = "Frog",
-          type = "frog",
+          name = "SpawnerA01",
+          type = "oasislake",
           shape = "point",
-          x = 3811,
-          y = 417,
+          x = 3808.5,
+          y = 417.25,
           width = 0,
           height = 0,
           rotation = 0,
           visible = true,
-          properties = {}
+          properties = {
+            ["ctf_boss_spawner"] = "middle01"
+          }
         },
         {
           id = 2267,
-          name = "Batilisk",
-          type = "bat",
+          name = "SpawnerA02",
+          type = "oasislake",
           shape = "point",
           x = 3614.49,
           y = 4381.76,
@@ -15669,7 +15671,9 @@ return {
           height = 0,
           rotation = 0,
           visible = true,
-          properties = {}
+          properties = {
+            ["ctf_boss_spawner"] = "middle02"
+          }
         },
         {
           id = 2274,
@@ -15692,8 +15696,8 @@ return {
           name = "Wormhole",
           type = "wormhole",
           shape = "point",
-          x = 3804,
-          y = 1318,
+          x = 2154,
+          y = 2128,
           width = 0,
           height = 0,
           rotation = 0,
@@ -15736,18 +15740,123 @@ return {
           }
         },
         {
-          id = 2298,
-          name = "Spawner1",
-          type = "gdjgkx",
+          id = 2299,
+          name = "SpawnerB02",
+          type = "telebase",
           shape = "point",
-          x = 3810,
-          y = 417,
+          x = 3740.99,
+          y = 4250.58,
           width = 0,
           height = 0,
           rotation = 0,
           visible = true,
           properties = {
-            ["ctf_boss_spawner"] = "middle01"
+            ["ctf_boss_spawner"] = "topright02"
+          }
+        },
+        {
+          id = 2300,
+          name = "SpawnerE01",
+          type = "telebase",
+          shape = "point",
+          x = 4000.5,
+          y = 610.5,
+          width = 0,
+          height = 0,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["ctf_boss_spawner"] = "bottomright01"
+          }
+        },
+        {
+          id = 2301,
+          name = "SpawnerB01",
+          type = "telebase",
+          shape = "point",
+          x = 3998.5,
+          y = 225,
+          width = 0,
+          height = 0,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["ctf_boss_spawner"] = "topright01"
+          }
+        },
+        {
+          id = 2302,
+          name = "SpawnerC01",
+          type = "telebase",
+          shape = "point",
+          x = 3616,
+          y = 226,
+          width = 0,
+          height = 0,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["ctf_boss_spawner"] = "topleft01"
+          }
+        },
+        {
+          id = 2303,
+          name = "SpawnerD01",
+          type = "telebase",
+          shape = "point",
+          x = 3612.5,
+          y = 609.5,
+          width = 0,
+          height = 0,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["ctf_boss_spawner"] = "bottomleft01"
+          }
+        },
+        {
+          id = 2304,
+          name = "SpawnerC02",
+          type = "telebase",
+          shape = "point",
+          x = 3482.67,
+          y = 4246.67,
+          width = 0,
+          height = 0,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["ctf_boss_spawner"] = "topleft02"
+          }
+        },
+        {
+          id = 2305,
+          name = "SpawnerD02",
+          type = "telebase",
+          shape = "point",
+          x = 3478.67,
+          y = 4526.67,
+          width = 0,
+          height = 0,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["ctf_boss_spawner"] = "bottomleft02"
+          }
+        },
+        {
+          id = 2306,
+          name = "SpawnerE02",
+          type = "telebase",
+          shape = "point",
+          x = 3756,
+          y = 4529.33,
+          width = 0,
+          height = 0,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["ctf_boss_spawner"] = "bottomright02"
           }
         }
       }

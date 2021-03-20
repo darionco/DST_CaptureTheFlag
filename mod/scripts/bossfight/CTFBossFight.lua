@@ -36,7 +36,7 @@ end
 function CTFBossFight:spawnNextWave(data)
     data._currentWave = data._currentWave + 1;
     local wave = data.waves[data._currentWave];
-    for k, v in pairs(wave) do
+    for k, v in pairs(wave.mobs) do
         local spawner = self.spawners[k];
         if spawner then
             local mobs = self:spawnMobs(spawner, v);
@@ -53,42 +53,56 @@ end
 local function NoHoles(pt)
     return not TheWorld.Map:IsPointNearHole(pt);
 end
-function CTFBossFight:spawnMobs(spawner, mobs)
+function CTFBossFight:spawnPrefabs(spawner, prefabs)
     -- do an effect or something here
     local x, y, z = spawner.Transform:GetWorldPosition();
-    local offset = FindWalkableOffset(
-            Vector3(x, 0, z),
-            math.random() * PI * 2,
-            0.5 + spawner:GetPhysicsRadius(0),
-            8,
-            false,
-            true,
-            NoHoles,
-            false,
-            false
-    );
-
     local spawned = {};
-    for _, v in mobs do
-        local mob = SpawnPrefab(v);
-        if mob then
-            mob.Transform:SetPosition(x + offset.x, 0, z + offset.z);
-            table.insert(spawned. child);
+
+    for _, v in ipairs(prefabs) do
+        for _ = 1, v.count do
+            local offset = FindWalkableOffset(
+                    Vector3(x, 0, z),
+                    math.random() * PI * 2,
+                    0.5,
+                    8,
+                    false,
+                    true,
+                    NoHoles,
+                    false,
+                    false
+            );
+
+            local inst = SpawnPrefab(v.prefab);
+            if inst then
+                inst.Transform:SetPosition(x + offset.x, 0, z + offset.z);
+                table.insert(spawned, inst);
+            end
         end
     end
 
     return spawned;
 end
 
+function CTFBossFight:spawnMobs(spawner, mobs)
+    return self:spawnPrefabs(spawner, mobs);
+end
+
+function CTFBossFight:spawnLoot(id, loot)
+    local spawner = self.spawners[id];
+    if spawner then
+        self:spawnPrefabs(spawner, loot);
+    end
+end
+
 function CTFBossFight:handleMobDied(data)
     data._activeMobs = data._activeMobs - 1;
     if data._activeMobs <= 0 then
         if data._currentWave == #data.waves then
-            self:spawnLoot(data.waves[data._currentWave].loot);
+            self:spawnLoot(data.centerSpawner, data.waves[data._currentWave].loot);
             self:resetFight(data, true);
         else
             data._nextLevelTask = self.world:DoTaskInTime(data.nextWaveDelay, function()
-                self:spawnLoot(data.waves[data._currentWave].loot);
+                self:spawnLoot(data.centerSpawner, data.waves[data._currentWave].loot);
                 self:spawnNextWave(data);
             end);
         end
@@ -108,7 +122,8 @@ function CTFBossFight:findNearbyPlayers(data)
             end
         end
 
-        if self._currentWave > 1 and not hasPlayers then
+        if data._currentWave > 1 and not hasPlayers then
+
             self:despawnEverything(data);
             self:resetFight(data, false);
         end
@@ -117,6 +132,7 @@ end
 
 function CTFBossFight:resetFight(data, playerWon)
     data._currentWave = 0;
+    data._activeMobs = 0;
 
     if data._playerDetectionTask then
         data._playerDetectionTask:Cancel();
@@ -136,7 +152,7 @@ function CTFBossFight:despawnEverything(data)
     local center = self.spawners[data.centerSpawner];
     if center then
         local x, y, z = center.Transform:GetWorldPosition();
-        local ents = TheSim:FindEntities(x, y, z, self.islandRadius, {}, { 'player' });
+        local ents = TheSim:FindEntities(x, y, z, data.islandRadius, {}, { 'player' });
         for _, v in ipairs(ents) do
             if v:IsValid() and not v:IsInLimbo() and not v:HasTag('irreplaceable') and
                 v.components and (v.components.health or v.components.inventoryitem)

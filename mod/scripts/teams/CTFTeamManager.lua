@@ -6,6 +6,7 @@
 
 local require = _G.require;
 local CTF_TEAM_CONSTANTS = require('constants/CTFTeamConstants');
+local CTFBossFight = require('bossfight/CTFBossFight');
 
 CTFTeamManager = {
     teamCount = 0,
@@ -168,10 +169,16 @@ end
 function CTFTeamManager:startGame()
     if self.gameStarted == false and self.gameStartCount == 0 then
         self.gameStarted = true;
+
         for _, v in ipairs(self.teams) do
             v:teleportAllPlayersToBase();
         end
+
         TheWorld:PushEvent(CTF_TEAM_CONSTANTS.GAME_STARTED);
+
+        if TheWorld.ismastersim then
+            CTFBossFight:startUpdating(TheWorld);
+        end
     end
 end
 

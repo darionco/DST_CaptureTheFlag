@@ -43,7 +43,7 @@ local LOOT_TABLE = {
     bat = { other = { 'spider_spitter', }, gold = 10 },
     spider_spitter = { other = { 'koalefant_winter', 'cane', }, gold = 3 },
     koalefant_winter = { other = { 'worm', 'worm', 'slurtle', 'greenstaff', }, gold = 3 },
-    slurtle = { other = { 'spat', 'orangeamulet', }, gold = 5 },
+    slurtle = { other = { 'spat', }, gold = 5 },
     spat = { other = { 'rook', 'bishop', 'eyeturret_item', }, gold = 5 },
     rook = { other = { 'glommer', 'yellowamulet', }, gold = 10 },
     glommer = { other = { 'knight_nightmare', 'knight_nightmare', 'knight_nightmare', 'rook_nightmare', }, gold = 10 },

@@ -8,39 +8,116 @@ local CTFBossFightInfo = {
     {
         initialDelay = 10, -- in seconds
         nextWaveDelay = 3, -- in seconds
-        playerLostCoolDown = 30, -- in seconds
-        playerWonCoolDown = 30, -- in seconds
-        islandRadius = 30, -- in game units
-        centerSpawner = 'spawner1',
+        playerLostCoolDown = 10, -- in seconds
+        playerWonCoolDown = 10, -- in seconds
+        islandRadius = 80, -- in game units
+        centerSpawner = 'middle01',
         waves = {
             -- wave 1
             {
                 mobs = {
-                    spawner1 = {
-                        { prefab = 'spider', count = 1 },
+                    middle01 = {
+                        { prefab = 'frog', count = 1 },
                     },
                 },
                 loot = {
-                    { prefab = 'goldnugget', count = 10, },
+                    { prefab = 'goldnugget', count = 3, },
                 }
             },
 
             -- wave 2
             {
                 mobs = {
-                    spawner1 = {
-                        { prefab = 'spiderqueen', count = 1 },
+                    middle01 = {
+                        { prefab = 'hound', count = 1 },
                     },
-                    spawner2 = {
-                        { prefab = 'spider_warrior', count = 5 },
+                    topright01 = {
+                        { prefab = 'firehound', count = 1 },
                     },
-                    spawner3 = {
-                        { prefab = 'spider_warrior', count = 5 },
+                    bottomleft01 = {
+                        { prefab = 'icehound', count = 1 },
+                    },
+                    topleft01 = {
+                        { prefab = 'mutatedhound', count = 1 },
+                    },
+                    bottomright01 = {
+                        { prefab = 'mutatedhound', count = 1 },
+                    },
+                },
+                loot = {
+                    { prefab = 'goldnugget', count = 5 },
+                    { prefab = 'spear', count = 1, },
+                }
+            },
+            -- wave 3
+            {
+                mobs = {
+                    topright01 = {
+                        { prefab = 'walrus', count = 1 },
+                    },
+                    bottomleft01 = {
+                        { prefab = 'little_walrus', count = 1 },
+                    },
+                    topleft01 = {
+                        { prefab = 'icehound', count = 1 },
+                    },
+                    bottomright01 = {
+                        { prefab = 'icehound', count = 1 },
                     },
                 },
                 loot = {
                     { prefab = 'goldnugget', count = 10 },
-                    { prefab = 'poop', count = 10, },
+                    { prefab = 'spear', count = 1, },
+                }
+            },
+
+            -- wave 4
+            {
+                mobs = {
+                    middle01 = {
+                        { prefab = 'penguin', count = 1 },
+                    },
+                    topright01 = {
+                        { prefab = 'mutated_penguin', count = 1 },
+                    },
+                    bottomleft01 = {
+                        { prefab = 'mutated_penguin', count = 1 },
+                    },
+                    topleft01 = {
+                        { prefab = 'mutated_penguin', count = 1 },
+                    },
+                    bottomright01 = {
+                        { prefab = 'mutated_penguin', count = 1 },
+                    },
+                },
+                loot = {
+                    { prefab = 'goldnugget', count = 10 },
+                    { prefab = 'spear', count = 1, },
+                }
+            },
+            
+            -- wave 5
+            {
+                mobs = {
+                    middle01 = {
+                        { prefab = 'bishop', count = 1 },
+                    },
+                    topright01 = {
+                        { prefab = 'knight', count = 1 },
+                    },
+                    bottomleft01 = {
+                        { prefab = 'knight', count = 1 },
+                    },
+                    topleft01 = {
+                        { prefab = 'knight', count = 1 },
+                    },
+                    bottomright01 = {
+                        { prefab = 'knight', count = 1 },
+                    },
+                },
+                loot = {
+                    { prefab = 'goldnugget', count = 10 },
+                    { prefab = 'spear', count = 1, },
                 }
             },
         }

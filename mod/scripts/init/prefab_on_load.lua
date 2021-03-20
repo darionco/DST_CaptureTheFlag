@@ -23,6 +23,8 @@ modimport('scripts/prefabs/patcher/wormhole');
 modimport('scripts/prefabs/patcher/abigail');
 modimport('scripts/prefabs/patcher/poop');
 modimport('scripts/prefabs/patcher/armor_skeleton');
+modimport('scripts/prefabs/patcher/telebase');
+modimport('scripts/prefabs/patcher/oasislake');
 
 --modimport('scripts/teams/CTFTeamManager');
 --

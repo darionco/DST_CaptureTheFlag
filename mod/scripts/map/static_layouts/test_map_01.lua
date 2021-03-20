@@ -15657,7 +15657,7 @@ return {
           rotation = 0,
           visible = true,
           properties = {
-            ["ctf_boss_spawner"] = "middle01"
+            ["data.ctf_boss_spawner"] = "middle01"
           }
         },
         {
@@ -15672,7 +15672,7 @@ return {
           rotation = 0,
           visible = true,
           properties = {
-            ["ctf_boss_spawner"] = "middle02"
+            ["data.ctf_boss_spawner"] = "middle02"
           }
         },
         {
@@ -15751,7 +15751,7 @@ return {
           rotation = 0,
           visible = true,
           properties = {
-            ["ctf_boss_spawner"] = "topright02"
+            ["data.ctf_boss_spawner"] = "topright02"
           }
         },
         {
@@ -15766,7 +15766,7 @@ return {
           rotation = 0,
           visible = true,
           properties = {
-            ["ctf_boss_spawner"] = "bottomright01"
+            ["data.ctf_boss_spawner"] = "bottomright01"
           }
         },
         {
@@ -15781,7 +15781,7 @@ return {
           rotation = 0,
           visible = true,
           properties = {
-            ["ctf_boss_spawner"] = "topright01"
+            ["data.ctf_boss_spawner"] = "topright01"
           }
         },
         {
@@ -15796,7 +15796,7 @@ return {
           rotation = 0,
           visible = true,
           properties = {
-            ["ctf_boss_spawner"] = "topleft01"
+            ["data.ctf_boss_spawner"] = "topleft01"
           }
         },
         {
@@ -15811,7 +15811,7 @@ return {
           rotation = 0,
           visible = true,
           properties = {
-            ["ctf_boss_spawner"] = "bottomleft01"
+            ["data.ctf_boss_spawner"] = "bottomleft01"
           }
         },
         {
@@ -15826,7 +15826,7 @@ return {
           rotation = 0,
           visible = true,
           properties = {
-            ["ctf_boss_spawner"] = "topleft02"
+            ["data.ctf_boss_spawner"] = "topleft02"
           }
         },
         {
@@ -15841,7 +15841,7 @@ return {
           rotation = 0,
           visible = true,
           properties = {
-            ["ctf_boss_spawner"] = "bottomleft02"
+            ["data.ctf_boss_spawner"] = "bottomleft02"
           }
         },
         {
@@ -15856,7 +15856,7 @@ return {
           rotation = 0,
           visible = true,
           properties = {
-            ["ctf_boss_spawner"] = "bottomright02"
+            ["data.ctf_boss_spawner"] = "bottomright02"
           }
         }
       }

@@ -7,6 +7,8 @@
 Assets = {
     Asset('ATLAS', 'images/ctf_crafting_tabs.xml'),
     Asset('IMAGE', 'images/ctf_crafting_tabs.tex'),
+
+    Asset('ANIM', 'anim/ctf_spider_team1.zip'),
 }
 
 PrefabFiles = {

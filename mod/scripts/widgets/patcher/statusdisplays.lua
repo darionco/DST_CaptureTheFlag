@@ -11,7 +11,7 @@ local CTF_TEAM_CONSTANTS = require('constants/CTFTeamConstants');
 AddClassPostConstruct('widgets/statusdisplays', function(self, owner)
     self.ctfStats = self:AddChild(CTFPlayerStats());
     -- allow space for combined stats
-    self.ctfStats:SetPosition(-330, 140, 0);
+    self.ctfStats:SetPosition(-370, 140, 0);
     self.ctfStats:SetScale(0.85, 0.85);
 
     local ctfPlayer = CTFTeamManager:getCTFPlayer(owner.userid);

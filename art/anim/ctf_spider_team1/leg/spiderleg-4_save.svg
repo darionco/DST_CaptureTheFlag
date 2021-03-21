@@ -14,7 +14,7 @@
    height="24"
    viewBox="0 0 64 24"
    sodipodi:docname="spiderleg-4_save.svg"
-   inkscape:export-filename="C:\Users\Julia\Downloads\spider_animations\spider_build\leg\leg-4.png"
+   inkscape:export-filename="C:\Users\Julia\Documents\GitHub\Warsak\art\anim\ctf_spider_team1\leg\leg-4.png"
    inkscape:export-xdpi="96"
    inkscape:export-ydpi="96"
    inkscape:version="1.0.2-2 (e86c870879, 2021-01-15)">
@@ -26,7 +26,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -51,7 +51,8 @@
      inkscape:window-x="-8"
      inkscape:window-y="-8"
      inkscape:window-maximized="1"
-     inkscape:current-layer="layer5" />
+     inkscape:current-layer="layer5"
+     inkscape:document-rotation="0" />
   <g
      inkscape:groupmode="layer"
      inkscape:label="Image"
@@ -61,26 +62,7 @@
        width="64"
        height="24"
        preserveAspectRatio="none"
-       xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAAAYCAYAAABKtPtEAAAABGdBTUEAALGPC/xhBQAAACBjSFJN
-AAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAABmJLR0QA/wD/AP+gvaeTAAAA
-B3RJTUUH5QMRFToZfnd9mQAAAzNJREFUWMPVmN1u00AQhb91Q9q0BUpVgRBC3HDB+z8MTwASSJWK
-2tD82Mly4Tn1ZOt17OBK7Ugju5v9mXPm7Oy6gX4WMu+ymDyfk3XFy2TERaJbLCTvXcEcYrGjfVAy
-xgoonXNifmReOPfkDAXtfZuAjMAm8bTPIxtLAd5eASfmx8DU2jwhQwnwwAWuMoCyLbAGVuZroLS+
-WQsd7fKCJou57BUGUODPzGeOhKkjoTiQgK0BKhNwwQhZAX/N78yXLSQ8qKINjEBOLPjXwAXw1v6e
-uD6aSOCPDfSpeZsCtBUOIaBLARsDOwdugJ/AD+DaiNE8W9zWEJgdVlxGz4CPwFfgixFx7IBojJe9
-pC+yPGivrKEWMy6rqGV/B/wCvtvvayNFwCtHXszVAEl/aqA/A9+AD0bK1ICp79SB9xn3wKH9ZBhC
-QBsZso0j4Mrer4Fbmi1SUatESsgWQXUobVB0hMxo9rYyrC2QFrsjnqbQthGzoZb6Bjg3Ej5R14MZ
-tQruXd8KiEc9Jj4F3lBn3u//wj19BlbG8tKRd0jh22dLYGHrlTT7X8Vvbu3Bra+kPiQ2lx0ViQXw
-B/htJGyNxQvq4qhCp8k3NNKUYs6s3wm1QnQM5rZBKu3UKsvq3MB7BSys/dZICLb+uY2ROh/W7pJn
-tMXm1EWlsElugEsjQKACTZERecF+m9HUhrQupESoSJXsVviUAIFcurWkwIW5FDK3JN5Y/NomEfYX
-o2AAXpsCLoH39jx14NOTREHpNPGngdpTIkS4gi95fL2O1q5zfuH6SIEqdv6+sHTz6qJUAbFPNVag
-E+q7wBXwjlr6WjhX3UPHMyVER9a9AVy3EIABuufxFkgTkLs675wgfSq0Pz8Ly3q0sWK7LVAfUPru
-VZAqQNkqM/PqxrdiBMtdhLrIkKSgkVS6X0PLfCkB6RejsrRzUWkhVVIfxbwC2oJOQUGTAVXdhb2P
-/akb9/TZF+9gAvqYKq2yoK+uF2vpMbSPUf99rz07VI6pUmLHb7l+ub6DFTGUAD8mlWrYM6YPyK4Y
-+oIbRELbGf4/1peE0YEcOuYp/iX2lGuM/k/XQ4IbumWetY39hfbi7B9N1UKim8boVAAAACV0RVh0
-ZGF0ZTpjcmVhdGUAMjAyMS0wMy0xN1QyMTo1ODoyNSswMDowMIzYbukAAAAldEVYdGRhdGU6bW9k
-aWZ5ADIwMjEtMDMtMTdUMjE6NTg6MjUrMDA6MDD9hdZVAAAAAElFTkSuQmCC
-"
+       xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAAAYCAYAAABKtPtEAAAABGdBTUEAALGPC/xhBQAAACBjSFJN AAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAABmJLR0QA/wD/AP+gvaeTAAAA B3RJTUUH5QMRFToZfnd9mQAAAzNJREFUWMPVmN1u00AQhb91Q9q0BUpVgRBC3HDB+z8MTwASSJWK 2tD82Mly4Tn1ZOt17OBK7Ugju5v9mXPm7Oy6gX4WMu+ymDyfk3XFy2TERaJbLCTvXcEcYrGjfVAy xgoonXNifmReOPfkDAXtfZuAjMAm8bTPIxtLAd5eASfmx8DU2jwhQwnwwAWuMoCyLbAGVuZroLS+ WQsd7fKCJou57BUGUODPzGeOhKkjoTiQgK0BKhNwwQhZAX/N78yXLSQ8qKINjEBOLPjXwAXw1v6e uD6aSOCPDfSpeZsCtBUOIaBLARsDOwdugJ/AD+DaiNE8W9zWEJgdVlxGz4CPwFfgixFx7IBojJe9 pC+yPGivrKEWMy6rqGV/B/wCvtvvayNFwCtHXszVAEl/aqA/A9+AD0bK1ICp79SB9xn3wKH9ZBhC QBsZso0j4Mrer4Fbmi1SUatESsgWQXUobVB0hMxo9rYyrC2QFrsjnqbQthGzoZb6Bjg3Ej5R14MZ tQruXd8KiEc9Jj4F3lBn3u//wj19BlbG8tKRd0jh22dLYGHrlTT7X8Vvbu3Bra+kPiQ2lx0ViQXw B/htJGyNxQvq4qhCp8k3NNKUYs6s3wm1QnQM5rZBKu3UKsvq3MB7BSys/dZICLb+uY2ROh/W7pJn tMXm1EWlsElugEsjQKACTZERecF+m9HUhrQupESoSJXsVviUAIFcurWkwIW5FDK3JN5Y/NomEfYX o2AAXpsCLoH39jx14NOTREHpNPGngdpTIkS4gi95fL2O1q5zfuH6SIEqdv6+sHTz6qJUAbFPNVag E+q7wBXwjlr6WjhX3UPHMyVER9a9AVy3EIABuufxFkgTkLs675wgfSq0Pz8Ly3q0sWK7LVAfUPru VZAqQNkqM/PqxrdiBMtdhLrIkKSgkVS6X0PLfCkB6RejsrRzUWkhVVIfxbwC2oJOQUGTAVXdhb2P /akb9/TZF+9gAvqYKq2yoK+uF2vpMbSPUf99rz07VI6pUmLHb7l+ub6DFTGUAD8mlWrYM6YPyK4Y +oIbRELbGf4/1peE0YEcOuYp/iX2lGuM/k/XQ4IbumWetY39hfbi7B9N1UKim8boVAAAACV0RVh0 ZGF0ZTpjcmVhdGUAMjAyMS0wMy0xN1QyMTo1ODoyNSswMDowMIzYbukAAAAldEVYdGRhdGU6bW9k aWZ5ADIwMjEtMDMtMTdUMjE6NTg6MjUrMDA6MDD9hdZVAAAAAElFTkSuQmCC "
        id="image3397" />
   </g>
   <g

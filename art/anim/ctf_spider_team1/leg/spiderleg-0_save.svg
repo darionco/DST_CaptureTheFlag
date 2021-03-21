@@ -15,7 +15,7 @@
    viewBox="0 0 56 20"
    sodipodi:docname="spiderleg-0_save.svg"
    inkscape:version="1.0.2-2 (e86c870879, 2021-01-15)"
-   inkscape:export-filename="C:\Users\Julia\Downloads\spider_animations\spider_build\leg\leg-0.png"
+   inkscape:export-filename="C:\Users\Julia\Documents\GitHub\Warsak\art\anim\ctf_spider_team1\leg\leg-0.png"
    inkscape:export-xdpi="96"
    inkscape:export-ydpi="96">
   <metadata
@@ -51,7 +51,8 @@
      inkscape:window-x="-8"
      inkscape:window-y="-8"
      inkscape:window-maximized="1"
-     inkscape:current-layer="layer2" />
+     inkscape:current-layer="layer2"
+     inkscape:document-rotation="0" />
   <g
      inkscape:groupmode="layer"
      inkscape:label="Image"
@@ -61,24 +62,7 @@
        width="56"
        height="20"
        preserveAspectRatio="none"
-       xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADgAAAAUCAYAAADY6P5TAAAABGdBTUEAALGPC/xhBQAAACBjSFJN
-AAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAABmJLR0QA/wD/AP+gvaeTAAAA
-B3RJTUUH5QMRFToZfnd9mQAAAqpJREFUWMPVllmP01AMhb8snU5nYQYhJCQQQrzz//8KgheEWIZl
-mAW6pWnKQ46J585NmrQ8gCUrt2mu7eN77OuE/1sSt97EPsg7NiaBAQJjG7feJ8DErbvE++vtM2l5
-l0sz/d44raSrPcGZpPKVdiTMYlgD5RDjuQO5ccYOgCNgLMcGzJysgLl0XxkDExo2VRFwFl8BzIaA
-jFE0FbjHwJkCMCeVAJqjKbBwCbBAPO1iat9YIo+AUQtAs1PJ1y/pUloopt41mAPnwEvgudaHCsDT
-ZCmHS+oTLVoym1BT/UCaBb7GUnvfRtFKvmbANfAFeA9cCHBJpD5jADOBegG8Ap4BD4Fjl307SU/X
-qUB6qtt6FJyU/ZdKrdahu7EZc74Dr5WwuYBbTD4pUYCJC+gceAI8FUirWR9ESUPXZQCwomlaE8cE
-7ysRyD6dewH8BD7p+UYgU2dv6wlWysoVcCmAaxmKSQ48kJbET9CD8ZLRXxIl6FbxzdhSf10Ab4GP
-CnpCQ62zDqDWODwIA1kq+wutK2XdmsykJ9gfwAfgnZ5X1KwJQf6JIQZwTU23C+riz7X5mrsNp41K
-4b1ZcrfrrhzAMXAKnHQkzif+m8C91fNSSavaNlnwoaEpdZcqgBvqbvVIJxjej2HW/KVc0LRz39JD
-gKcOYFsXXSvJn6nZ9VWA584moY22SSYT+JEcj3Vyx8r2IfcHhNCeddewVkyNoifSkbMXs1nRXBE3
-sl04RkTrcNv8F8pYJ2idq2usKmmmnTYKZTQ12DbJmM1KgObUtOwlQwGiTPt7KwRp7+2O3DavprKZ
-unexE/RDxl7D9rbvkwH7PCX/hj0PftPyfi+A/4J0DQL3JKe/JF2GdgioM7AB0rm/7wkmO+wZEvwQ
-yg9KStr3wx2lT+BDEja4pH4DVprujgOz6cIAAAAldEVYdGRhdGU6Y3JlYXRlADIwMjEtMDMtMTdU
-MjE6NTg6MjUrMDA6MDCM2G7pAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDIxLTAzLTE3VDIxOjU4OjI1
-KzAwOjAw/YXWVQAAAABJRU5ErkJggg==
-"
+       xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADgAAAAUCAYAAADY6P5TAAAABGdBTUEAALGPC/xhBQAAACBjSFJN AAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAABmJLR0QA/wD/AP+gvaeTAAAA B3RJTUUH5QMRFToZfnd9mQAAAqpJREFUWMPVllmP01AMhb8snU5nYQYhJCQQQrzz//8KgheEWIZl mAW6pWnKQ46J585NmrQ8gCUrt2mu7eN77OuE/1sSt97EPsg7NiaBAQJjG7feJ8DErbvE++vtM2l5 l0sz/d44raSrPcGZpPKVdiTMYlgD5RDjuQO5ccYOgCNgLMcGzJysgLl0XxkDExo2VRFwFl8BzIaA jFE0FbjHwJkCMCeVAJqjKbBwCbBAPO1iat9YIo+AUQtAs1PJ1y/pUloopt41mAPnwEvgudaHCsDT ZCmHS+oTLVoym1BT/UCaBb7GUnvfRtFKvmbANfAFeA9cCHBJpD5jADOBegG8Ap4BD4Fjl307SU/X qUB6qtt6FJyU/ZdKrdahu7EZc74Dr5WwuYBbTD4pUYCJC+gceAI8FUirWR9ESUPXZQCwomlaE8cE 7ysRyD6dewH8BD7p+UYgU2dv6wlWysoVcCmAaxmKSQ48kJbET9CD8ZLRXxIl6FbxzdhSf10Ab4GP CnpCQ62zDqDWODwIA1kq+wutK2XdmsykJ9gfwAfgnZ5X1KwJQf6JIQZwTU23C+riz7X5mrsNp41K 4b1ZcrfrrhzAMXAKnHQkzif+m8C91fNSSavaNlnwoaEpdZcqgBvqbvVIJxjej2HW/KVc0LRz39JD gKcOYFsXXSvJn6nZ9VWA584moY22SSYT+JEcj3Vyx8r2IfcHhNCeddewVkyNoifSkbMXs1nRXBE3 sl04RkTrcNv8F8pYJ2idq2usKmmmnTYKZTQ12DbJmM1KgObUtOwlQwGiTPt7KwRp7+2O3DavprKZ unexE/RDxl7D9rbvkwH7PCX/hj0PftPyfi+A/4J0DQL3JKe/JF2GdgioM7AB0rm/7wkmO+wZEvwQ yg9KStr3wx2lT+BDEja4pH4DVprujgOz6cIAAAAldEVYdGRhdGU6Y3JlYXRlADIwMjEtMDMtMTdU MjE6NTg6MjUrMDA6MDCM2G7pAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDIxLTAzLTE3VDIxOjU4OjI1 KzAwOjAw/YXWVQAAAABJRU5ErkJggg== "
        id="image20"
        style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-opacity:0" />
   </g>

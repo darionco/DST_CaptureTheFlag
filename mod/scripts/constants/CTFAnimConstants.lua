@@ -7,6 +7,7 @@
 local CTF_ANIM_CONSTANTS = {
     spider = {
         [1] = 'ctf_spider_team1',
+        [2] = 'ctf_spider_team2',
     },
 }
 

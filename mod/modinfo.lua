@@ -80,16 +80,16 @@ configuration_options = {
     },
 }
 
---game_modes =
---{
---    {
---        name = 'warsak',
---        label = 'Warsak!',
---        description = CTF_STRINGS.gameModeDescription,
---        settings =
---        {
---            level_type = 'CUSTOM',
---            ghost_sanity_drain = false,
---        }
---    }
---}
+game_modes =
+{
+    {
+        name = 'warsak',
+        label = 'Warsak!',
+        description = CTF_STRINGS.gameModeDescription,
+        settings =
+        {
+            ghost_sanity_drain = false,
+            drop_everything_on_despawn = true,
+        }
+    }
+}

@@ -320,7 +320,7 @@ function CTFTeam:setTeamColor(obj)
     local amt = 0.15;
     local r, g, b, a = self:getTeamColor(self.id);
     obj.AnimState:SetMultColour((1 - amt) * r, (1 - amt) * g, (1 - amt) * b, a);
-    obj.AnimState:SetAddColour(r * amt, g * amt, b * amt, a);
+    --obj.AnimState:SetAddColour(r * amt, g * amt, b * amt, a);
 end
 
 function CTFTeam:registerObject(obj, data)

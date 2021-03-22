@@ -40,13 +40,13 @@ local CTF_STRINGS = {
 
 -- russian
 if locale == 'ru' then
-    CTF_STRINGS.description = 'Capture the flag themed mod!'; -- TODO
+    CTF_STRINGS.description = 'Захватить флага, тематический мод!';
 
     CTF_STRINGS.options.CTF_MIN_PLAYERS_TO_START.label = 'Мин. Количество игроков';
     CTF_STRINGS.options.CTF_MIN_PLAYERS_TO_START.hover = 'Игра начнется, когда к игре присоединится указанное количество игроков.';
 
-    CTF_STRINGS.options.CTF_LANGUAGE.label = 'Language'; -- TODO
-    CTF_STRINGS.options.CTF_LANGUAGE.hover = 'Select the game language or "Autodetect" to let the mod figure it out'; -- TODO
+    CTF_STRINGS.options.CTF_LANGUAGE.label = 'Язык';
+    CTF_STRINGS.options.CTF_LANGUAGE.hover = 'Выберите язык игры или "Автоопределение", чтобы мод выбрал за Вас';
 
     CTF_STRINGS.gameModeDescription = ''; -- TODO
 end

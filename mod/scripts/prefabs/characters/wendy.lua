@@ -59,29 +59,6 @@ AddStategraphState('wilson', State{
                 else
                     inst.AnimState:OverrideSymbol('flower', flower.AnimState:GetBuild(), 'flower')
                 end
-
-                if flower.components and flower.components.aoetargeting then
-                    local reticuleprefab = flower.components.aoetargeting.reticule.reticuleprefab;
-                    local reticule = SpawnPrefab(reticuleprefab);
-                    if reticule ~= nil then
-                        local x, y, z = inst.bufferedaction:GetActionPoint():Get();
-                        reticule.Transform:SetPosition(x, y, z);
-                        if reticule.Flash ~= nil then
-                            reticule:Flash();
-                        else
-                            reticule:DoTaskInTime(1, function()
-                                reticule:Remove();
-                                local pingprefab = flower.components.aoetargeting.reticule.pingprefab;
-                                if pingprefab then
-                                    reticule = SpawnPrefab(pingprefab);
-                                    if reticule ~= nil then
-                                        reticule.Transform:SetPosition(x, y, z);
-                                    end
-                                end
-                            end);
-                        end
-                    end
-                end
             end
 
             inst.sg.statemem.action = inst.bufferedaction
@@ -165,29 +142,6 @@ AddStategraphState('wilson_client', State{
                     inst.AnimState:OverrideItemSkinSymbol( 'flower', flower.AnimState:GetBuild(), 'flower', flower.GUID, flower.AnimState:GetBuild() )
                 else
                     inst.AnimState:OverrideSymbol('flower', flower.AnimState:GetBuild(), 'flower')
-                end
-
-                if flower.components and flower.components.aoetargeting then
-                    local reticuleprefab = flower.components.aoetargeting.reticule.reticuleprefab;
-                    local reticule = SpawnPrefab(reticuleprefab);
-                    if reticule ~= nil then
-                        local x, y, z = buffaction:GetActionPoint():Get();
-                        reticule.Transform:SetPosition(x, y, z);
-                        if reticule.Flash ~= nil then
-                            reticule:Flash();
-                        else
-                            reticule:DoTaskInTime(1, function()
-                                reticule:Remove();
-                                local pingprefab = flower.components.aoetargeting.reticule.pingprefab;
-                                if pingprefab then
-                                    reticule = SpawnPrefab(pingprefab);
-                                    if reticule ~= nil then
-                                        reticule.Transform:SetPosition(x, y, z);
-                                    end
-                                end
-                            end);
-                        end
-                    end
                 end
             end
         end

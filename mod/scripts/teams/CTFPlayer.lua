@@ -5,7 +5,7 @@
 ---
 local require = _G.require;
 local inventory = require('init/player_inventory');
-local ShowWelcomeScreen = require('screens/CTFInstructionsPopup');
+local ShowWelcomeScreen = use('scripts/screens/CTFInstructionsPopup');
 local CTF_TEAM_CONSTANTS = require('constants/CTFTeamConstants');
 
 AddPrefabPostInit('ctf_player_net', function(inst)

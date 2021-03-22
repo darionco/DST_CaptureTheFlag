@@ -4,21 +4,25 @@
 --- DateTime: 2021-02-21 5:39 p.m.
 ---
 
-local CTF_STRINGS = {
-    WELCOME = {
-        TITLE = 'Welcome to Capture the Flag!',
-        TEXT = 'The are two teams in this game, each team has a different hue.\nThe goal of the game is to bring the opponent\'s piggyback to your base.\nUse gold to craft weapons, armor and food.\nYou can get gold by defeating enemies.\nSome creatures are your friends, some aren\'t, either way, they all drop gold.\n\nGood luck!',
-        DISCORD = 'https://discord.gg/qfNbVrXCkd',
-        VIDEO = 'https://www.youtube.com/embed/_LN5mRUN6cE?autoplay=1',
-    },
+local require = _G.require;
+local CTF_STRINGS = use('scripts/constants/locales/CTFStrings_en');
+local CTF_LANGUAGE_CODE = use('scripts/constants/CTFLanguageCode');
 
-    CHAT_ALL = '[ALL]',
-    CHAT_TEAM = '[TEAM]',
+local function deepCopyStrings(source, target)
+    for k, v in pairs(source) do
+        if type(v) == 'string' then
+            target[k] = v;
+        elseif target[k] and type(target[k]) == 'table' then
+            deepCopyStrings(v, target[k]);
+        end
+    end
+end
 
-    CHAT_ALL_SHORT = '[A]',
-    CHAT_TEAM_SHORT = '[T]',
-
-    CHAT_TEAM_DELIMITER = '\n',
-}
+if CTF_LANGUAGE_CODE ~= 'en' then
+    local status, CTF_STRINGS_LOCALIZED = pcall(require, 'constants/locales/CTFStrings_' .. CTF_LANGUAGE_CODE);
+    if status == true then
+        deepCopyStrings(CTF_STRINGS_LOCALIZED, CTF_STRINGS);
+    end
+end
 
 return CTF_STRINGS;

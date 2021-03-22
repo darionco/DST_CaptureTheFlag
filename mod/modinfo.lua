@@ -6,6 +6,19 @@ else
     name = 'Warsak!'
 end
 
+author = 'fibonacci618, JayLil & aligura'
+version = '0.12.0'
+forumthread = ''
+
+dst_compatible = true
+dont_starve_compatible = false
+reign_of_giants_compatible = false
+all_clients_require_mod = true
+client_only_mod = false
+server_only_mod = true
+
+api_version = 10
+
 -- localization
 locale = locale or 'en';
 
@@ -38,21 +51,7 @@ if locale == 'ru' then
     CTF_STRINGS.gameModeDescription = ''; -- TODO
 end
 
-
 description = CTF_STRINGS.description;
-author = 'fibonacci618, JayLil & aligura'
-version = '0.11.10'
-
-forumthread = ''
-
-dst_compatible = true
-dont_starve_compatible = false
-reign_of_giants_compatible = false
-all_clients_require_mod = true
-client_only_mod = false
-server_only_mod = true
-
-api_version = 10
 
 local options = {};
 for i = 1, 64 do

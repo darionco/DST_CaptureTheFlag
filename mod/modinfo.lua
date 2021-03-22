@@ -6,7 +6,40 @@ else
     name = 'Warsak!'
 end
 
-description = 'Capture the flag themed mod!'
+-- localization
+locale = locale or 'en';
+
+-- default language
+local CTF_STRINGS = {
+    description = 'Capture the flag themed mod!', -- this should be updated
+    options = {
+        CTF_MIN_PLAYERS_TO_START = {
+            label = 'Min player count',
+            hover = 'The game will start when the specified number of players join the game',
+        },
+        CTF_LANGUAGE = {
+            label = 'Language',
+            hover = 'Select the game language or "Autodetect" to let the mod figure it out',
+        },
+    },
+    gameModeDescription = '', -- TODO
+};
+
+-- russian
+if locale == 'ru' then
+    CTF_STRINGS.description = 'Capture the flag themed mod!'; -- TODO
+
+    CTF_STRINGS.options.CTF_MIN_PLAYERS_TO_START.label = 'Мин. Количество игроков';
+    CTF_STRINGS.options.CTF_MIN_PLAYERS_TO_START.hover = 'Игра начнется, когда к игре присоединится указанное количество игроков.';
+
+    CTF_STRINGS.options.CTF_LANGUAGE.label = 'Language'; -- TODO
+    CTF_STRINGS.options.CTF_LANGUAGE.hover = 'Select the game language or "Autodetect" to let the mod figure it out'; -- TODO
+
+    CTF_STRINGS.gameModeDescription = ''; -- TODO
+end
+
+
+description = CTF_STRINGS.description;
 author = 'fibonacci618, JayLil & aligura'
 version = '0.11.10'
 
@@ -28,24 +61,35 @@ end
 
 configuration_options = {
     {
+        name = 'CTF_LANGUAGE',
+        label = CTF_STRINGS.options.CTF_LANGUAGE.label,
+        options = {
+            { description = 'autodetect', data = false },
+            { description = 'English', data = 'en' },
+            { description = 'Русский', data = 'ru' },
+        },
+        default = false,
+        hover = CTF_STRINGS.options.CTF_LANGUAGE.hover,
+    },
+    {
         name = 'CTF_MIN_PLAYERS_TO_START',
-        label = 'Min player count',
+        label = CTF_STRINGS.options.CTF_MIN_PLAYERS_TO_START.label,
         options = options,
         default = 2,
-        hover = 'The game will start when the specified number of players join the game'
+        hover = CTF_STRINGS.options.CTF_MIN_PLAYERS_TO_START.hover,
     },
 }
 
-game_modes =
-{
-    {
-        name = 'warsak',
-        label = 'Warsak!',
-        description = '',
-        settings =
-        {
-            level_type = 'CUSTOM',
-            ghost_sanity_drain = false,
-        }
-    }
-}
+--game_modes =
+--{
+--    {
+--        name = 'warsak',
+--        label = 'Warsak!',
+--        description = CTF_STRINGS.gameModeDescription,
+--        settings =
+--        {
+--            level_type = 'CUSTOM',
+--            ghost_sanity_drain = false,
+--        }
+--    }
+--}

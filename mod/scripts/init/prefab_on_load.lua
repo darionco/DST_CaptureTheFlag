@@ -25,6 +25,7 @@ modimport('scripts/prefabs/patcher/poop');
 modimport('scripts/prefabs/patcher/armor_skeleton');
 modimport('scripts/prefabs/patcher/telebase');
 modimport('scripts/prefabs/patcher/oasislake');
+modimport('scripts/prefabs/patcher/lighter');
 
 --modimport('scripts/teams/CTFTeamManager');
 --

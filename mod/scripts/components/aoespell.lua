@@ -12,8 +12,7 @@ local AOESpell = Class(function(self, inst)
     self.distance = 8; -- this is the default
     self.can_cast = cast_noop;
     self.cast_spell = cast_noop;
-    self.expected_doer = 'nobody';
-    self.expected_item = 'none';
+    self.action = 'idle';
 end);
 
 function AOESpell:CanCast(doer, pos)

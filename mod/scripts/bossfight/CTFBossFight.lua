@@ -70,7 +70,7 @@ function CTFBossFight:spawnPrefabs(spawner, prefabs)
                     NoHoles,
                     false,
                     false
-            );
+            ) or { x = math.random() * 10 - 5, y = 0, z = math.random() * 10 - 5 };
 
             local inst = SpawnPrefab(v.prefab);
             if inst then

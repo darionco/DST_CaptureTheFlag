@@ -27,8 +27,8 @@ local CTF_STRINGS = {
     CHAT_TEAM_DELIMITER = '\n',
 
     CHARACTER_DESCRIPTIONS = {
-        wilson = 'NEWEST CHARACTER RELEASE\n*Uses your life force to grow his stubble\n*Bounty is tied to his stats\n*Resets after death',
-        willow = 'WORK IN PROGRESS',
+        wilson = '*Uses your life force to grow his stubble\n*Bounty is tied to his stats\n*Resets after death',
+        willow = 'NEWEST CHARACTER RELEASE (almost)\n*Uses her lighter as a ranged weapon\n*Can create a ring of fire\n*Extra damage if you use them at the same time',
         wendy = '*Can use Abigail for a quick burst of damage\n*Abigails health becomes her damage\n*Resets after each use',
         wolfgang = '*Absorbs damage when full\n*Gets slower on a full stomach\n*Is a literal tank',
         wx78 = '*Can buy gears to upgrade from the store\n*Can get very tanky',
@@ -140,6 +140,9 @@ local CTF_STRINGS = {
 
         --WEBBER
         SPIDERHAT = 'Have up to 10 spider followers!',
+
+        --WILLOW
+        LIGHTER = 'Burn your enemies alive!',
     }
 }
 

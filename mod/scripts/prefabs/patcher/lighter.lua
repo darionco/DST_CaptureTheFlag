@@ -8,6 +8,7 @@ local require = _G.require;
 local Propagator = require('components/propagator');
 local CTFClassPatcher = use('scripts/CTFClassPatcher');
 local CTF_CHARACTER_CONSTANTS = use('scripts/constants/CTFCharacterConstants');
+local CTF_TEAM_CONSTANTS = use('scripts/constants/CTFTeamConstants');
 
 local WILLOW = CTF_CHARACTER_CONSTANTS.WILLOW;
 
@@ -66,11 +67,95 @@ local function onattack(inst, attacker, target)
     target:PushEvent('attacked', { attacker = attacker, damage = inst.components.weapon.damage, weapon = inst });
 end
 
+local function castAOE(act)
+    local doer = act.doer;
+    local invobject = act.invobject;
+    local pos = act:GetActionPoint();
+
+    if doer and doer.components.cooldown and invobject and invobject.components.aoetargeting then
+        invobject.components.aoetargeting:SetEnabled(false);
+        doer.components.cooldown:StartCharging();
+
+        local projectile = SpawnPrefab('ctf_fire_blast');
+        if projectile then
+            local x, y, z = doer.Transform:GetWorldPosition();
+            projectile.Transform:SetPosition(x, y, z);
+            projectile.targetPosition = pos;
+            projectile.components.complexprojectile:Launch(pos, doer, doer);
+            if doer.data and doer.data.ctf_team_tag then
+                projectile.onhitfn = function()
+                    local ents = TheSim:FindEntities(pos.x, pos.y, pos.z, 4.5, { '_combat' });
+                    local teamTag = doer.data.ctf_team_tag;
+                    local damage = WILLOW.LIGHTER_FIRE_BLAST_DAMAGE;
+                    for _, v in ipairs(ents) do
+                        if v ~= doer and not v:HasTag(teamTag) and v:IsValid() and not v:IsInLimbo() then
+                            if v.components then
+                                if v.components.combat then
+                                    v.components.combat:GetAttacked(doer, damage, nil);
+                                end
+
+                                if v.components.burnable then
+                                    if v.components.burnable.smoldering then
+                                        v.components.burnable:StartBurningDamage(
+                                                WILLOW.LIGHTER_FIRE_BLAST_FIRE_TICK_COUNT,
+                                                WILLOW.LIGHTER_FIRE_BLAST_FIRE_TICK_TIME,
+                                                WILLOW.LIGHTER_FIRE_BLAST_FIRE_TICK_DAMAGE, -- * v.components.burnable.smolder_queue_length,
+                                                invobject.prefab,
+                                                doer
+                                        );
+                                    elseif v.components.health:IsDead() then
+                                        v.components.burnable:Ignite();
+                                    else
+                                        v.components.burnable:AddSmoldering(
+                                                WILLOW.LIGHTER_SMOLDER_TICK_COUNT,
+                                                WILLOW.LIGHTER_SMOLDER_TICK_TIME,
+                                                WILLOW.LIGHTER_SMOLDER_TICK_DAMAGE,
+                                                invobject.prefab,
+                                                doer
+                                        );
+                                    end
+                                end
+                            end
+                        end
+                    end
+                end;
+            end
+        end
+
+        return true;
+    end
+end
+
 AddPrefabPostInit('lighter', function(inst)
+    inst:AddComponent('aoetargeting');
+    inst.components.aoetargeting.reticule.reticuleprefab = 'reticuleaoe';
+    inst.components.aoetargeting.reticule.pingprefab = 'reticuleaoeping';
+    inst.components.aoetargeting.reticule.targetfn = nil;
+    inst.components.aoetargeting.reticule.validcolour = { 1, .75, 0, 1 };
+    inst.components.aoetargeting.reticule.invalidcolour = { .5, 0, 0, 1 };
+    inst.components.aoetargeting.reticule.ease = true;
+    inst.components.aoetargeting.reticule.mouseenabled = true;
+    inst.components.aoetargeting:SetEnabled(false);
+
+    inst:AddComponent('aoespell');
+    inst.components.aoespell.cast_spell = castAOE;
+    inst.components.aoespell.str = 'Fire Blast!';
+    inst.components.aoespell.action = 'ctf_fire_blast';
+    inst.components.aoespell.distance = WILLOW.LIGHTER_FIRE_BLAST_DISTANCE;
+    inst.components.aoespell.can_cast = function(act)
+        local doer = act.doer;
+        if doer and doer.components and doer.components.cooldown then
+            return doer.components.cooldown:IsCharged();
+        end
+        return false;
+    end;
+
     if inst.components then
         inst:RemoveComponent('fueled');
         inst:RemoveComponent('lighter');
         inst:RemoveComponent('cooker');
+
+        inst:AddTag('lighter');
 
         if inst.components.weapon then
             inst.components.weapon:SetDamage(WILLOW.LIGHTER_HIT_DAMAGE);
@@ -85,17 +170,38 @@ AddPrefabPostInit('lighter', function(inst)
             local OldOnEquip = inst.components.equippable.onequipfn;
             inst.components.equippable:SetOnEquip(function(f_inst, owner)
                 OldOnEquip(f_inst, owner);
-                if owner.components and owner.components.combat then
-                    f_inst.ctf_old_attack_period = owner.components.combat.min_attack_period;
-                    owner.components.combat:SetAttackPeriod(WILLOW.LIGHTER_ATTACK_PERIOD);
+                if owner.components then
+                    if owner.components.combat then
+                        f_inst.ctf_old_attack_period = owner.components.combat.min_attack_period;
+                        owner.components.combat:SetAttackPeriod(WILLOW.LIGHTER_ATTACK_PERIOD);
+                    end
+
+                    if owner.components.cooldown then
+                        f_inst.components.aoetargeting:SetEnabled(owner.components.cooldown:IsCharged());
+                        owner.components.cooldown.onchargedfn = function()
+                            f_inst.components.aoetargeting:SetEnabled(true);
+                        end
+                    end
+                end
+
+                if TheWorld.ismastersim then
+                    if owner.data and owner.data.ctf_team_id then
+                        f_inst.components.aoetargeting.reticule.validcolour = CTF_TEAM_CONSTANTS.TEAM_COLORS[owner.data.ctf_team_id];
+                    end
                 end
             end);
 
             local OldOnUnequip = inst.components.equippable.onunequipfn;
             inst.components.equippable:SetOnUnequip(function(f_inst, owner)
                 OldOnUnequip(f_inst, owner);
-                if owner.components and owner.components.combat then
-                    owner.components.combat:SetAttackPeriod(f_inst.ctf_old_attack_period or TUNING.WILSON_ATTACK_PERIOD);
+                if owner.components then
+                    if owner.components.combat then
+                        owner.components.combat:SetAttackPeriod(f_inst.ctf_old_attack_period or TUNING.WILSON_ATTACK_PERIOD);
+                    end
+
+                    if owner.components.cooldown then
+                        owner.components.cooldown.onchargedfn = nil;
+                    end
                 end
             end);
         end

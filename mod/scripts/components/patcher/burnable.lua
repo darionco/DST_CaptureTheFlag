@@ -41,12 +41,15 @@ CTFClassPatcher(Burnable, function(self, ctor, inst)
     ctor(self, inst);
     self.smolder_queue_length = 0;
     self.smolder_queue = {};
+    
+    self.ctf_burning_task = nil;
+    self.ctf_burning_tick = 0;
 end);
 
 function Burnable:AddSmoldering(ticks, tickTime, tickDamage, cause, afflicter)
-    if not (self.burning or self.smoldering or self.inst:HasTag("fireimmune")) then
+    if not (self.burning or self.smoldering or self.inst:HasTag('fireimmune')) then
         self.smoldering = true;
-        self.smoke = SpawnPrefab("smoke_plant");
+        self.smoke = SpawnPrefab('smoke_plant');
         if self.smoke ~= nil then
             if #self.fxdata == 1 and self.fxdata[1].follow then
                 if self.fxdata[1].followaschild then
@@ -104,3 +107,29 @@ function Burnable:StopSmoldering()
     end
 end
 
+function Burnable:StartBurningDamage(ticks, tickTime, tickDamage, cause, afflicter)
+    if not (self.burning or self.inst:HasTag('fireimmune')) then
+        self.nocharring = true;
+        self:StopSmoldering();
+        self:Ignite();
+        self.ctf_burning_tick = 0;
+        self.ctf_burning_task = self.inst:DoPeriodicTask(tickTime, function(inst)
+            self.ctf_burning_tick = self.ctf_burning_tick + 1;
+            if inst.components and inst.components.health then
+                if not inst.components.health:IsDead() then
+                    inst.components.health:DoDelta(-tickDamage, true, cause, true, afflicter, true);
+                end
+
+                if inst.components.health:IsDead() then
+                    return;
+                end
+            end
+
+            if self.ctf_burning_tick >= ticks then
+                self.ctf_burning_task:Cancel();
+                self.ctf_burning_task = nil;
+                self:Extinguish();
+            end
+        end);
+    end
+end

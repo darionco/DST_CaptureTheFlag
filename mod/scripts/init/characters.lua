@@ -19,6 +19,7 @@ modimport('scripts/prefabs/characters/wendy');
 modimport('scripts/prefabs/characters/woodie');
 modimport('scripts/prefabs/characters/wx78');
 modimport('scripts/prefabs/characters/wilson');
+modimport('scripts/prefabs/characters/willow');
 
 -- disable characters not completed/banned etc
 for _, v in ipairs(CTF_MISC_CONSTANTS.DISABLED_CHARACTERS) do

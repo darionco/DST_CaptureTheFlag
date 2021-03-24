@@ -16,4 +16,5 @@ PrefabFiles = {
     'ctf_team_marker',
     'ctf_player_net',
     'ctf_abigail_hit',
+    'ctf_fire_blast',
 }

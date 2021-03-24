@@ -28,9 +28,14 @@ local function smolderUpdate(inst, self, entry)
     end
 
     if entry.currentTick >= entry.ticks then
-        self.smolder_queue[entry.id]:Cancel();
-        self.smolder_queue[entry.id] = nil;
-        self.smolder_queue_length = math.max(0, self.smolder_queue_length - 1);
+        if self.smolder_queue[entry.id] then
+            self.smolder_queue[entry.id]:Cancel();
+            self.smolder_queue[entry.id] = nil;
+            self.smolder_queue_length = math.max(0, self.smolder_queue_length - 1);
+        else
+            -- something went really wrong stop smoldering to try to fix entity
+            self.smolder_queue_length = 0;
+        end
         if self.smolder_queue_length == 0 then
             self:StopSmoldering();
         end
@@ -72,7 +77,7 @@ function Burnable:AddSmoldering(ticks, tickTime, tickDamage, cause, afflicter)
 
     if self.smoldering then
         local smolder_entry = {
-            id = '' .. GetTime(),
+            id = afflicter.userid .. GetTime(),
             damage = tickDamage,
             ticks = ticks,
             currentTick = 0,

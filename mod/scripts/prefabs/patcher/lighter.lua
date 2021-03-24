@@ -95,16 +95,17 @@ local function castAOE(act)
                                 end
 
                                 if v.components.burnable then
-                                    if v.components.burnable.smoldering then
+                                    if v.components.health:IsDead() then
+                                        v.components.burnable:Ignite();
+                                    elseif v.components.burnable.smoldering then
+                                        local smolderDamage = v.components.burnable.smolder_queue_length * WILLOW.LIGHTER_FIRE_BLAST_FIRE_SMOLDER_STACK_DAMAGE;
                                         v.components.burnable:StartBurningDamage(
                                                 WILLOW.LIGHTER_FIRE_BLAST_FIRE_TICK_COUNT,
                                                 WILLOW.LIGHTER_FIRE_BLAST_FIRE_TICK_TIME,
-                                                WILLOW.LIGHTER_FIRE_BLAST_FIRE_TICK_DAMAGE, -- * v.components.burnable.smolder_queue_length,
+                                                WILLOW.LIGHTER_FIRE_BLAST_FIRE_TICK_DAMAGE + smolderDamage,
                                                 invobject.prefab,
                                                 doer
                                         );
-                                    elseif v.components.health:IsDead() then
-                                        v.components.burnable:Ignite();
                                     else
                                         v.components.burnable:AddSmoldering(
                                                 WILLOW.LIGHTER_SMOLDER_TICK_COUNT,

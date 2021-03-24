@@ -15648,7 +15648,7 @@ return {
         {
           id = 2266,
           name = "SpawnerA01",
-          type = "oasislake",
+          type = "archive_portal",
           shape = "point",
           x = 3808.5,
           y = 417.25,
@@ -15663,7 +15663,7 @@ return {
         {
           id = 2267,
           name = "SpawnerA02",
-          type = "oasislake",
+          type = "archive_portal",
           shape = "point",
           x = 3614.49,
           y = 4381.76,
@@ -15676,9 +15676,73 @@ return {
           }
         },
         {
+          id = 2274,
+          name = "Wormhole",
+          type = "wormhole",
+          shape = "point",
+          x = 3804,
+          y = 670,
+          width = 0,
+          height = 0,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["data.ctf_wormhole"] = "FromBoss01",
+            ["data.ctf_wormhole_target"] = "ToBoss01"
+          }
+        },
+        {
+          id = 2275,
+          name = "Wormhole",
+          type = "wormhole",
+          shape = "point",
+          x = 3814,
+          y = 534.667,
+          width = 0,
+          height = 0,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["data.ctf_wormhole"] = "ToBoss01",
+            ["data.ctf_wormhole_target"] = "FromBoss01"
+          }
+        },
+        {
+          id = 2276,
+          name = "Wormhole",
+          type = "wormhole",
+          shape = "point",
+          x = 3637.33,
+          y = 4316,
+          width = 0,
+          height = 0,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["data.ctf_wormhole"] = "ToBoss02",
+            ["data.ctf_wormhole_target"] = "FromBoss02"
+          }
+        },
+        {
+          id = 2277,
+          name = "Wormhole",
+          type = "wormhole",
+          shape = "point",
+          x = 3616,
+          y = 4191.33,
+          width = 0,
+          height = 0,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["data.ctf_wormhole"] = "FromBoss02",
+            ["data.ctf_wormhole_target"] = "ToBoss02"
+          }
+        },
+        {
           id = 2299,
           name = "SpawnerB02",
-          type = "telebase",
+          type = "moose_nesting_ground",
           shape = "point",
           x = 3740.99,
           y = 4250.58,
@@ -15693,7 +15757,7 @@ return {
         {
           id = 2300,
           name = "SpawnerE01",
-          type = "telebase",
+          type = "moose_nesting_ground",
           shape = "point",
           x = 4000.5,
           y = 610.5,
@@ -15708,7 +15772,7 @@ return {
         {
           id = 2301,
           name = "SpawnerB01",
-          type = "telebase",
+          type = "moose_nesting_ground",
           shape = "point",
           x = 3998.5,
           y = 225,
@@ -15723,7 +15787,7 @@ return {
         {
           id = 2302,
           name = "SpawnerC01",
-          type = "telebase",
+          type = "moose_nesting_ground",
           shape = "point",
           x = 3616,
           y = 226,
@@ -15738,7 +15802,7 @@ return {
         {
           id = 2303,
           name = "SpawnerD01",
-          type = "telebase",
+          type = "moose_nesting_ground",
           shape = "point",
           x = 3612.5,
           y = 609.5,
@@ -15753,7 +15817,7 @@ return {
         {
           id = 2304,
           name = "SpawnerC02",
-          type = "telebase",
+          type = "moose_nesting_ground",
           shape = "point",
           x = 3482.67,
           y = 4246.67,
@@ -15768,7 +15832,7 @@ return {
         {
           id = 2305,
           name = "SpawnerD02",
-          type = "telebase",
+          type = "moose_nesting_ground",
           shape = "point",
           x = 3478.67,
           y = 4526.67,
@@ -15783,7 +15847,7 @@ return {
         {
           id = 2306,
           name = "SpawnerE02",
-          type = "telebase",
+          type = "moose_nesting_ground",
           shape = "point",
           x = 3756,
           y = 4529.33,

@@ -3865,61 +3865,89 @@
   <object id="2263" name="EvilLamp" type="cavelightmoon" x="3553" y="163.5">
    <point/>
   </object>
-  <object id="2266" name="SpawnerA01" type="oasislake" x="3808.5" y="417.25">
+  <object id="2266" name="SpawnerA01" type="archive_portal" x="3808.5" y="417.25">
    <properties>
     <property name="data.ctf_boss_spawner" value="middle01"/>
    </properties>
    <point/>
   </object>
-  <object id="2267" name="SpawnerA02" type="oasislake" x="3614.49" y="4381.76">
+  <object id="2267" name="SpawnerA02" type="archive_portal" x="3614.49" y="4381.76">
    <properties>
     <property name="data.ctf_boss_spawner" value="middle02"/>
    </properties>
    <point/>
   </object>
-  <object id="2299" name="SpawnerB02" type="telebase" x="3740.99" y="4250.58">
+  <object id="2274" name="Wormhole" type="wormhole" x="3804" y="670">
+   <properties>
+    <property name="data.ctf_wormhole" value="FromBoss01"/>
+    <property name="data.ctf_wormhole_target" value="ToBoss01"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="2275" name="Wormhole" type="wormhole" x="3814" y="534.667">
+   <properties>
+    <property name="data.ctf_wormhole" value="ToBoss01"/>
+    <property name="data.ctf_wormhole_target" value="FromBoss01"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="2276" name="Wormhole" type="wormhole" x="3637.33" y="4316">
+   <properties>
+    <property name="data.ctf_wormhole" value="ToBoss02"/>
+    <property name="data.ctf_wormhole_target" value="FromBoss02"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="2277" name="Wormhole" type="wormhole" x="3616" y="4191.33">
+   <properties>
+    <property name="data.ctf_wormhole" value="FromBoss02"/>
+    <property name="data.ctf_wormhole_target" value="ToBoss02"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="2299" name="SpawnerB02" type="moose_nesting_ground" x="3740.99" y="4250.58">
    <properties>
     <property name="data.ctf_boss_spawner" value="topright02"/>
    </properties>
    <point/>
   </object>
-  <object id="2300" name="SpawnerE01" type="telebase" x="4000.5" y="610.5">
+  <object id="2300" name="SpawnerE01" type="moose_nesting_ground" x="4000.5" y="610.5">
    <properties>
     <property name="data.ctf_boss_spawner" value="bottomright01"/>
    </properties>
    <point/>
   </object>
-  <object id="2301" name="SpawnerB01" type="telebase" x="3998.5" y="225">
+  <object id="2301" name="SpawnerB01" type="moose_nesting_ground" x="3998.5" y="225">
    <properties>
     <property name="data.ctf_boss_spawner" value="topright01"/>
    </properties>
    <point/>
   </object>
-  <object id="2302" name="SpawnerC01" type="telebase" x="3616" y="226">
+  <object id="2302" name="SpawnerC01" type="moose_nesting_ground" x="3616" y="226">
    <properties>
     <property name="data.ctf_boss_spawner" value="topleft01"/>
    </properties>
    <point/>
   </object>
-  <object id="2303" name="SpawnerD01" type="telebase" x="3612.5" y="609.5">
+  <object id="2303" name="SpawnerD01" type="moose_nesting_ground" x="3612.5" y="609.5">
    <properties>
     <property name="data.ctf_boss_spawner" value="bottomleft01"/>
    </properties>
    <point/>
   </object>
-  <object id="2304" name="SpawnerC02" type="telebase" x="3482.67" y="4246.67">
+  <object id="2304" name="SpawnerC02" type="moose_nesting_ground" x="3482.67" y="4246.67">
    <properties>
     <property name="data.ctf_boss_spawner" value="topleft02"/>
    </properties>
    <point/>
   </object>
-  <object id="2305" name="SpawnerD02" type="telebase" x="3478.67" y="4526.67">
+  <object id="2305" name="SpawnerD02" type="moose_nesting_ground" x="3478.67" y="4526.67">
    <properties>
     <property name="data.ctf_boss_spawner" value="bottomleft02"/>
    </properties>
    <point/>
   </object>
-  <object id="2306" name="SpawnerE02" type="telebase" x="3756" y="4529.33">
+  <object id="2306" name="SpawnerE02" type="moose_nesting_ground" x="3756" y="4529.33">
    <properties>
     <property name="data.ctf_boss_spawner" value="bottomright02"/>
    </properties>

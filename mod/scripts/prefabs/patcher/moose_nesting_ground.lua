@@ -7,7 +7,7 @@
 local require = _G.require;
 local CTFBossFight = require('bossfight/CTFBossFight');
 
-CTFPrefabPatcher:registerPrefabPatcher('telebase', function(inst, data)
+CTFPrefabPatcher:registerPrefabPatcher('moose_nesting_ground', function(inst, data)
     if data.ctf_boss_spawner then
         CTFBossFight:registerSpawner(inst, data.ctf_boss_spawner);
     end

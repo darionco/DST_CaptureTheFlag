@@ -113,6 +113,8 @@ local function castAOE(act)
     if doer and doer.components.cooldown and invobject and invobject.components.aoetargeting then
         invobject.components.aoetargeting:SetEnabled(false);
         doer.components.cooldown:StartCharging();
+        invobject:PushEvent('rechargechange', { percent = 0 });
+        invobject:PushEvent('rechargetimechange', { t = doer.components.cooldown:GetTimeToCharged() });
 
         local projectile = SpawnPrefab('ctf_fire_blast');
         if projectile then
@@ -153,6 +155,11 @@ local function patchOnEquip(equippable)
                 owner.components.cooldown.onchargedfn = function()
                     inst.components.aoetargeting:SetEnabled(true);
                 end
+
+                inst:DoTaskInTime(0, function()
+                    inst:PushEvent('rechargechange', { percent = owner.components.cooldown:IsCharged() and 1 or 0 });
+                    inst:PushEvent('rechargetimechange', { t = owner.components.cooldown:GetTimeToCharged() });
+                end);
             end
         end
 
@@ -209,6 +216,8 @@ AddPrefabPostInit('lighter', function(inst)
         end
         return false;
     end;
+
+    inst:AddTag('rechargeable');
 
     if inst.components then
         inst:RemoveComponent('fueled');

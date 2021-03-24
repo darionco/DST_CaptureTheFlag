@@ -6,6 +6,7 @@
 
 local require = _G.require;
 local CTFBossFightInfo = require('bossfight/CTFBossFightInfo');
+local LootDropper = require('components/lootdropper');
 
 local CTFBossFight = {
     world = nil,
@@ -76,6 +77,10 @@ function CTFBossFight:spawnPrefabs(spawner, prefabs)
             if inst then
                 inst.Transform:SetPosition(x + offset.x, 0, z + offset.z);
                 table.insert(spawned, inst);
+                local fx = SpawnPrefab('collapse_big');
+                if fx then
+                    fx.Transform:SetPosition(x + offset.x, 0, z + offset.z);
+                end
             end
         end
     end
@@ -90,7 +95,22 @@ end
 function CTFBossFight:spawnLoot(id, loot)
     local spawner = self.spawners[id];
     if spawner then
-        self:spawnPrefabs(spawner, loot);
+        local dropper = {
+            inst = spawner,
+            min_speed = 2,
+            max_speed = 6,
+            y_speed = 20,
+            y_speed_variance = 5,
+        }
+        local pt = Vector3(spawner.Transform:GetWorldPosition());
+        for _, v in ipairs(loot) do
+            for _ = 1, v.count do
+                local inst = SpawnPrefab(v.prefab);
+                if inst then
+                    LootDropper.FlingItem(dropper, inst, pt);
+                end
+            end
+        end
     end
 end
 

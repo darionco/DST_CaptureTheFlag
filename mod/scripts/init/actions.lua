@@ -4,6 +4,8 @@
 --- DateTime: 2021-03-09 9:44 p.m.
 ---
 
+local CTFClassPatcher = use('scripts/CTFClassPatcher');
+
 ACTIONS.CASTAOE.stroverridefn = function(act)
     if act.invobject and act.invobject.components and act.invobject.components.aoespell then
         return act.invobject.components.aoespell.str;
@@ -18,10 +20,23 @@ ACTIONS.CASTAOE.fn = function(act)
     end
 end
 
+CTFClassPatcher(BufferedAction, function(self, ctor, doer, target, action, invobject, pos, recipe, distance, forced, rotation)
+    if action and action == ACTIONS.CASTAOE and invobject and invobject.components and invobject.components.aoespell then
+        distance = invobject.components.aoespell.distance or ACTIONS.CASTAOE.distance;
+    end
+    ctor(self, doer, target, action, invobject, pos, recipe, distance, forced, rotation);
+end);
+
 AddStategraphActionHandler('wilson', _G.ActionHandler(_G.ACTIONS.CASTAOE, function (inst, action)
-    return action.invobject ~= nil and (action.invobject:HasTag('abigail_flower') and 'ctf_summon_abigail')
+    if action.invobject ~= nil and action.invobject.components and action.invobject.components.aoespell then
+        return action.invobject.components.aoespell.action;
+    end
+    return nil;
 end));
 
 AddStategraphActionHandler('wilson_client', _G.ActionHandler(_G.ACTIONS.CASTAOE, function (inst, action)
-    return action.invobject ~= nil and (action.invobject:HasTag('abigail_flower') and 'ctf_summon_abigail')
+    if action.invobject ~= nil and action.invobject.components and action.invobject.components.aoespell then
+        return action.invobject.components.aoespell.action;
+    end
+    return nil;
 end));

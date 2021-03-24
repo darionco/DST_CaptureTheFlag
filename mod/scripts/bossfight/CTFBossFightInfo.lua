@@ -6,11 +6,11 @@
 
 local CTFBossFightInfo = {
     {
-        initialDelay = 10, -- in seconds
+        initialDelay = 30, -- in seconds
         nextWaveDelay = 3, -- in seconds
-        playerLostCoolDown = 10, -- in seconds
-        playerWonCoolDown = 10, -- in seconds
-        islandRadius = 50, -- in game units
+        playerLostCoolDown = 240, -- in seconds
+        playerWonCoolDown = 1440, -- in seconds
+        islandRadius = 40, -- in game units
         centerSpawner = 'middle01',
         waves = {
 
@@ -47,7 +47,6 @@ local CTFBossFightInfo = {
                 },
                 loot = {
                     { prefab = 'goldnugget', count = 5 },
-                    { prefab = 'spear', count = 1, },
                 }
             },
             
@@ -69,7 +68,6 @@ local CTFBossFightInfo = {
                 },
                 loot = {
                     { prefab = 'goldnugget', count = 10 },
-                    { prefab = 'spear', count = 1, },
                 }
             },
 
@@ -93,8 +91,7 @@ local CTFBossFightInfo = {
                     },
                 },
                 loot = {
-                    { prefab = 'goldnugget', count = 10 },
-                    { prefab = 'spear', count = 1, },
+                    { prefab = 'goldnugget', count = 15 },
                 }
             },
             
@@ -130,21 +127,21 @@ local CTFBossFightInfo = {
                         { prefab = 'spiderqueen', count = 1 },
                     },
                     topright01 = {
-                        { prefab = 'spider_hider', count = 2 },
+                        { prefab = 'spider_hider', count = 1 },
                     },
                     bottomleft01 = {
-                        { prefab = 'spider_hider', count = 2 },
+                        { prefab = 'spider_hider', count = 1 },
                     },
                     topleft01 = {
-                        { prefab = 'spider_hider', count = 2 },
+                        { prefab = 'spider_hider', count = 1 },
                     },
                     bottomright01 = {
-                        { prefab = 'spider_hider', count = 2 },
+                        { prefab = 'spider_hider', count = 1 },
                     },
                 },
                 loot = {
                     { prefab = 'goldnugget', count = 10 },
-                    { prefab = 'spear', count = 1, },
+                    { prefab = 'cane', count = 1, },
                 }
             },
             
@@ -157,7 +154,7 @@ local CTFBossFightInfo = {
                 },
                 loot = {
                     { prefab = 'goldnugget', count = 10 },
-                    { prefab = 'spear', count = 1, },
+                    { prefab = 'greenamulet', count = 1, },
                 }
             },
             
@@ -170,7 +167,36 @@ local CTFBossFightInfo = {
                 },
                 loot = {
                     { prefab = 'goldnugget', count = 10 },
-                    { prefab = 'spear', count = 1, },
+                    { prefab = 'townportaltalisman', count = 3, },
+                }
+            },
+            
+            -- wave 9
+            {
+                mobs = {
+                    middle01 = {
+                        { prefab = 'dragonfly', count = 1 },
+                    },
+                },
+                loot = {
+                    { prefab = 'goldnugget', count = 10 },
+                    { prefab = 'yellowamulet', count = 1, },
+                }
+            },
+            
+            -- wave 10
+            {
+                mobs = {
+                    middle01 = {
+                        { prefab = 'rabbit', count = 1 },
+                    },
+                },
+                loot = {
+                    { prefab = 'goldnugget', count = 50 },
+                    { prefab = 'tallbirdegg', count = 3, },
+                    { prefab = 'townportal_blueprint', count = 1, },
+                    { prefab = 'armor_sanity', count = 1, },
+                    { prefab = 'nightsword', count = 1, },
                 }
             },
         }

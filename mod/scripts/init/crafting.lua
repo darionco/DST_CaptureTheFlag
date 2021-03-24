@@ -459,6 +459,19 @@ local function buildNewCrafting()
                 },
 			}
 		},
+        {
+            tab = 'Fire',
+            order = 10,
+            icon = 'tab_fight.tex',
+			owner_tag = 'pyromaniac',
+            recipes = {
+                {
+                    prefab = 'lighter',
+                    ingredients = { Ingredient('goldnugget', 30) },
+                    count = 1
+                },
+			}
+		},
     }
 
     registerRecipes(content);

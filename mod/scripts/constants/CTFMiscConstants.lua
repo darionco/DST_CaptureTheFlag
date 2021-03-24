@@ -6,7 +6,6 @@
 
 local CTF_MISC_CONSTANTS = {
     DISABLED_CHARACTERS = {
-        'willow',
         'wurt',
     }
 }

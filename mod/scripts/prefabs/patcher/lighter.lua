@@ -151,28 +151,29 @@ local function patchOnEquip(equippable)
             end
         end
 
-        if owner.player_classified and owner.player_classified.ctf_cooldown_charged and owner.player_classified.ctf_cooldown_time then
+        local ctfPlayer = CTFTeamManager:getCTFPlayer(owner.userid);
+        if ctfPlayer then
             if not TheNet:IsDedicated() then
-                inst.ctf_on_cooldown_charged = function(classified)
-                    inst.components.aoetargeting:SetEnabled(classified.ctf_cooldown_charged:value());
-                    inst:PushEvent('rechargechange', { percent = classified.ctf_cooldown_charged:value() and 1 or 0 });
+                inst.ctf_on_cooldown_charged = function(net)
+                    inst.components.aoetargeting:SetEnabled(net.cooldown_charged.var:value());
+                    inst:PushEvent('rechargechange', { percent = net.cooldown_charged.var:value() and 1 or 0 });
                 end
 
-                inst.ctf_on_cooldown_time = function(classified)
-                    inst:PushEvent('rechargetimechange', { t = classified.ctf_cooldown_time:value() });
+                inst.ctf_on_cooldown_time = function(net)
+                    inst:PushEvent('rechargetimechange', { t = net.cooldown_time.var:value() });
                 end
 
-                inst:ListenForEvent('ctf_cooldown_charged', inst.ctf_on_cooldown_charged, owner.player_classified);
-                inst:ListenForEvent('ctf_cooldown_time', inst.ctf_on_cooldown_time, owner.player_classified);
+                inst:ListenForEvent(ctfPlayer.net.cooldown_charged.event, inst.ctf_on_cooldown_charged, ctfPlayer.net);
+                inst:ListenForEvent(ctfPlayer.net.cooldown_time.event, inst.ctf_on_cooldown_time, ctfPlayer.net);
 
                 inst:DoTaskInTime(0, function()
-                    inst.ctf_on_cooldown_charged(owner.player_classified);
-                    inst.ctf_on_cooldown_time(owner.player_classified);
+                    inst.ctf_on_cooldown_charged(ctfPlayer.net);
+                    inst.ctf_on_cooldown_time(ctfPlayer.net);
                 end);
             end
 
             if TheWorld.ismastersim then
-                owner.player_classified.ctf_cooldown_time:set(owner.components.cooldown:GetTimeToCharged());
+                ctfPlayer.net.cooldown_time.var:set(owner.components.cooldown:GetTimeToCharged());
             end
         end
 
@@ -193,9 +194,10 @@ local function patchOnUnequip(equippable)
                 owner.components.combat:SetAttackPeriod(inst.ctf_old_attack_period or TUNING.WILSON_ATTACK_PERIOD);
             end
 
-            if not TheNet:IsDedicated() and owner.player_classified and inst.ctf_on_cooldown_active and inst.ctf_on_cooldown_time then
-                inst:RemoveEventCallback('ctf_cooldown_charged', inst.ctf_on_cooldown_charged, owner.player_classified);
-                inst:RemoveEventCallback('ctf_cooldown_time', inst.ctf_on_cooldown_time, owner.player_classified);
+            local ctfPlayer = CTFTeamManager:getCTFPlayer(owner.userid);
+            if not TheNet:IsDedicated() and ctfPlayer and inst.ctf_on_cooldown_active and inst.ctf_on_cooldown_time then
+                inst:RemoveEventCallback(ctfPlayer.net.cooldown_charged.event, inst.ctf_on_cooldown_charged, ctfPlayer.net);
+                inst:RemoveEventCallback(ctfPlayer.net.cooldown_time.event, inst.ctf_on_cooldown_time, ctfPlayer.net);
                 inst.ctf_on_cooldown_charged = nil;
                 inst.ctf_on_cooldown_time = nil;
             end

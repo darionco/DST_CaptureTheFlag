@@ -77,7 +77,7 @@ function Burnable:AddSmoldering(ticks, tickTime, tickDamage, cause, afflicter)
 
     if self.smoldering then
         local smolder_entry = {
-            id = afflicter.userid .. GetTime(),
+            id = { afflicter.userid .. GetTime() },
             damage = tickDamage,
             ticks = ticks,
             currentTick = 0,

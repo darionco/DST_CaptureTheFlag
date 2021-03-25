@@ -113,8 +113,6 @@ local function castAOE(act)
     if doer and doer.components.cooldown and invobject and invobject.components.aoetargeting then
         invobject.components.aoetargeting:SetEnabled(false);
         doer.components.cooldown:StartCharging();
-        invobject:PushEvent('rechargechange', { percent = 0 });
-        invobject:PushEvent('rechargetimechange', { t = doer.components.cooldown:GetTimeToCharged() });
 
         local projectile = SpawnPrefab('ctf_fire_blast');
         if projectile then
@@ -149,31 +147,17 @@ local function patchOnEquip(equippable)
                 inst.ctf_old_attack_period = owner.components.combat.min_attack_period;
                 owner.components.combat:SetAttackPeriod(WILLOW.LIGHTER_ATTACK_PERIOD);
             end
-        end
 
-        local ctfPlayer = CTFTeamManager:getCTFPlayer(owner.userid);
-        if ctfPlayer then
-            if not TheNet:IsDedicated() then
-                inst.ctf_on_cooldown_charged = function(net)
-                    inst.components.aoetargeting:SetEnabled(net.cooldown_charged.var:value());
-                    inst:PushEvent('rechargechange', { percent = net.cooldown_charged.var:value() and 1 or 0 });
+            if owner.components.cooldown and inst.replica.equippable then
+                owner.components.cooldown.startchargingfn = function()
+                    inst.replica.equippable.ctf_cooldown_charged:set(owner.components.cooldown:IsCharged());
+                    inst.replica.equippable.ctf_cooldown_time:set(owner.components.cooldown:GetTimeToCharged());
                 end
+                owner.components.cooldown.onchargedfn = owner.components.cooldown.startchargingfn;
 
-                inst.ctf_on_cooldown_time = function(net)
-                    inst:PushEvent('rechargetimechange', { t = net.cooldown_time.var:value() });
-                end
-
-                inst:ListenForEvent(ctfPlayer.net.cooldown_charged.event, inst.ctf_on_cooldown_charged, ctfPlayer.net);
-                inst:ListenForEvent(ctfPlayer.net.cooldown_time.event, inst.ctf_on_cooldown_time, ctfPlayer.net);
-
-                inst:DoTaskInTime(0, function()
-                    inst.ctf_on_cooldown_charged(ctfPlayer.net);
-                    inst.ctf_on_cooldown_time(ctfPlayer.net);
-                end);
-            end
-
-            if TheWorld.ismastersim then
-                ctfPlayer.net.cooldown_time.var:set(owner.components.cooldown:GetTimeToCharged());
+                inst.replica.equippable.ctf_cooldown_charged:set_local(owner.components.cooldown:IsCharged());
+                inst.replica.equippable.ctf_cooldown_time:set_local(owner.components.cooldown:GetTimeToCharged());
+                inst:DoTaskInTime(0, owner.components.cooldown.onchargedfn);
             end
         end
 
@@ -194,12 +178,9 @@ local function patchOnUnequip(equippable)
                 owner.components.combat:SetAttackPeriod(inst.ctf_old_attack_period or TUNING.WILSON_ATTACK_PERIOD);
             end
 
-            local ctfPlayer = CTFTeamManager:getCTFPlayer(owner.userid);
-            if not TheNet:IsDedicated() and ctfPlayer and inst.ctf_on_cooldown_active and inst.ctf_on_cooldown_time then
-                inst:RemoveEventCallback(ctfPlayer.net.cooldown_charged.event, inst.ctf_on_cooldown_charged, ctfPlayer.net);
-                inst:RemoveEventCallback(ctfPlayer.net.cooldown_time.event, inst.ctf_on_cooldown_time, ctfPlayer.net);
-                inst.ctf_on_cooldown_charged = nil;
-                inst.ctf_on_cooldown_time = nil;
+            if owner.components.cooldown then
+                owner.components.cooldown.startchargingfn = nil;
+                owner.components.cooldown.onchargedfn = nil;
             end
         end
     end);
@@ -236,6 +217,17 @@ AddPrefabPostInit('lighter', function(inst)
     end;
 
     inst:AddTag('rechargeable');
+
+    if inst.replica.equippable then
+        inst:ListenForEvent('ctf_cooldown_charged', function()
+            inst.components.aoetargeting:SetEnabled(inst.replica.equippable.ctf_cooldown_charged:value());
+            inst:PushEvent('rechargechange', { percent = inst.replica.equippable.ctf_cooldown_charged:value() and 1 or 0 });
+        end);
+
+        inst:ListenForEvent('ctf_cooldown_time', function()
+            inst:PushEvent('rechargetimechange', { t = inst.replica.equippable.ctf_cooldown_time:value() });
+        end);
+    end
 
     if inst.components then
         inst:RemoveComponent('fueled');

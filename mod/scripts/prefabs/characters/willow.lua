@@ -5,26 +5,11 @@
 ---
 
 local CTF_CHARACTER_CONSTANTS = use('scripts/constants/CTFCharacterConstants');
-local CTFCharacterPostInit = use('scripts/CTFCharacterPostInit');
 
-CTFCharacterPostInit('willow', function(inst, ctfPlayer)
-    if TheWorld.ismastersim then
-        inst:AddComponent('cooldown');
-
-        inst.components.cooldown.cooldown_duration = CTF_CHARACTER_CONSTANTS.WILLOW.LIGHTER_FIRE_BLAST_COOLDOWN;
-
-        inst.components.cooldown.startchargingfn = function()
-            ctfPlayer.net.cooldown_charged.var:set(false);
-            ctfPlayer.net.cooldown_time.var:set(inst.components.cooldown:GetTimeToCharged());
-        end
-
-        inst.components.cooldown.onchargedfn = function()
-            ctfPlayer.net.cooldown_charged.var:set(true);
-            ctfPlayer.net.cooldown_time.var:set(0);
-        end
-
-        inst.components.cooldown:StartCharging();
-    end
+AddPrefabPostInit('willow', function(inst)
+    inst:AddComponent('cooldown');
+    inst.components.cooldown.cooldown_duration = CTF_CHARACTER_CONSTANTS.WILLOW.LIGHTER_FIRE_BLAST_COOLDOWN;
+    inst.components.cooldown:StartCharging();
 end);
 
 AddStategraphState('wilson', State {
@@ -45,7 +30,7 @@ AddStategraphState('wilson', State {
         TimeEvent(13 * FRAMES, function(inst)
             inst.sg:RemoveStateTag('busy');
         end),
-        
+
         TimeEvent(10 * FRAMES, function(inst)
             inst:PerformBufferedAction();
         end),

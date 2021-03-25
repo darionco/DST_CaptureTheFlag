@@ -5,3 +5,4 @@
 ---
 
 modimport('scripts/components/patcher/burnable');
+modimport('scripts/components/patcher/equippable_replica');

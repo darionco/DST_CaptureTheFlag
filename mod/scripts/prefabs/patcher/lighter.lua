@@ -218,32 +218,34 @@ AddPrefabPostInit('lighter', function(inst)
 
     inst:AddTag('rechargeable');
 
-    if inst.replica.equippable then
-        inst:ListenForEvent('ctf_cooldown_charged', function()
-            inst.components.aoetargeting:SetEnabled(inst.replica.equippable.ctf_cooldown_charged:value());
-            inst:PushEvent('rechargechange', { percent = inst.replica.equippable.ctf_cooldown_charged:value() and 1 or 0 });
-        end);
+    inst:DoTaskInTime(0, function()
+        if inst.replica.equippable then
+            inst:ListenForEvent('ctf_cooldown_charged', function()
+                inst.components.aoetargeting:SetEnabled(inst.replica.equippable.ctf_cooldown_charged:value());
+                inst:PushEvent('rechargechange', { percent = inst.replica.equippable.ctf_cooldown_charged:value() and 1 or 0 });
+            end);
 
-        inst:ListenForEvent('ctf_cooldown_time', function()
-            inst:PushEvent('rechargetimechange', { t = inst.replica.equippable.ctf_cooldown_time:value() });
-        end);
-    end
-
-    if inst.components then
-        inst:RemoveComponent('fueled');
-        inst:RemoveComponent('lighter');
-        inst:RemoveComponent('cooker');
-
-        inst:AddTag('lighter');
-
-        if inst.components.weapon then
-            patchWeapon(inst.components.weapon);
+            inst:ListenForEvent('ctf_cooldown_time', function()
+                inst:PushEvent('rechargetimechange', { t = inst.replica.equippable.ctf_cooldown_time:value() });
+            end);
         end
 
-        if inst.components.equippable then
-            patchEquippable(inst.components.equippable);
+        if inst.components then
+            inst:RemoveComponent('fueled');
+            inst:RemoveComponent('lighter');
+            inst:RemoveComponent('cooker');
+
+            inst:AddTag('lighter');
+
+            if inst.components.weapon then
+                patchWeapon(inst.components.weapon);
+            end
+
+            if inst.components.equippable then
+                patchEquippable(inst.components.equippable);
+            end
         end
-    end
+    end);
 end);
 
 AddPrefabPostInit('fire_projectile', function(inst)

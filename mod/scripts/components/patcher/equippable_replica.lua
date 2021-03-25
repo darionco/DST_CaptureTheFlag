@@ -5,7 +5,7 @@
 ---
 
 local Equippable = require('components/equippable_replica');
-local CTFClassPatcher = use('scripts/CTFClassPatcher');
+local CTFClassPatcher = use('scripts/tools/CTFClassPatcher');
 
 CTFClassPatcher(Equippable, function(self, ctor, inst)
     ctor(self, inst);

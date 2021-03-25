@@ -5,7 +5,7 @@
 ---
 
 local Burnable = require('components/burnable');
-local CTFClassPatcher = use('scripts/CTFClassPatcher');
+local CTFClassPatcher = use('scripts/tools/CTFClassPatcher');
 
 local function smolderUpdate(inst, self, entry)
     entry.currentTick = entry.currentTick + 1;

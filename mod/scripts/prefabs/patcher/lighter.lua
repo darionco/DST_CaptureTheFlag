@@ -6,7 +6,7 @@
 
 local require = _G.require;
 local Propagator = require('components/propagator');
-local CTFClassPatcher = use('scripts/CTFClassPatcher');
+local CTFClassPatcher = use('scripts/tools/CTFClassPatcher');
 local CTF_CHARACTER_CONSTANTS = use('scripts/constants/CTFCharacterConstants');
 local CTF_TEAM_CONSTANTS = use('scripts/constants/CTFTeamConstants');
 

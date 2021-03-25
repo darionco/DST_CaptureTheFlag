@@ -150,6 +150,7 @@ local function patchOnEquip(equippable)
 
             if owner.components.cooldown and inst.replica.equippable then
                 owner.components.cooldown.startchargingfn = function()
+                    inst.components.aoetargeting:SetEnabled(owner.components.cooldown:IsCharged());
                     inst.replica.equippable.ctf_cooldown_charged:set(owner.components.cooldown:IsCharged());
                     inst.replica.equippable.ctf_cooldown_time:set(owner.components.cooldown:GetTimeToCharged());
                 end
@@ -221,7 +222,6 @@ AddPrefabPostInit('lighter', function(inst)
     inst:DoTaskInTime(0, function()
         if inst.replica.equippable then
             inst:ListenForEvent('ctf_cooldown_charged', function()
-                inst.components.aoetargeting:SetEnabled(inst.replica.equippable.ctf_cooldown_charged:value());
                 inst:PushEvent('rechargechange', { percent = inst.replica.equippable.ctf_cooldown_charged:value() and 1 or 0 });
             end);
 
@@ -243,6 +243,12 @@ AddPrefabPostInit('lighter', function(inst)
 
             if inst.components.equippable then
                 patchEquippable(inst.components.equippable);
+            end
+
+            if inst.components.inventoryitem then
+                inst.components.inventoryitem:SetOnPutInInventoryFn(function(f_inst, owner)
+                    print('===================================== inst.components.inventoryitem:SetOnPutInInventoryFn', f_inst, owner);
+                end);
             end
         end
     end);

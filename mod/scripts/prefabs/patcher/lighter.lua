@@ -149,17 +149,30 @@ local function patchOnEquip(equippable)
                 inst.ctf_old_attack_period = owner.components.combat.min_attack_period;
                 owner.components.combat:SetAttackPeriod(WILLOW.LIGHTER_ATTACK_PERIOD);
             end
+        end
 
-            if owner.components.cooldown then
-                inst.components.aoetargeting:SetEnabled(owner.components.cooldown:IsCharged());
-                owner.components.cooldown.onchargedfn = function()
-                    inst.components.aoetargeting:SetEnabled(true);
+        if owner.player_classified and owner.player_classified.ctf_cooldown_charged and owner.player_classified.ctf_cooldown_time then
+            if not TheNet:IsDedicated() then
+                inst.ctf_on_cooldown_charged = function(classified)
+                    inst.components.aoetargeting:SetEnabled(classified.ctf_cooldown_charged:value());
+                    inst:PushEvent('rechargechange', { percent = classified.ctf_cooldown_charged:value() and 1 or 0 });
                 end
 
+                inst.ctf_on_cooldown_time = function(classified)
+                    inst:PushEvent('rechargetimechange', { t = classified.ctf_cooldown_time:value() });
+                end
+
+                inst:ListenForEvent('ctf_cooldown_charged', inst.ctf_on_cooldown_charged, owner.player_classified);
+                inst:ListenForEvent('ctf_cooldown_time', inst.ctf_on_cooldown_time, owner.player_classified);
+
                 inst:DoTaskInTime(0, function()
-                    inst:PushEvent('rechargechange', { percent = owner.components.cooldown:IsCharged() and 1 or 0 });
-                    inst:PushEvent('rechargetimechange', { t = owner.components.cooldown:GetTimeToCharged() });
+                    inst.ctf_on_cooldown_charged(owner.player_classified);
+                    inst.ctf_on_cooldown_time(owner.player_classified);
                 end);
+            end
+
+            if TheWorld.ismastersim then
+                owner.player_classified.ctf_cooldown_time:set(owner.components.cooldown:GetTimeToCharged());
             end
         end
 
@@ -180,8 +193,11 @@ local function patchOnUnequip(equippable)
                 owner.components.combat:SetAttackPeriod(inst.ctf_old_attack_period or TUNING.WILSON_ATTACK_PERIOD);
             end
 
-            if owner.components.cooldown then
-                owner.components.cooldown.onchargedfn = nil;
+            if not TheNet:IsDedicated() and owner.player_classified and inst.ctf_on_cooldown_active and inst.ctf_on_cooldown_time then
+                inst:RemoveEventCallback('ctf_cooldown_charged', inst.ctf_on_cooldown_charged, owner.player_classified);
+                inst:RemoveEventCallback('ctf_cooldown_time', inst.ctf_on_cooldown_time, owner.player_classified);
+                inst.ctf_on_cooldown_charged = nil;
+                inst.ctf_on_cooldown_time = nil;
             end
         end
     end);

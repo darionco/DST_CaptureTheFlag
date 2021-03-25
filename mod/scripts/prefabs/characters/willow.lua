@@ -8,7 +8,27 @@ local CTF_CHARACTER_CONSTANTS = use('scripts/constants/CTFCharacterConstants');
 
 AddPrefabPostInit('willow', function(inst)
     inst:AddComponent('cooldown');
+
+    if inst.player_classified then
+        inst.player_classified.ctf_cooldown_charged = net_bool(inst.player_classified.GUID, 'ctf_cooldown_charged', 'ctf_cooldown_charged');
+        inst.player_classified.ctf_cooldown_time = net_float(inst.player_classified.GUID, 'ctf_cooldown_time', 'ctf_cooldown_time');
+
+        inst.player_classified.ctf_cooldown_charged:set(false);
+        inst.player_classified.ctf_cooldown_time:set(0);
+    end
+
     inst.components.cooldown.cooldown_duration = CTF_CHARACTER_CONSTANTS.WILLOW.LIGHTER_FIRE_BLAST_COOLDOWN;
+
+    inst.components.cooldown.startchargingfn = function()
+        inst.player_classified.ctf_cooldown_charged:set(false);
+        inst.player_classified.ctf_cooldown_time:set(inst.components.cooldown:GetTimeToCharged());
+    end
+
+    inst.components.cooldown.onchargedfn = function()
+        inst.player_classified.ctf_cooldown_charged:set(true);
+        inst.player_classified.ctf_cooldown_time:set(0);
+    end
+
     inst.components.cooldown:StartCharging();
 end);
 

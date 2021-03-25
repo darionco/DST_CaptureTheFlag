@@ -28,9 +28,6 @@ local function ctf()
     createNetVar(inst, 'assists', net_ushortint);
     createNetVar(inst, 'bounty', net_ushortint);
 
-    createNetVar(inst, 'cooldown_charged', net_bool);
-    createNetVar(inst, 'cooldown_time', net_float);
-
     inst.entity:SetPristine();
     inst.persists = false;
 

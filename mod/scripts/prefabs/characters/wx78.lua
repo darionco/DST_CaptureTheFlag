@@ -4,6 +4,9 @@
 --- DateTime: 2021-03-16 9:32 p.m.
 ---
 
+local require = _G.require;
+local CTF_TEAM_CONSTANTS = require('constants/CTFTeamConstants');
+
 local function ctf_ondeath(inst)
     if inst.level > 0 then
         local dropgears = math.ceil(inst.level / 2);
@@ -13,6 +16,7 @@ local function ctf_ondeath(inst)
                 local gear = SpawnPrefab("gears");
                 if gear ~= nil then
                     if team then
+                        gear:AddTag(CTF_TEAM_CONSTANTS.TEAM_ITEM_TAG);
                         team:registerObject(gear, nil);
                     end
 

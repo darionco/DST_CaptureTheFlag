@@ -21,35 +21,6 @@ local LOOT_TABLE = {
     skeleton_player = { gold = 5 },
     molebat = { gold = 2 },
     koalefant_summer = { gold = 40 },
-    worm = { gold = 3 },
-    bishop = { gold = 5 },
-    krampus = { gold = 3 },
-    knight_nightmare = { gold = 5 },
-    mutated_penguin = { gold = 3 },
-    
-
-    -- Secret Fight
-    frog = { other = { 'spider_dropper', }, gold = 1 },
-    spider_dropper = { other = { 'walrus', }, gold = 2 },
-    walrus = { other = { 'knight', }, gold = 3 },
-    knight = { other = { 'mutated_penguin', 'mutated_penguin', 'penguin', 'mutated_penguin', 'mutated_penguin', }, gold = 4 },
-    penguin = { other = { 'leif', }, gold = 5 },
-    leif = { other = { 'warg', }, gold = 6 },
-    warg = { other = { 'deerclops', }, gold = 7 },
-    deerclops = { other = { 'rabbit', }, gold = 8 },
-    rabbit = { other = { 'tallbirdegg', 'tallbirdegg', 'tallbirdegg', 'beemine', 'beemine', 'beemine', 'beemine', 'beemine', 'cane', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'greenamulet', }, gold = 80 },
-
-    -- Other Secret Fight (Maze)
-    bat = { other = { 'spider_spitter', }, gold = 10 },
-    spider_spitter = { other = { 'koalefant_winter', 'cane', }, gold = 3 },
-    koalefant_winter = { other = { 'worm', 'worm', 'slurtle', 'greenstaff', }, gold = 3 },
-    slurtle = { other = { 'spat', }, gold = 5 },
-    spat = { other = { 'rook', 'bishop', 'eyeturret_item', }, gold = 5 },
-    rook = { other = { 'glommer', 'yellowamulet', }, gold = 10 },
-    glommer = { other = { 'knight_nightmare', 'knight_nightmare', 'knight_nightmare', 'rook_nightmare', }, gold = 10 },
-    rook_nightmare = { other = { 'bearger', 'townportaltalisman', }, gold = 10 },
-    bearger = { other = { 'carrat', 'townportaltalisman', 'townportaltalisman', }, gold = 10 },
-    carrat = { other = { 'tallbirdegg', 'tallbirdegg', 'tallbirdegg', 'beemine', 'beemine', 'beemine', 'beemine', 'beemine', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'waterplant_bomb', 'greenamulet', 'townportal_blueprint', 'townportaltalisman_blueprint', }, gold = 50 },
 };
 
 LootDropper.DropLoot = function(self, pt)

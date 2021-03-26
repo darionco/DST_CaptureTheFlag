@@ -13,30 +13,30 @@ Layouts['CTFMap'] = StaticLayout.Get('map/static_layouts/test_map_01',{
 	disable_transform = true,
 	defs={
 	},
-})
+});
 	
 AddStartLocation('CTFStartLocation', {
     name = STRINGS.UI.SANDBOXMENU.DEFAULTSTART,
     location = 'forest',
     start_setpeice = 'CTFMap',
     start_node = 'Blank',
-})
+});
 
 AddTask('CTFGenerationTask', {
-		locks={},
-		keys_given={},
-		room_choices={
-			--['Forest'] = function() return 1 + math.random(SIZE_VARIATION) end, 
-			--['BarePlain'] = 1, 
-			--['Plain'] = function() return 1 + math.random(SIZE_VARIATION) end, 
-			--['Clearing'] = 1,
-			['Blank'] = 1,
-		}, 
-		room_bg=GROUND.GRASS,
-		--background_room='BGGrass',
-		background_room = 'Blank',
-		colour={r=0,g=1,b=0,a=1}
-	}) 
+	locks={},
+	keys_given={},
+	room_choices={
+		--['Forest'] = function() return 1 + math.random(SIZE_VARIATION) end,
+		--['BarePlain'] = 1,
+		--['Plain'] = function() return 1 + math.random(SIZE_VARIATION) end,
+		--['Clearing'] = 1,
+		['Blank'] = 1,
+	},
+	room_bg=GROUND.GRASS,
+	--background_room='BGGrass',
+	background_room = 'Blank',
+	colour={r=0,g=1,b=0,a=1}
+});
 	
 AddLevelPreInitAny(function(level)
 	if level.location ~= 'forest' then
@@ -69,4 +69,4 @@ AddLevelPreInitAny(function(level)
 	--	ents.ctf_spawn = nil;
 	--	OldBunchSpawnerInit(ents, map_width, map_height);
 	--end
-end)
+end);

@@ -111,10 +111,16 @@ local function buildNewCrafting()
                 },
                 {
                     prefab = 'townportal',
-                    ingredients = { Ingredient('goldnugget', 40) },
+                    ingredients = { Ingredient('goldnugget', 40), Ingredient('klaussackkey', 1) },
                     level = TECH.SCIENCE_THREE,
                     count = 1,
                     placer = 'townportal_placer',
+                },
+                {
+                    prefab = 'nightstick',
+                    ingredients = { Ingredient('goldnugget', 20), Ingredient('spear', 1) },
+                    level = TECH.SCIENCE_THREE,
+                    count = 1,
                 },
             }
         },
@@ -455,6 +461,19 @@ local function buildNewCrafting()
                 {
                     prefab = 'spiderhat',
                     ingredients = { Ingredient('goldnugget', 25) },
+                    count = 1
+                },
+			}
+		},
+        {
+            tab = 'Fire',
+            order = 10,
+            icon = 'tab_fight.tex',
+			owner_tag = 'pyromaniac',
+            recipes = {
+                {
+                    prefab = 'lighter',
+                    ingredients = { Ingredient('goldnugget', 30) },
                     count = 1
                 },
 			}

@@ -6,6 +6,7 @@
 
 local require = _G.require;
 local CTF_TEAM_CONSTANTS = require('constants/CTFTeamConstants');
+local CTF_ANIM_CONSTANTS = require('constants/CTFAnimConstants');
 local CTFTeamCombat = require('teams/CTFTeamCombat');
 
 local CTF_FLAG_TAGS = { CTF_TEAM_CONSTANTS.TEAM_FLAG_TAG };
@@ -319,7 +320,7 @@ function CTFTeam:setTeamColor(obj)
     local amt = 0.15;
     local r, g, b, a = self:getTeamColor(self.id);
     obj.AnimState:SetMultColour((1 - amt) * r, (1 - amt) * g, (1 - amt) * b, a);
-    obj.AnimState:SetAddColour(r * amt, g * amt, b * amt, a);
+    --obj.AnimState:SetAddColour(r * amt, g * amt, b * amt, a);
 end
 
 function CTFTeam:registerObject(obj, data)
@@ -387,7 +388,11 @@ function CTFTeam:registerObject(obj, data)
     self:patchCombat(obj, self.teamTag);
 
     if obj.AnimState then
-        self:setTeamColor(obj);
+        if CTF_ANIM_CONSTANTS[obj.prefab] and CTF_ANIM_CONSTANTS[obj.prefab][self.id] then
+            obj.AnimState:SetBuild(CTF_ANIM_CONSTANTS[obj.prefab][self.id]);
+        else
+            self:setTeamColor(obj);
+        end
     end
 end
 

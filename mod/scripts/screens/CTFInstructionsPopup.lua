@@ -10,7 +10,7 @@ local Image = require "widgets/image"
 local Widget = require "widgets/widget"
 local Menu = require "widgets/menu"
 local TEMPLATES = require "widgets/templates"
-local CTF_STRINGS = require('constants/CTFStrings');
+local CTF_STRINGS = use('scripts/constants/CTFStrings');
 
 local CTFInstructionsPopup = Class(Screen, function(self, title, text, buttons, timeout)
     Screen._ctor(self, "BigPopupDialogScreen")
@@ -90,22 +90,22 @@ return function(cb)
             CTF_STRINGS.WELCOME.TEXT,
             {
                 {
-                    text = "Discord",
+                    text = CTF_STRINGS.WELCOME.DISCORD,
                     cb = function()
-                        VisitURL(CTF_STRINGS.WELCOME.DISCORD);
+                        VisitURL(CTF_STRINGS.WELCOME.DISCORD_LINK);
                     end
                 },
                 {
-                    text = "OK",
+                    text = CTF_STRINGS.WELCOME.OK,
                     cb = function()
                         _G.TheFrontEnd:PopScreen();
                         cb();
                     end
                 },
                 {
-                    text = "Video Tutorial",
+                    text = CTF_STRINGS.WELCOME.VIDEO,
                     cb = function()
-                        VisitURL(CTF_STRINGS.WELCOME.VIDEO);
+                        VisitURL(CTF_STRINGS.WELCOME.VIDEO_LINK);
                     end
                 },
             }

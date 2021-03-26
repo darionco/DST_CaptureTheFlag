@@ -5,7 +5,7 @@
 ---
 
 local require = _G.require;
-local CTF_STRINGS = require('constants/CTFStrings');
+local CTF_STRINGS = use('scripts/constants/CTFStrings');
 local CTF_TEAM_CONSTANTS = require('constants/CTFTeamConstants');
 local UserCommands = require('usercommands');
 local ChatInputScreen = require('screens/chatinputscreen');
@@ -59,7 +59,7 @@ GLOBAL.Networking_Say = function(guid, userid, name, prefab, message, colour, wh
     if not message then
         return;
     end
-    
+
     local player = CTFTeamManager:getCTFPlayer(userid);
     local teamID = player and player:getTeamID() or 0;
     if teamID ~= 0 then

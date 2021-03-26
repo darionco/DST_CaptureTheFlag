@@ -7,9 +7,7 @@
 local require = GLOBAL.require;
 local CTF_TEAM_CONSTANTS = require('constants/CTFTeamConstants');
 local PlayerStatusScreen = require('screens/playerstatusscreen');
-local Widget = require('widgets/widget');
-local Image = require('widgets/image');
-local Text = require('widgets/text');
+local CTFPlayerStats = require('widgets/CTFPlayerStats');
 
 local OldGetDisplayName = PlayerStatusScreen.GetDisplayName;
 PlayerStatusScreen.GetDisplayName = function(self, clientrecord)
@@ -29,126 +27,6 @@ local function no_op()end;
 local function patchWidgetFunction(widget, fnName)
     widget['_' .. fnName] = widget[fnName];
     widget[fnName] = no_op;
-end
-
-local PlayerStats = Class(Widget, function(self)
-    Widget._ctor(self, 'ctf_player_stats');
-
-    self.killsIcon = self:AddChild(Image('images/ctf_crafting_tabs.xml', 'ctf_tab_weapons.tex'));
-    self.killsIcon:SetScale(0.32, 0.32);
-    self.killsIcon:SetPosition(0, 3, 0);
-
-    self.kills = self:AddChild(Text(UIFONT, 35, ''));
-    self.kills:SetPosition(38, 0, 0);
-    self.kills:SetHAlign(ANCHOR_LEFT);
-
-    self.deathsIcon = self:AddChild(Image('images/ctf_crafting_tabs.xml', 'ctf_tab_deaths.tex'));
-    self.deathsIcon:SetScale(0.32, 0.32);
-    self.deathsIcon:SetPosition(68, 3, 0);
-
-    self.deaths = self:AddChild(Text(UIFONT, 35, ''));
-    self.deaths:SetPosition(106, 0, 0);
-    self.deaths:SetHAlign(ANCHOR_LEFT);
-
-    self.assistsIcon = self:AddChild(Image('images/ctf_crafting_tabs.xml', 'ctf_tab_assists.tex'));
-    self.assistsIcon:SetScale(0.32, 0.32);
-    self.assistsIcon:SetPosition(136, 3, 0);
-
-    self.assists = self:AddChild(Text(UIFONT, 35, ''));
-    self.assists:SetPosition(174, 0, 0);
-    self.assists:SetHAlign(ANCHOR_LEFT);
-
-    self.bountyIcon = self:AddChild(Image('images/ctf_crafting_tabs.xml', 'ctf_tab_bounty.tex'));
-    self.bountyIcon:SetScale(0.5, 0.5);
-    self.bountyIcon:SetPosition(204, 3, 0);
-
-    self.bounty = self:AddChild(Text(UIFONT, 35, ''));
-    self.bounty:SetPosition(250, 0, 0);
-    self.bounty:SetHAlign(ANCHOR_LEFT);
-
-    self.userid = nil;
-    self.ctfPlayer = nil;
-
-    self.updateStatsHandler = function()
-        self:updateStats();
-    end
-
-    self:hideStats();
-end);
-
-function PlayerStats:hideStats()
-    self.killsIcon:Hide();
-    self.kills:Hide();
-    self.deathsIcon:Hide();
-    self.deaths:Hide();
-    self.assistsIcon:Hide();
-    self.assists:Hide();
-    self.bountyIcon:Hide();
-    self.bounty:Hide();
-end
-
-function PlayerStats:showStats()
-    self.killsIcon:Show();
-    self.kills:Show();
-    self.deathsIcon:Show();
-    self.deaths:Show();
-    self.assistsIcon:Show();
-    self.assists:Show();
-    self.bountyIcon:Show();
-    self.bounty:Show();
-end
-
-function PlayerStats:setUser(userid)
-    local ctfPlayer = userid and CTFTeamManager:getCTFPlayer(userid) or nil;
-    if ctfPlayer ~= self.ctfPlayer then
-        if self.ctfPlayer then
-            self:unregisterStatsEvents(self.ctfPlayer);
-        end
-        self.userid = userid;
-        self.ctfPlayer = ctfPlayer;
-
-        if self.ctfPlayer then
-            self:showStats();
-            self:updateStats();
-            self:registerStatsEvents(self.ctfPlayer);
-        else
-            self:hideStats();
-        end
-    end
-end
-
-function PlayerStats:updateStats()
-    if self.ctfPlayer then
-        self.kills:SetString('' .. self.ctfPlayer:getKills());
-        self.deaths:SetString('' .. self.ctfPlayer:getDeaths());
-        self.assists:SetString('' .. self.ctfPlayer:getAssists());
-        self.bounty:SetString('' .. self.ctfPlayer:getBounty());
-    end
-end
-
-function PlayerStats:registerStatsEvents(ctfPlayer)
-    if ctfPlayer then
-        ctfPlayer.net:ListenForEvent(ctfPlayer.net.kills.event, self.updateStatsHandler);
-        ctfPlayer.net:ListenForEvent(ctfPlayer.net.deaths.event, self.updateStatsHandler);
-        ctfPlayer.net:ListenForEvent(ctfPlayer.net.assists.event, self.updateStatsHandler);
-        ctfPlayer.net:ListenForEvent(ctfPlayer.net.bounty.event, self.updateStatsHandler);
-    end
-end
-
-function PlayerStats:unregisterStatsEvents(ctfPlayer)
-    if ctfPlayer then
-        ctfPlayer.net:RemoveEventCallback(ctfPlayer.net.kills.event, self.updateStatsHandler);
-        ctfPlayer.net:RemoveEventCallback(ctfPlayer.net.deaths.event, self.updateStatsHandler);
-        ctfPlayer.net:RemoveEventCallback(ctfPlayer.net.assists.event, self.updateStatsHandler);
-        ctfPlayer.net:RemoveEventCallback(ctfPlayer.net.bounty.event, self.updateStatsHandler);
-    end
-end
-
-function PlayerStats:Kill()
-    if self.ctfPlayer then
-        self:unregisterStatsEvents(self.ctfPlayer);
-    end
-    PlayerStats._base.Kill(self)
 end
 
 local function patchListingLayout(listing)
@@ -183,7 +61,7 @@ local function patchListingLayout(listing)
     listing.age:_SetString('');
     listing.age:_Hide();
 
-    listing.stats = listing:AddChild(PlayerStats());
+    listing.stats = listing:AddChild(CTFPlayerStats());
     listing.stats:SetPosition(-55, 0, 0);
 end
 

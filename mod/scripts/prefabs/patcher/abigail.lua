@@ -49,6 +49,7 @@ AddPrefabPostInit('abigail_flower', function(inst)
     inst:AddComponent('aoespell');
     inst.components.aoespell.cast_spell = castAOE;
     inst.components.aoespell.str = 'Summon Abigail';
+    inst.components.aoespell.action = 'ctf_summon_abigail';
     inst.components.aoespell.can_cast = function(act)
         local doer = act.doer;
         if doer and doer.components and doer.components.ghostlybond and doer.components.ghostlybond.notsummoned then
@@ -70,12 +71,12 @@ AddPrefabPostInit('abigail_flower', function(inst)
     inst:RemoveComponent('summoningitem');
 end);
 
-AddComponentAction('POINT', 'aoetargeting', function(item, doer, point, actions)
-    local aoetargeting = doer.components.playercontroller:IsAOETargeting();
-    if aoetargeting and doer.prefab == 'wendy' and item.prefab == 'abigail_flower' then
-        table.insert(actions, ACTIONS.CASTAOE);
-    end
-end);
+--AddComponentAction('POINT', 'aoetargeting', function(item, doer, point, actions)
+--    local aoetargeting = doer.components.playercontroller:IsAOETargeting();
+--    if aoetargeting and doer.prefab == 'wendy' and item.prefab == 'abigail_flower' then
+--        table.insert(actions, ACTIONS.CASTAOE);
+--    end
+--end);
 
 AddStategraphState('abigail', State{
     name = 'ctf_appear',

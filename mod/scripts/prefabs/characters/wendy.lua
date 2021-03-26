@@ -136,7 +136,7 @@ AddStategraphState('wilson_client', State{
         if buffaction ~= nil then
             inst:PerformPreviewBufferedAction()
 
-            local flower = inst.bufferedaction.invobject
+            local flower = buffaction.invobject
             if flower ~= nil and flower:IsValid() then
                 if flower.skin_id ~= 0 then
                     inst.AnimState:OverrideItemSkinSymbol( 'flower', flower.AnimState:GetBuild(), 'flower', flower.GUID, flower.AnimState:GetBuild() )

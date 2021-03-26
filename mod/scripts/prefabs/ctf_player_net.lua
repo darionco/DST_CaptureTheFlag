@@ -4,10 +4,7 @@
 --- DateTime: 2021-03-05 12:01 p.m.
 ---
 
-local function createNetVar(inst, name, type)
-    local key = 'ctf_' .. name;
-    inst[name] = { var = type(inst.GUID, key, key), event = key };
-end
+local CTFCreateNetVar = require('tools/CTFCreateNetVar');
 
 local function ctf()
     local inst = CreateEntity();
@@ -17,16 +14,16 @@ local function ctf()
     inst.entity:SetCanSleep(false);
     inst:AddTag('CLASSIFIED');
 
-    createNetVar(inst, 'player', net_entity);
-    createNetVar(inst, 'user_id', net_string);
-    createNetVar(inst, 'name', net_string);
-    createNetVar(inst, 'team_id', net_tinybyte);
-    createNetVar(inst, 'spawned', net_event);
-    createNetVar(inst, 'ready', net_bool);
-    createNetVar(inst, 'kills', net_ushortint);
-    createNetVar(inst, 'deaths', net_ushortint);
-    createNetVar(inst, 'assists', net_ushortint);
-    createNetVar(inst, 'bounty', net_ushortint);
+    CTFCreateNetVar(inst, 'player', net_entity);
+    CTFCreateNetVar(inst, 'user_id', net_string);
+    CTFCreateNetVar(inst, 'name', net_string);
+    CTFCreateNetVar(inst, 'team_id', net_tinybyte);
+    CTFCreateNetVar(inst, 'spawned', net_event);
+    CTFCreateNetVar(inst, 'ready', net_bool);
+    CTFCreateNetVar(inst, 'kills', net_ushortint);
+    CTFCreateNetVar(inst, 'deaths', net_ushortint);
+    CTFCreateNetVar(inst, 'assists', net_ushortint);
+    CTFCreateNetVar(inst, 'bounty', net_ushortint);
 
     inst.entity:SetPristine();
     inst.persists = false;

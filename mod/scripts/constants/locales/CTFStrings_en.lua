@@ -28,10 +28,10 @@ local CTF_STRINGS = {
 
     CHARACTER_DESCRIPTIONS = {
         wilson = '*Uses your life force to grow his stubble\n*Bounty is tied to his stats\n*Resets after death',
-        willow = 'NEWEST CHARACTER RELEASE (almost)\n*Uses her lighter as a ranged weapon\n*Can create a ring of fire\n*Extra damage if you use them at the same time',
+        willow = 'NEWEST CHARACTER RELEASE\n*Uses her lighter as a ranged weapon\n*Can create a ring of fire',
         wendy = '*Can use Abigail for a quick burst of damage\n*Abigails health becomes her damage\n*Resets after each use',
         wolfgang = '*Absorbs damage when full\n*Gets slower on a full stomach\n*Is a literal tank',
-        wx78 = '*Can buy gears to upgrade from the store\n*Can get very tanky',
+        wx78 = '*Can buy gears to upgrade from the store',
         wickerbottom = '*Can craft Heart Tart Art\n*Can also craft Humpty Dumpty',
         wes = '*Armor effectiveness reduced\n*Does more damage\n*Can\'t be insta-killed\n*Has less health, hunger and sanity',
         waxwell = '*Can spawn up to 5 shadow duelists',
@@ -76,6 +76,7 @@ local CTF_STRINGS = {
         NIGHTSWORD = 'Damage: 68\n Durability: 100',
         RUINS_BAT = 'Damage: 59.5\n Durability: 200',
         TOWNPORTAL = 'Teleport using a desert stone!',
+        NIGHTSTICK = 'Damage: 43.35 - 72.25\n Durability: 6 mins',
 
 
         --ARMOR
@@ -108,6 +109,10 @@ local CTF_STRINGS = {
         TRAP_BRAMBLE = 'Damage: 40\n Durability: 10',
         COMPOSTWRAP = '+40 health, speeds up blooming',
 
+        --WICKERBOTTOM
+        BOOK_SILVICULTURE = 'Heal the heart, tart, art.',
+        BOOK_BRIMSTONE = 'Humpty Dumpty had a great killing spree.',
+
 
         --WOODIE
         WEREITEM_MOOSE = 'Destroy anything as the weremoose!',
@@ -125,10 +130,14 @@ local CTF_STRINGS = {
         SPICE_GARLIC = '33% absorbtion\n Duration: 4 minutes',
         SPICE_CHILI = '20% more damage\n Duration: 4 minutes',
         SPICE_SALT = '25% more healing to any food',
-
-        --WICKERBOTTOM
-        BOOK_SILVICULTURE = 'Heal the heart, tart, art.',
-        BOOK_BRIMSTONE = 'Humpty Dumpty had a great killing spree.',
+        LIGHTNINGGOATHORN = 'Is the name is linked to the use?',
+        BONESHARD = 'Is the name is linked to the use?',
+        WORMLIGHT = 'Health: 11\n Hunger: 25',
+        FISH_COOKED = 'Health: 1\n Hunger: 12.5',
+        FROGLEGS_COOKED = 'Health: 1\n Hunger: 12.5',
+        BUTTER = 'Health: 40\n Hunger: 25',
+        ONION_COOKED = 'Health: 1\n Hunger: 9.375',
+        TOMATO_COOKED = 'Health: 20\n Hunger: 12.5',
 
 
         --MAXWELL
@@ -138,8 +147,14 @@ local CTF_STRINGS = {
         --WX-78
         GEARS = 'Eat up to 15 and gain up to 400 health!',
 
+
+        --WENDY
+        ABIGAIL_FLOWER = 'Summon Abigail for a burst of damage!',
+
+
         --WEBBER
         SPIDERHAT = 'Have up to 10 spider followers!',
+
 
         --WILLOW
         LIGHTER = 'Burn your enemies alive!',

@@ -141,7 +141,7 @@ local CTFBossFightInfo = {
                 },
                 loot = {
                     { prefab = 'goldnugget', count = 10 },
-                    { prefab = 'cane', count = 1, },
+                    { prefab = 'ruins_bat', count = 1, },
                 }
             },
             
@@ -158,19 +158,6 @@ local CTFBossFightInfo = {
                 }
             },
             
-            -- wave 8
-            {
-                mobs = {
-                    middle01 = {
-                        { prefab = 'bearger', count = 1 },
-                    },
-                },
-                loot = {
-                    { prefab = 'goldnugget', count = 10 },
-                    { prefab = 'townportaltalisman', count = 3, },
-                }
-            },
-            
             -- wave 9
             {
                 mobs = {
@@ -180,7 +167,7 @@ local CTFBossFightInfo = {
                 },
                 loot = {
                     { prefab = 'goldnugget', count = 10 },
-                    { prefab = 'yellowamulet', count = 1, },
+                    { prefab = 'cane', count = 1, },
                 }
             },
             
@@ -189,6 +176,149 @@ local CTFBossFightInfo = {
                 mobs = {
                     middle01 = {
                         { prefab = 'rabbit', count = 1 },
+                    },
+                },
+                loot = {
+                    { prefab = 'goldnugget', count = 50 },
+                    { prefab = 'tallbirdegg', count = 3, },
+                    { prefab = 'nightstick_blueprint', count = 1, },
+                    { prefab = 'waterballoon', count = 10, },
+                }
+            },
+        }
+    },
+    {
+        initialDelay = 10, -- in seconds
+        nextWaveDelay = 3, -- in seconds
+        playerLostCoolDown = 10, -- in seconds
+        playerWonCoolDown = 10, -- in seconds
+        islandRadius = 40, -- in game units
+        centerSpawner = 'middle02',
+        waves = {
+
+            -- wave 1
+            {
+                mobs = {
+                    middle02 = {
+                        { prefab = 'bat', count = 1 },
+                    },
+                },
+                loot = {
+                    { prefab = 'goldnugget', count = 3, },
+                }
+            },
+
+            -- wave 2
+            {
+                mobs = {
+                    topright02 = {
+                        { prefab = 'tallbird', count = 1 },
+                    },
+                },
+                loot = {
+                    { prefab = 'goldnugget', count = 5 },
+                }
+            },
+            
+            -- wave 3
+            {
+                mobs = {
+                    middle02 = {
+                        { prefab = 'koalefant_winter', count = 1 },
+                    },
+                },
+                loot = {
+                    { prefab = 'goldnugget', count = 10 },
+                }
+            },
+
+            -- wave 4
+            {
+                mobs = {
+                    bottomleft02 = {
+                        { prefab = 'spat', count = 1 },
+                    },
+                },
+                loot = {
+                    { prefab = 'goldnugget', count = 20 },
+                }
+            },
+            
+            -- wave 5
+            {
+                mobs = {
+                    middle02 = {
+                        { prefab = 'warg', count = 1 },
+                    },
+                    topright02 = {
+                        { prefab = 'hound', count = 1 },
+                    },
+                    bottomleft02 = {
+                        { prefab = 'hound', count = 1 },
+                    },
+                    topleft02 = {
+                        { prefab = 'hound', count = 1 },
+                    },
+                    bottomright02 = {
+                        { prefab = 'hound', count = 1 },
+                    },
+                },
+                loot = {
+                    { prefab = 'goldnugget', count = 15 },
+                    { prefab = 'batbat', count = 1, },
+                }
+            },
+            
+            -- wave 6
+            {
+                mobs = {
+                    bottomleft02 = {
+                        { prefab = 'bearger', count = 1 },
+                    },
+                },
+                loot = {
+                    { prefab = 'goldnugget', count = 15 },
+                    { prefab = 'icestaff', count = 1, },
+                }
+            },
+            
+            -- wave 7
+            {
+                mobs = {
+                    middle02 = {
+                        { prefab = 'shadow_rook', count = 1 },
+                    },
+                    topright02 = {
+                        { prefab = 'shadow_bishop', count = 1 },
+                    },
+                    bottomleft02 = {
+                        { prefab = 'shadow_knight', count = 1 },
+                    },
+                },
+                loot = {
+                    { prefab = 'goldnugget', count = 20 },
+                    { prefab = 'townportaltalisman', count = 3, },
+                }
+            },
+            
+            -- wave 8
+            {
+                mobs = {
+                    middle02 = {
+                        { prefab = 'klaus', count = 1 },
+                    },
+                },
+                loot = {
+                    { prefab = 'goldnugget', count = 30 },
+                    { prefab = 'yellowamulet', count = 1, },
+                }
+            },
+            
+            -- wave 9
+            {
+                mobs = {
+                    middle02 = {
+                        { prefab = 'smallbird', count = 1 },
                     },
                 },
                 loot = {

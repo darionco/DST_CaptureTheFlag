@@ -5,12 +5,15 @@
 ---
 
 local CTF_CHARACTER_CONSTANTS = use('scripts/constants/CTFCharacterConstants');
+local CTFInit = use('scripts/tools/CTFInit');
 
-AddPrefabPostInit('willow', function(inst)
-    inst:AddComponent('cooldown');
-    inst.components.cooldown.cooldown_duration = CTF_CHARACTER_CONSTANTS.WILLOW.LIGHTER_FIRE_BLAST_COOLDOWN;
-    inst.components.cooldown:StartCharging();
-end);
+local master_post_init = function(inst)
+    inst:AddComponent('rechargeable');
+    inst.components.rechargeable:SetRechargeTime(CTF_CHARACTER_CONSTANTS.WILLOW.LIGHTER_FIRE_BLAST_COOLDOWN);
+    inst.components.rechargeable:StartRecharge();
+end
+
+CTFInit:Character('willow', nil, master_post_init);
 
 AddStategraphState('wilson', State {
     name = 'ctf_fire_blast',

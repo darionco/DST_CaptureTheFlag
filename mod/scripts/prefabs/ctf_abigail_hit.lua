@@ -19,6 +19,8 @@ local function fn()
     inst.AnimState:PlayAnimation('vex_hit');
     inst.AnimState:SetFinalOffset(3);
 
+    inst.entity:SetPristine();
+
     if not TheWorld.ismastersim then
         return inst
     end

@@ -22,7 +22,11 @@ local function initializeInventory(player)
     if not player_list[player.userid] then
         player_list[player.userid] = true;
         removeAllItems(player);
-        putInInventory(player, 'goldnugget', 12);
+        if TheNet:GetServerGameMode() == 'warsak_boss_rush' then
+            putInInventory(player, 'goldnugget', 100);
+        else
+            putInInventory(player, 'goldnugget', 12);
+        end
     end
 end
 

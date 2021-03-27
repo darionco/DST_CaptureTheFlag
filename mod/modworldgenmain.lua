@@ -94,13 +94,6 @@ AddLevelPreInitAny(function(level)
 	level.overrides.has_ocean = true
 	level.required_prefabs = {} --Wendy's update fix
 
-	local status, net = pcall(function() return GLOBAL.TheNet end);
-	local gameMode = status and net:GetServerGameMode() or 'warsak';
-	print('=============================================== gameMode', gameMode);
-
-	local mapFile = true and 'map/static_layouts/boss_rush_01' or 'map/static_layouts/test_map_01';
-	print('=============================================== mapFile', mapFile);
-
 	-- Monkey patch BunchSpawnerInit since it's the last function that gets `ents` before the check for a spawn point
 	--local OldBunchSpawnerInit = _G.BunchSpawnerInit;
 	--_G.BunchSpawnerInit = function(ents, map_width, map_height)

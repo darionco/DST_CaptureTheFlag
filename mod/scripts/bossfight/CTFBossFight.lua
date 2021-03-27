@@ -44,7 +44,11 @@ function CTFBossFight:spawnNextWave(data)
             if #mobs > 0 then
                 data._activeMobs = data._activeMobs + #mobs;
                 for _, mob in pairs(mobs) do
-                    mob:ListenForEvent('death', function() self:handleMobDied(data) end);
+                    -- handle klaus special case
+                    if mob.SpawnDeer then
+                        mob:SpawnDeer();
+                    end
+                    mob:ListenForEvent('death', function() self:handleMobDied(mob, data) end);
                 end
             end
         end
@@ -114,7 +118,12 @@ function CTFBossFight:spawnLoot(id, loot)
     end
 end
 
-function CTFBossFight:handleMobDied(data)
+function CTFBossFight:handleMobDied(mob, data)
+    -- handle klaus special case
+    if mob.IsUnchained and not mob:IsUnchained() then
+        return;
+    end
+
     data._activeMobs = data._activeMobs - 1;
     if data._activeMobs <= 0 then
         if data._currentWave == #data.waves then
@@ -122,8 +131,12 @@ function CTFBossFight:handleMobDied(data)
             self:resetFight(data, true);
         else
             data._nextLevelTask = self.world:DoTaskInTime(data.nextWaveDelay, function()
-                self:spawnLoot(data.centerSpawner, data.waves[data._currentWave].loot);
-                self:spawnNextWave(data);
+                if data.waves[data._currentWave] then
+                    self:spawnLoot(data.centerSpawner, data.waves[data._currentWave].loot);
+                    self:spawnNextWave(data);
+                else
+                    self:resetFight(data, false);
+                end
             end);
         end
     end

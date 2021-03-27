@@ -188,10 +188,10 @@ local CTFBossFightInfo = {
         }
     },
     {
-        initialDelay = 10, -- in seconds
+        initialDelay = 30, -- in seconds
         nextWaveDelay = 3, -- in seconds
-        playerLostCoolDown = 10, -- in seconds
-        playerWonCoolDown = 10, -- in seconds
+        playerLostCoolDown = 240, -- in seconds
+        playerWonCoolDown = 1440, -- in seconds
         islandRadius = 40, -- in game units
         centerSpawner = 'middle02',
         waves = {
@@ -219,7 +219,7 @@ local CTFBossFightInfo = {
                     { prefab = 'goldnugget', count = 5 },
                 }
             },
-            
+
             -- wave 3
             {
                 mobs = {
@@ -243,7 +243,7 @@ local CTFBossFightInfo = {
                     { prefab = 'goldnugget', count = 20 },
                 }
             },
-            
+
             -- wave 5
             {
                 mobs = {
@@ -268,7 +268,7 @@ local CTFBossFightInfo = {
                     { prefab = 'batbat', count = 1, },
                 }
             },
-            
+
             -- wave 6
             {
                 mobs = {
@@ -281,7 +281,7 @@ local CTFBossFightInfo = {
                     { prefab = 'icestaff', count = 1, },
                 }
             },
-            
+
             -- wave 7
             {
                 mobs = {

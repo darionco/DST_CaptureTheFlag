@@ -4,11 +4,12 @@
 --- DateTime: 2021-03-21 11:04 p.m.
 ---
 
-local require = _G.require;
 local Propagator = require('components/propagator');
-local CTFClassPatcher = use('scripts/CTFClassPatcher');
+
+local CTFClassPatcher = use('scripts/tools/CTFClassPatcher');
 local CTF_CHARACTER_CONSTANTS = use('scripts/constants/CTFCharacterConstants');
 local CTF_TEAM_CONSTANTS = use('scripts/constants/CTFTeamConstants');
+local CTFInit = use('scripts/tools/CTFInit');
 
 local WILLOW = CTF_CHARACTER_CONSTANTS.WILLOW;
 
@@ -110,9 +111,11 @@ local function castAOE(act)
     local invobject = act.invobject;
     local pos = act:GetActionPoint();
 
-    if doer and doer.components.cooldown and invobject and invobject.components.aoetargeting then
-        invobject.components.aoetargeting:SetEnabled(false);
-        doer.components.cooldown:StartCharging();
+    if doer and doer.components.rechargeable and invobject and invobject.components.rechargeable then
+        doer.components.rechargeable:StartRecharge();
+        if invobject.components.finiteuses then
+            invobject.components.finiteuses:Use(1);
+        end
 
         local projectile = SpawnPrefab('ctf_fire_blast');
         if projectile then
@@ -136,6 +139,7 @@ local function patchWeapon(weapon)
     weapon:SetRange(WILLOW.LIGHTER_ATTACK_RANGE_MIN, WILLOW.LIGHTER_ATTACK_RANGE_MAX);
     weapon:SetOnAttack(onattack);
     weapon:SetProjectile('fire_projectile');
+    weapon.attackwear = 0;
 end
 
 local function patchOnEquip(equippable)
@@ -146,19 +150,6 @@ local function patchOnEquip(equippable)
             if owner.components.combat then
                 inst.ctf_old_attack_period = owner.components.combat.min_attack_period;
                 owner.components.combat:SetAttackPeriod(WILLOW.LIGHTER_ATTACK_PERIOD);
-            end
-
-            if owner.components.cooldown and inst.replica.equippable then
-                owner.components.cooldown.startchargingfn = function()
-                    inst.components.aoetargeting:SetEnabled(owner.components.cooldown:IsCharged());
-                    inst.replica.equippable.ctf_cooldown_charged:set(owner.components.cooldown:IsCharged());
-                    inst.replica.equippable.ctf_cooldown_time:set(owner.components.cooldown:GetTimeToCharged());
-                end
-                owner.components.cooldown.onchargedfn = owner.components.cooldown.startchargingfn;
-
-                inst.replica.equippable.ctf_cooldown_charged:set_local(owner.components.cooldown:IsCharged());
-                inst.replica.equippable.ctf_cooldown_time:set_local(owner.components.cooldown:GetTimeToCharged());
-                inst:DoTaskInTime(0, owner.components.cooldown.onchargedfn);
             end
         end
 
@@ -176,12 +167,8 @@ local function patchOnUnequip(equippable)
         OldOnUnequip(inst, owner);
         if owner.components then
             if owner.components.combat then
+                -- this might be an issue once we have other weapons that change the attack speed
                 owner.components.combat:SetAttackPeriod(inst.ctf_old_attack_period or TUNING.WILSON_ATTACK_PERIOD);
-            end
-
-            if owner.components.cooldown then
-                owner.components.cooldown.startchargingfn = nil;
-                owner.components.cooldown.onchargedfn = nil;
             end
         end
     end);
@@ -193,7 +180,11 @@ local function patchEquippable(equippable)
     patchOnUnequip(equippable);
 end
 
-AddPrefabPostInit('lighter', function(inst)
+local common_post_init = function(inst)
+    -- rechargeable (from rechargeable component) added to pristine state for optimization
+    inst:AddTag('rechargeable');
+    inst:AddTag('firestaff');
+
     inst:AddComponent('aoetargeting');
     inst.components.aoetargeting.reticule.reticuleprefab = 'reticuleaoe';
     inst.components.aoetargeting.reticule.pingprefab = 'reticuleaoeping';
@@ -211,48 +202,52 @@ AddPrefabPostInit('lighter', function(inst)
     inst.components.aoespell.distance = WILLOW.LIGHTER_FIRE_BLAST_DISTANCE;
     inst.components.aoespell.can_cast = function(act)
         local doer = act.doer;
-        if doer and doer.components and doer.components.cooldown then
-            return doer.components.cooldown:IsCharged();
+        if doer and doer.components and doer.components.rechargeable then
+            return doer.components.rechargeable:IsCharged();
         end
         return false;
     end;
+end
 
-    inst:AddTag('rechargeable');
+local master_post_init = function(inst)
+    inst:RemoveComponent('fueled');
+    inst:RemoveComponent('lighter');
+    inst:RemoveComponent('cooker');
 
-    inst:DoTaskInTime(0, function()
-        if inst.replica.equippable then
-            inst:ListenForEvent('ctf_cooldown_charged', function()
-                inst:PushEvent('rechargechange', { percent = inst.replica.equippable.ctf_cooldown_charged:value() and 1 or 0 });
-            end);
+    inst:AddComponent('rechargeable');
+    inst.components.rechargeable:SetRechargeTime(WILLOW.LIGHTER_FIRE_BLAST_COOLDOWN);
 
-            inst:ListenForEvent('ctf_cooldown_time', function()
-                inst:PushEvent('rechargetimechange', { t = inst.replica.equippable.ctf_cooldown_time:value() });
-            end);
-        end
+    inst:AddComponent('finiteuses');
+    inst.components.finiteuses:SetMaxUses(WILLOW.LIGHTER_FIRE_BLAST_USES);
+    inst.components.finiteuses:SetUses(WILLOW.LIGHTER_FIRE_BLAST_USES);
+    inst.components.finiteuses:SetOnFinished(inst.Remove);
 
-        if inst.components then
-            inst:RemoveComponent('fueled');
-            inst:RemoveComponent('lighter');
-            inst:RemoveComponent('cooker');
+    inst:AddTag('lighter');
 
-            inst:AddTag('lighter');
+    if inst.components.weapon then
+        patchWeapon(inst.components.weapon);
+    end
 
-            if inst.components.weapon then
-                patchWeapon(inst.components.weapon);
+    if inst.components.equippable then
+        patchEquippable(inst.components.equippable);
+    end
+
+    if inst.components.inventoryitem then
+        inst.components.inventoryitem:SetOnPutInInventoryFn(function(f_inst, owner)
+            if owner.components.rechargeable and f_inst.components.rechargeable then
+                f_inst.components.rechargeable:SetProxy(owner.components.rechargeable);
             end
+        end);
 
-            if inst.components.equippable then
-                patchEquippable(inst.components.equippable);
+        inst.components.inventoryitem:SetOnDroppedFn(function(f_inst)
+            if f_inst.components.rechargeable then
+                f_inst.components.rechargeable:SetProxy(nil);
             end
+        end);
+    end
+end
 
-            if inst.components.inventoryitem then
-                inst.components.inventoryitem:SetOnPutInInventoryFn(function(f_inst, owner)
-                    print('===================================== inst.components.inventoryitem:SetOnPutInInventoryFn', f_inst, owner);
-                end);
-            end
-        end
-    end);
-end);
+CTFInit:Prefab('lighter', common_post_init, master_post_init);
 
 AddPrefabPostInit('fire_projectile', function(inst)
     if inst.components and inst.components.projectile then

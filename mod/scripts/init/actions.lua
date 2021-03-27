@@ -4,7 +4,7 @@
 --- DateTime: 2021-03-09 9:44 p.m.
 ---
 
-local CTFClassPatcher = use('scripts/CTFClassPatcher');
+local CTFClassPatcher = use('scripts/tools/CTFClassPatcher');
 
 ACTIONS.CASTAOE.stroverridefn = function(act)
     if act.invobject and act.invobject.components and act.invobject.components.aoespell then

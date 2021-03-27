@@ -90,5 +90,15 @@ game_modes =
             ghost_sanity_drain = false,
             drop_everything_on_despawn = true,
         }
-    }
+    },
+    {
+        name = 'warsak_boss_rush',
+        label = 'Warsak! - Boss Rush',
+        description = CTF_STRINGS.gameModeDescription,
+        settings =
+        {
+            ghost_sanity_drain = false,
+            drop_everything_on_despawn = true,
+        }
+    },
 }

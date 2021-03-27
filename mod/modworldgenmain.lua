@@ -1,12 +1,21 @@
-GLOBAL.setmetatable(env,{__index=function(t,k) return GLOBAL.rawget(GLOBAL,k) end})
 local Layouts =  require('map/layouts').Layouts
 local StaticLayout = require('map/static_layout')
 require('constants')
 require('map/tasks')
-require('map/level') 
+require('map/level')
+
+GLOBAL.setmetatable(env,{
+	__index = function(t,k)
+		return GLOBAL.rawget(GLOBAL,k);
+	end
+});
+
+local status, net = pcall(function() return GLOBAL.TheNet end);
+local gameMode = status and net:GetServerGameMode() or 'warsak';
+local mapFile = gameMode == 'warsak_boss_rush' and 'map/static_layouts/boss_rush_01' or 'map/static_layouts/test_map_01';
 
 --Add static_layout. Note that there must be a gate in this, otherwise the map cannot be generated
-Layouts['CTFMap'] = StaticLayout.Get('map/static_layouts/test_map_01',{
+Layouts['CTFMap'] = StaticLayout.Get(mapFile, {
 	start_mask = PLACE_MASK.IGNORE_IMPASSABLE_BARREN_RESERVED,
 	fill_mask = PLACE_MASK.IGNORE_IMPASSABLE_BARREN_RESERVED,
 	layout_position = LAYOUT_POSITION.CENTER,

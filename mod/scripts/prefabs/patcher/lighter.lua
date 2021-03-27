@@ -113,6 +113,9 @@ local function castAOE(act)
 
     if doer and doer.components.rechargeable and invobject and invobject.components.rechargeable then
         doer.components.rechargeable:StartRecharge();
+        if invobject.components.finiteuses then
+            invobject.components.finiteuses:Use(1);
+        end
 
         local projectile = SpawnPrefab('ctf_fire_blast');
         if projectile then
@@ -136,6 +139,7 @@ local function patchWeapon(weapon)
     weapon:SetRange(WILLOW.LIGHTER_ATTACK_RANGE_MIN, WILLOW.LIGHTER_ATTACK_RANGE_MAX);
     weapon:SetOnAttack(onattack);
     weapon:SetProjectile('fire_projectile');
+    weapon.attackwear = 0;
 end
 
 local function patchOnEquip(equippable)
@@ -179,6 +183,7 @@ end
 local common_post_init = function(inst)
     -- rechargeable (from rechargeable component) added to pristine state for optimization
     inst:AddTag('rechargeable');
+    inst:AddTag('firestaff');
 
     inst:AddComponent('aoetargeting');
     inst.components.aoetargeting.reticule.reticuleprefab = 'reticuleaoe';
@@ -205,12 +210,17 @@ local common_post_init = function(inst)
 end
 
 local master_post_init = function(inst)
-    inst:AddComponent('rechargeable');
-    inst.components.rechargeable:SetRechargeTime(WILLOW.LIGHTER_FIRE_BLAST_COOLDOWN);
-
     inst:RemoveComponent('fueled');
     inst:RemoveComponent('lighter');
     inst:RemoveComponent('cooker');
+
+    inst:AddComponent('rechargeable');
+    inst.components.rechargeable:SetRechargeTime(WILLOW.LIGHTER_FIRE_BLAST_COOLDOWN);
+
+    inst:AddComponent('finiteuses');
+    inst.components.finiteuses:SetMaxUses(WILLOW.LIGHTER_FIRE_BLAST_USES);
+    inst.components.finiteuses:SetUses(WILLOW.LIGHTER_FIRE_BLAST_USES);
+    inst.components.finiteuses:SetOnFinished(inst.Remove);
 
     inst:AddTag('lighter');
 

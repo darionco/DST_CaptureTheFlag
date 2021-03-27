@@ -99,6 +99,7 @@ game_modes =
         {
             ghost_sanity_drain = false,
             drop_everything_on_despawn = true,
+            level_type = "WARSAK_BOSS_RUSH",
         }
     },
 }

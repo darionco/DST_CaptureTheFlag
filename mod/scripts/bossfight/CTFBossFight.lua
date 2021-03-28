@@ -170,9 +170,13 @@ function CTFBossFight:findNearbyPlayers(data)
         end
 
         if data._currentWave > 1 and not hasPlayers then
-
             self:despawnEverything(data);
-            self:resetFight(data, false);
+            if TheNet:GetServerGameMode() == 'warsak_boss_rush' then
+                local endTime = GetTime();
+                TheWorld:PushEvent(CTF_TEAM_CONSTANTS.GAME_ENDED, { time = -1, name = data.name });
+            else
+                self:resetFight(data, false);
+            end
         end
     end
 end

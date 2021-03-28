@@ -29,7 +29,11 @@ WorldResetTimer.UpdateCycles = function(self, _)
         local time = CTFTeamManager.ctf_rush_end_time:value();
         local name = CTFTeamManager.ctf_rush_name:value();
         if time and name then
-            self.title:SetString(string.format('Completed %s rush in %.2f seconds!', name, time));
+            if time == -1 then
+                self.title:SetString(string.format('%s rush failed. Let\'s try that again...', name));
+            else
+                self.title:SetString(string.format('Completed %s rush in %.2f seconds!', name, time));
+            end
         else
             self.title:SetString('The rush has ended!');
         end

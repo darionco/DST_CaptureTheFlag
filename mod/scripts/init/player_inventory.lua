@@ -4,6 +4,7 @@
 --- DateTime: 2021-01-17 12:05 p.m.
 ---
 
+local CTF_RUSH_CONSTANTS = require('constants/CTFRushConstants');
 local player_list = {};
 
 local function removeAllItems(player)
@@ -23,7 +24,7 @@ local function initializeInventory(player)
         player_list[player.userid] = true;
         removeAllItems(player);
         if TheNet:GetServerGameMode() == 'warsak_boss_rush' then
-            putInInventory(player, 'goldnugget', 100);
+            putInInventory(player, 'goldnugget', CTF_RUSH_CONSTANTS.STARTING_GOLD);
         else
             putInInventory(player, 'goldnugget', 12);
         end

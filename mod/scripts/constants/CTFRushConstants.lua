@@ -5,6 +5,7 @@
 ---
 
 local CTF_RUSH_CONSTANTS = {
+    STARTING_GOLD = 50,
     DEFAULT_LOOT = {
         gold = 5,
     },

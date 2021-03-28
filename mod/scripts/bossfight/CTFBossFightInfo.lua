@@ -6,6 +6,7 @@
 
 local CTFBossFightInfo = {
     {
+        name = 'Dragonfly',
         initialDelay = 30, -- in seconds
         nextWaveDelay = 3, -- in seconds
         playerLostCoolDown = 240, -- in seconds
@@ -188,6 +189,7 @@ local CTFBossFightInfo = {
         }
     },
     {
+        name = 'Klaus',
         initialDelay = 30, -- in seconds
         nextWaveDelay = 3, -- in seconds
         playerLostCoolDown = 240, -- in seconds
@@ -300,7 +302,7 @@ local CTFBossFightInfo = {
                     { prefab = 'townportaltalisman', count = 3, },
                 }
             },
-            
+
             -- wave 8
             {
                 mobs = {

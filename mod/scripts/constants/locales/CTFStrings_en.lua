@@ -6,8 +6,8 @@
 
 local CTF_STRINGS = {
     WELCOME = {
-        TITLE = 'Welcome to Capture the Flag!',
-        TEXT = 'There are two teams in this game, each team has a different hue.\nThe goal of the game is to bring the opponent\'s piggyback to your base.\nUse gold to craft weapons, armor and food.\nYou can get gold by defeating enemies.\nSome creatures are your friends, some aren\'t, either way, they all drop gold.\n\nGood luck!',
+        TITLE = 'Welcome to Warsak! (BETA)',
+        TEXT = 'Each team has a unique coloured heath bar representing their team.\nThe goal of the game is to bring the opponent\'s piggyback to your base.\nUse gold to craft weapons, armor and food! Build up to the best gear!\nGold is dropped by everything (even skeletons and player bounties)!\nEach character has a unique ability, listed in the character selection!\nWork with your team! Pressing "U" is now team chat! Pressing "Y" is all chat.\nGood luck!',
 
         OK = 'OK',
 

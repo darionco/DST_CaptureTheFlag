@@ -8,6 +8,7 @@ modimport('scripts/init/widgets');
 modimport('scripts/init/screens');
 modimport('scripts/init/assets');
 modimport('scripts/init/components');
+modimport('scripts/init/brains');
 modimport('scripts/init/prefab_on_load');
 modimport('scripts/init/crafting');
 modimport('scripts/init/crafting_descriptions');

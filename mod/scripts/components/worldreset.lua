@@ -15,18 +15,36 @@ local OldCTOR = WorldResetTimer._ctor;
 WorldResetTimer._ctor = function (self, owner)
     OldCTOR(self, owner);
     self.root:RemoveChild(self.title);
-    self.title = self.root:AddChild(Text(TALKINGFONT, 50));
-    self.title:SetColour(0, 0, 0, 1);
+    if TheNet:GetServerGameMode() == 'warsak_boss_rush' then
+        self.title = self.root:AddChild(Text(TALKINGFONT, 40));
+    else
+        self.title = self.root:AddChild(Text(TALKINGFONT, 50));
+    end
+    self.title:SetColour(1, 1, 1, 1);
     self.title:SetPosition(0, 130, 0);
 end
 
 WorldResetTimer.UpdateCycles = function(self, _)
-    local id = CTFTeamManager.ctf_winning_team_id:value();
-    if id then
-        self.title:SetString('Team ' .. id .. ' wins!');
-        self.title:SetColour(unpack(CTF_TEAM_CONSTANTS.TEAM_COLORS[math.min(id, 5)]));
+    if TheNet:GetServerGameMode() == 'warsak_boss_rush' then
+        local time = CTFTeamManager.ctf_rush_end_time:value();
+        local name = CTFTeamManager.ctf_rush_name:value();
+        if time and name then
+            if time == -1 then
+                self.title:SetString(string.format('%s rush failed. Let\'s try that again...', name));
+            else
+                self.title:SetString(string.format('Completed %s rush in %.2f seconds!', name, time));
+            end
+        else
+            self.title:SetString('The rush has ended!');
+        end
     else
-        self.title:SetString('The game has ended!');
+        local id = CTFTeamManager.ctf_winning_team_id:value();
+        if id then
+            self.title:SetString('Team ' .. id .. ' wins!');
+            self.title:SetColour(unpack(CTF_TEAM_CONSTANTS.TEAM_COLORS[math.min(id, 5)]));
+        else
+            self.title:SetString('The game has ended!');
+        end
     end
 end
 

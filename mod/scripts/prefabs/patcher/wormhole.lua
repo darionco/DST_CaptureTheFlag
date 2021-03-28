@@ -13,5 +13,19 @@ CTFPrefabPatcher:registerPrefabPatcher('wormhole', function(inst, data)
             inst.components.teleporter.targetTeleporter = wormholeList[data.ctf_wormhole_target];
             wormholeList[data.ctf_wormhole_target].components.teleporter.targetTeleporter = inst;
         end
+
+        if TheNet:GetServerGameMode() == 'warsak_boss_rush' then
+            local OldRegisterTeleportee = inst.components.teleporter.RegisterTeleportee;
+            inst.components.teleporter.RegisterTeleportee = function(self, doer)
+                OldRegisterTeleportee(self, doer);
+                -- remove all other wormholes
+                for k, v in pairs(wormholeList) do
+                    if v ~= inst and v ~= inst.components.teleporter.targetTeleporter then
+                        v:Remove();
+                        wormholeList[k] = nil;
+                    end
+                end
+            end
+        end
     end
 end);

@@ -4,8 +4,8 @@
 --- DateTime: 2021-02-07 11:13 p.m.
 ---
 
-local require = _G.require;
 local LootDropper = require('components/lootdropper');
+local CTF_RUSH_CONSTANTS = require('constants/CTFRushConstants');
 
 local LOOT_TABLE = {
     bishop_nightmare = { gold = 5 },
@@ -25,7 +25,9 @@ local LOOT_TABLE = {
 
 LootDropper.DropLoot = function(self, pt)
     local prefabs;
-    if self.inst and self.inst.prefab and LOOT_TABLE[self.inst.prefab] then
+    if TheNet:GetServerGameMode() == 'warsak_boss_rush' then
+        prefabs = CTF_RUSH_CONSTANTS.DEFAULT_LOOT;
+    elseif self.inst and self.inst.prefab and LOOT_TABLE[self.inst.prefab] then
         prefabs = LOOT_TABLE[self.inst.prefab];
     else
         prefabs = { gold =  1 };

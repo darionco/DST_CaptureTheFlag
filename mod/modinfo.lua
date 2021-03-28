@@ -7,7 +7,7 @@ else
 end
 
 author = 'fibonacci618, JayLil & aligura'
-version = '0.12.10'
+version = '0.13.1'
 forumthread = ''
 
 dst_compatible = true
@@ -90,5 +90,16 @@ game_modes =
             ghost_sanity_drain = false,
             drop_everything_on_despawn = true,
         }
-    }
+    },
+    {
+        name = 'warsak_boss_rush',
+        label = 'Warsak! - Boss Rush',
+        description = CTF_STRINGS.gameModeDescription,
+        settings =
+        {
+            ghost_sanity_drain = false,
+            drop_everything_on_despawn = true,
+            level_type = "WARSAK_BOSS_RUSH",
+        }
+    },
 }

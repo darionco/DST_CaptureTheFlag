@@ -21,7 +21,11 @@ local function registerRecipes(content)
         -- Recipe("spear", {Ingredient("twigs", 2), Ingredient("rope", 1), Ingredient("flint", 1) }, RECIPETABS.WAR,  TECH.SCIENCE_ONE)
         -- (name, ingredients, tab, level, placer, min_spacing, nounlock, numtogive, builder_tag, atlas, image)
         for _, vv in ipairs(v.recipes) do
-            AddRecipe(vv.prefab, vv.ingredients, recipe_tab, vv.level, vv.placer, vv.spacing, nil, vv.count);
+            local level = vv.level;
+            if TheNet:GetServerGameMode() == 'warsak_boss_rush' and level == TECH.SCIENCE_ONE then
+                level = nil;
+            end
+            AddRecipe(vv.prefab, vv.ingredients, recipe_tab, level, vv.placer, vv.spacing, nil, vv.count);
         end
     end
 

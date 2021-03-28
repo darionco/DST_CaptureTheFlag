@@ -7,6 +7,8 @@
 local require = _G.require;
 local CTF_TEAM_CONSTANTS = require('constants/CTFTeamConstants');
 local CTFBossFight = require('bossfight/CTFBossFight');
+local CTFBossFightInfo = require('bossfight/CTFBossFightInfo');
+local json = require('json');
 
 CTFTeamManager = {
     teamCount = 0,
@@ -28,6 +30,12 @@ function CTFTeamManager:initNet(net)
     self.ctf_game_ended = net_bool(self.net.GUID, 'ctf_game_ended', 'ctf_game_ended');
     self.ctf_game_ended:set(false);
 
+    if TheNet:GetServerGameMode() == 'warsak_boss_rush' then
+        self.ctf_rush_end_time = net_float(self.net.GUID, 'ctf_rush_end_time', 'ctf_rush_end_time');
+        self.ctf_rush_name = net_string(self.net.GUID, 'ctf_rush_name', 'ctf_rush_name');
+        self.ctf_rush_records = net_string(self.net.GUID, 'ctf_rush_records', 'ctf_rush_records');
+    end
+
     if not TheNet:IsDedicated() then
         self.net:ListenForEvent('ctf_player_table', function() self:handleNetPlayerTable() end);
         self.net:ListenForEvent('ctf_game_ended', function()
@@ -41,9 +49,34 @@ function CTFTeamManager:initNet(net)
         end);
     end
 
+    if TheWorld.ismastersim then
+        if TheNet:GetServerGameMode() == 'warsak_boss_rush' then
+            TheSim:GetPersistentString('warsak_boss_rush_leaderboard.json', function(load_success, str)
+                if load_success == true then
+                    CTFBossFight.rushRecords = json.decode(str);
+                else
+                    CTFBossFight.rushRecords = {};
+                    for _, v in ipairs(CTFBossFightInfo) do
+                        CTFBossFight.rushRecords[v.name] = {
+                            bestTime = -1,
+                            players = {},
+                        };
+                    end
+                    TheSim:SetPersistentString('warsak_boss_rush_leaderboard.json', json.encode(CTFBossFight.rushRecords), false, nil);
+                end
+                self.ctf_rush_records:set(json.encode(CTFBossFight.rushRecords));
+            end);
+        end
+    end
+
     TheWorld:ListenForEvent(CTF_TEAM_CONSTANTS.GAME_ENDED, function(_, data)
-        self.ctf_winning_team_id:set(data.teamID);
-        self.ctf_winning_team_tag:set(data.teamTag);
+        if TheNet:GetServerGameMode() == 'warsak_boss_rush' then
+            self.ctf_rush_end_time:set(data.time);
+            self.ctf_rush_name:set(data.name);
+        else
+            self.ctf_winning_team_id:set(data.teamID);
+            self.ctf_winning_team_tag:set(data.teamTag);
+        end
         self.ctf_game_reset_timer:set(CTF_TEAM_CONSTANTS.GAME_RESTART_TIME);
         self.ctf_game_ended:set(true);
 

@@ -4,14 +4,16 @@
 --- DateTime: 2021-03-19 2:54 p.m.
 ---
 
-local require = _G.require;
 local CTFBossFightInfo = require('bossfight/CTFBossFightInfo');
 local LootDropper = require('components/lootdropper');
+local CTF_TEAM_CONSTANTS = require('constants/CTFTeamConstants');
+local CTF_RUSH_CONSTANTS = require('constants/CTFRushConstants');
 
 local CTFBossFight = {
     world = nil,
     spawners = {},
     activeFights = {},
+    startTime = nil,
 }
 
 function CTFBossFight:startUpdating(world)
@@ -108,7 +110,11 @@ function CTFBossFight:spawnLoot(id, loot)
         }
         local pt = Vector3(spawner.Transform:GetWorldPosition());
         for _, v in ipairs(loot) do
-            for _ = 1, v.count do
+            local count = v.count;
+            if TheNet:GetServerGameMode() == 'warsak_boss_rush' then
+                count = count * CTF_RUSH_CONSTANTS.BOSS_LOOT_MULTIPLIER;
+            end
+            for _ = 1, count do
                 local inst = SpawnPrefab(v.prefab);
                 if inst then
                     LootDropper.FlingItem(dropper, inst, pt);
@@ -126,9 +132,17 @@ function CTFBossFight:handleMobDied(mob, data)
 
     data._activeMobs = data._activeMobs - 1;
     if data._activeMobs <= 0 then
+        if data._currentWave == 1 and self.startTime == nil and TheNet:GetServerGameMode() == 'warsak_boss_rush' then
+            self.startTime = GetTime();
+        end
         if data._currentWave == #data.waves then
             self:spawnLoot(data.centerSpawner, data.waves[data._currentWave].loot);
-            self:resetFight(data, true);
+            if TheNet:GetServerGameMode() == 'warsak_boss_rush' then
+                local endTime = GetTime();
+                TheWorld:PushEvent(CTF_TEAM_CONSTANTS.GAME_ENDED, { time = endTime - self.startTime, name = data.name });
+            else
+                self:resetFight(data, true);
+            end
         else
             data._nextLevelTask = self.world:DoTaskInTime(data.nextWaveDelay, function()
                 if data.waves[data._currentWave] then

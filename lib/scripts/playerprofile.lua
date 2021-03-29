@@ -755,6 +755,27 @@ function PlayerProfile:GetAutoLoginEnabled()
 	end
 end
 
+function PlayerProfile:SetAnimatedHeadsEnabled(enabled)
+	if USE_SETTINGS_FILE then
+	   TheSim:SetSetting("misc", "animatedheads", tostring(enabled))
+   else
+	   self:SetValue("animatedheads", enabled)
+	   self.dirty = true
+   end
+end
+
+function PlayerProfile:GetAnimatedHeadsEnabled()
+	if USE_SETTINGS_FILE then
+		local animatedheads = TheSim:GetSetting("misc", "animatedheads")
+		if animatedheads == nil then
+			return true
+		end
+		return animatedheads == "true"
+	else
+		return GetValueOrDefault( self.persistdata.animatedheads, true )
+	end
+end
+
 function PlayerProfile:SetAutoCavesEnabled(enabled)
 	if USE_SETTINGS_FILE then
 	   TheSim:SetSetting("misc", "autocaves", tostring(enabled))
@@ -769,6 +790,40 @@ function PlayerProfile:GetAutoCavesEnabled()
 		return TheSim:GetSetting("misc", "autocaves") == "true"
 	else
 		return GetValueOrDefault( self.persistdata.autocaves, false )
+	end
+end
+
+function PlayerProfile:SetModsWarning(enabled)
+	if USE_SETTINGS_FILE then
+	   TheSim:SetSetting("misc", "modswarning", tostring(enabled))
+   else
+	   self:SetValue("modswarning", enabled)
+	   self.dirty = true
+   end
+end
+
+function PlayerProfile:GetModsWarning()
+	if USE_SETTINGS_FILE then
+		return TheSim:GetSetting("misc", "modswarning") ~= "false"
+	else
+		return GetValueOrDefault( self.persistdata.modswarning, true )
+	end
+end
+
+function PlayerProfile:SetPresetMode(mode)
+	if USE_SETTINGS_FILE then
+	   TheSim:SetSetting("misc", "presetmode", mode)
+   else
+	   self:SetValue("presetmode", mode)
+	   self.dirty = true
+   end
+end
+
+function PlayerProfile:GetPresetMode()
+	if USE_SETTINGS_FILE then
+		return TheSim:GetSetting("misc", "presetmode") or "combined"
+	else
+		return GetValueOrDefault( self.persistdata.presetmode, "combined" )
 	end
 end
 

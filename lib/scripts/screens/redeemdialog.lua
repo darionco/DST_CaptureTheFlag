@@ -8,7 +8,7 @@ local ThankYouPopup = require "screens/thankyoupopup"
 
 local NUM_CODE_GROUPS = 5
 local DIGITS_PER_GROUP = 4
-local DIGIT_WIDTH = 19
+local DIGIT_WIDTH = 21
 local CODE_LENGTH = 24
 -- Codes are 5 groups of 4 characters (letters and numbers) separated by hyphens
 -- i and o are not allowed
@@ -97,10 +97,10 @@ function RedeemDialog:MakeTextEntryBox(parent)
     entrybox.textboxes = {}
 
     for i = 1, NUM_CODE_GROUPS do
-		entrybox.textboxes[i] = parent:AddChild(TextEditLinked( CODEFONT, 32, nil, UICOLOURS.BLACK ) )
+		entrybox.textboxes[i] = parent:AddChild(TextEditLinked( CODEFONT, 26, nil, UICOLOURS.BLACK ) )
 		entrybox.textboxes[i]:SetForceEdit(true)
 		entrybox.textboxes[i]:SetRegionSize( box_size, box_y )
-		entrybox.textboxes[i]:SetHAlign(ANCHOR_LEFT)
+		entrybox.textboxes[i]:SetHAlign(ANCHOR_MIDDLE)
 		entrybox.textboxes[i]:SetVAlign(ANCHOR_MIDDLE)
 		entrybox.textboxes[i]:SetTextLengthLimit(DIGITS_PER_GROUP)
 		entrybox.textboxes[i]:SetCharacterFilter( VALID_CHARS )
@@ -111,7 +111,7 @@ function RedeemDialog:MakeTextEntryBox(parent)
 		entrybox.textboxes[i]:EnableWordWrap(false)
 		entrybox.textboxes[i]:EnableScrollEditWindow(false)
 		entrybox.textboxes[i]:SetForceUpperCase(true)
-		entrybox.textboxes[i]:SetPosition(i*95 - (NUM_CODE_GROUPS/2+0.5)*95, 2, 0)
+		entrybox.textboxes[i]:SetPosition(i*102 - (NUM_CODE_GROUPS/2+0.5)*102, 2, 0)
 
 		if IsConsole() then
 			entrybox.textboxes[i].bg = entrybox.textboxes[i]:AddChild( Image("images/global_redux.xml", "textbox3_gold_normal.tex") )
@@ -170,8 +170,8 @@ function RedeemDialog:MakeTextEntryBox(parent)
 						self.submit_btn:Select()
 					end
 					self.redeem_in_progress = true
-					TheItems:RedeemCode(redeem_code, function(success, status, item_type, category, message)
-						self:DisplayResult(success, status, item_type, category, message)
+					TheItems:RedeemCode(redeem_code, function(success, status, item_type, currency, currency_amt, category, message)
+						self:DisplayResult(success, status, item_type, currency, currency_amt, category, message)
 					end)
 				end
 			end
@@ -211,7 +211,7 @@ function RedeemDialog:MakeTextEntryBox(parent)
     self.entrybox = entrybox
 end
 
-function RedeemDialog:DisplayResult(success, status, item_type, category, message) 
+function RedeemDialog:DisplayResult(success, status, item_type, currency, currency_amt, category, message) 
 	-- Possible responses when attempting to query server:
 	--success=true, status="ACCEPTED"
 	--success=false, status="INVALID_CODE"
@@ -224,10 +224,10 @@ function RedeemDialog:DisplayResult(success, status, item_type, category, messag
     self.redeem_in_progress = false
 
 	--DO WE DEAL WITH item_type = FROMNUM???
-	print( "RedeemDialog:DisplayResult", success, status, item_type, category, message )
+	print( "RedeemDialog:DisplayResult", success, status, item_type, currency, currency_amt, category, message )
 	if success then
 		local items = {} -- early access thank you gifts
-		table.insert(items, {item=item_type, item_id=0, gifttype=category, message=message})
+		table.insert(items, {item=item_type, item_id=0, currency=currency, currency_amt=currency_amt, gifttype=category, message=message})
 
 		for i = 1, NUM_CODE_GROUPS do
 			self.entrybox.textboxes[i]:SetString("")

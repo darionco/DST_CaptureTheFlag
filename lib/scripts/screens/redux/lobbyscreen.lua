@@ -173,8 +173,6 @@ local CharacterSelectPanel = Class(LobbyPanel, function(self, owner)
 
 	local CharacterButtonCtor = Class(CharacterButton, function(self, character, cbPortraitFocused, cbPortraitClicked)
 		CharacterButton._ctor(self, character, cbPortraitFocused, cbPortraitClicked)
-		self:SetScale(0.95)
-		self.face:SetScale(1.1)
 	end)
 
 	local function BuildCharacterDetailsWidget(char)
@@ -457,14 +455,6 @@ local LavaarenaFestivalBookPannel = Class(LobbyPanel, function(self, owner)
 	
 	self.focus_forward = self.eventbook
 
-	function self:OnControl(control, down)
-		if self.eventbook:OnControlTabs(control, down) then
-			return true 
-		end
-
-		if Widget.OnControl(self, control, down) then return true end
-	end
-
 	function self:OnNextButton()
 		return true
 	end
@@ -474,6 +464,10 @@ local LavaarenaFestivalBookPannel = Class(LobbyPanel, function(self, owner)
 	end
 
 	function self:OnControl(control, down)
+		if self.eventbook:OnControlTabs(control, down) then
+			return true 
+		end
+
 		if Widget.OnControl(self, control, down) then return true end
 
         if TheInput:ControllerAttached() and (not down) and (control == CONTROL_PAUSE or control == CONTROL_ACCEPT) and owner.next_button:IsEnabled() then

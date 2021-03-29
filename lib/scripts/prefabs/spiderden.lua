@@ -1,3 +1,5 @@
+require("worldsettingsutil")
+
 local prefabs =
 {
     "spider",
@@ -165,6 +167,11 @@ local function AttemptMakeQueen(inst)
         return
     end
 
+    if not TUNING.SPAWN_SPIDERQUEEN then
+        SetLarge(inst)
+        return
+    end
+
     if inst.data.stage == nil or inst.data.stage ~= 3 then
         -- we got here directly (probably by loading), so reconfigure to the level 3 state.
         SetLarge(inst)
@@ -175,8 +182,8 @@ local function AttemptMakeQueen(inst)
         return
     end
 
-    local check_range = 60
-    local cap = 4
+    local check_range = TUNING.SPIDERDEN_QUEEN_RANGE_CHECK
+    local cap = TUNING.SPIDERDEN_QUEEN_CAP
     local x, y, z = inst.Transform:GetWorldPosition()
     local ents = TheSim:FindEntities(x, y, z, check_range, nil, nil, DENCHECK_ONEOF_TAGS)
     local num_dens = #ents
@@ -230,7 +237,7 @@ local function SpawnDefenders(inst, attacker)
             num_warriors = math.floor(SpringCombatMod(num_warriors))
             num_warriors = num_warriors - inst.components.childspawner:CountChildrenOutside(IsDefender)
             for k = 1, num_to_release do
-                inst.components.childspawner.childname = k <= num_warriors and "spider_warrior" or "spider"
+                inst.components.childspawner.childname = (TUNING.SPAWN_SPIDER_WARRIORS and k <= num_warriors and "spider_warrior") or "spider"
                 local spider = inst.components.childspawner:SpawnChild()
                 if spider ~= nil and attacker ~= nil and spider.components.combat ~= nil then
                     spider.components.combat:SetTarget(attacker)
@@ -338,7 +345,7 @@ local function GetMedGrowTime(inst)
 end
 
 local function GetLargeGrowTime(inst)
-    return TUNING.SPIDERDEN_GROW_TIME[3] * (1 + math.random())
+    return TUNING.SPIDERDEN_GROW_TIME_QUEEN * (1 + math.random())
 end
 
 local function OnEntityWake(inst)
@@ -374,10 +381,10 @@ end
 
 local growth_stages =
 {
-    { name = "small",   time = GetSmallGrowTime,    fn = SetSmall           },
-    { name = "med",     time = GetMedGrowTime,      fn = SetMedium          },
-    { name = "large",   time = GetLargeGrowTime,    fn = SetLarge           },
-    { name = "queen",                               fn = AttemptMakeQueen   },
+    { name = "small",   time = GetSmallGrowTime,    fn = SetSmall         },
+    { name = "med",     time = GetMedGrowTime,      fn = SetMedium        },
+    { name = "large",   time = GetLargeGrowTime,    fn = SetLarge,        multiplier = TUNING.SPIDERDEN_GROW_TIME_QUEEN * 2},
+    { name = "queen",                               fn = AttemptMakeQueen },
 }
 
 local function CanTarget(guy)
@@ -413,9 +420,22 @@ local function OnHaunt(inst)
 end
 
 local function OnLoadPostPass(inst)
-    if inst.components.growable ~= nil and inst:GetCurrentPlatform() ~= nil then
-		inst.components.growable:StopGrowing()
+    if inst:GetCurrentPlatform() then
+        if inst.components.growable then
+            inst.components.growable:StopGrowing()
+        end
+        if inst.components.childspawner then
+            inst.components.childspawner:StopRegen()
+        end
+    else
+        if inst.components.childspawner then
+            inst.components.childspawner:StartRegen()
+        end
     end
+end
+
+local function OnPreLoad(inst, data)
+    WorldSettings_ChildSpawner_PreLoad(inst, data, TUNING.SPIDERDEN_RELEASE_TIME, TUNING.SPIDERDEN_REGEN_TIME)
 end
 
 local function MakeSpiderDenFn(den_level)
@@ -465,10 +485,17 @@ local function MakeSpiderDenFn(den_level)
         inst.components.childspawner.childname = "spider"
         inst.components.childspawner:SetRegenPeriod(TUNING.SPIDERDEN_REGEN_TIME)
         inst.components.childspawner:SetSpawnPeriod(TUNING.SPIDERDEN_RELEASE_TIME)
+        WorldSettings_ChildSpawner_SpawnPeriod(inst, TUNING.SPIDERDEN_RELEASE_TIME, TUNING.SPIDERDEN_ENABLED)
+        WorldSettings_ChildSpawner_RegenPeriod(inst, TUNING.SPIDERDEN_REGEN_TIME, TUNING.SPIDERDEN_ENABLED)
+        if not TUNING.SPIDERDEN_ENABLED then
+            inst.components.childspawner.childreninside = 0
+        end
+
         inst.components.childspawner.allowboats = true
 
-        inst.components.childspawner.emergencychildname = "spider_warrior"
+        inst.components.childspawner.emergencychildname = TUNING.SPAWN_SPIDER_WARRIORS and "spider_warrior" or "spider"
         inst.components.childspawner.emergencychildrenperplayer = 1
+        inst.components.childspawner.canemergencyspawn = TUNING.SPIDERDEN_ENABLED
 
         inst.components.childspawner:SetSpawnedFn(onspawnspider)
         --inst.components.childspawner:SetMaxChildren(TUNING.SPIDERDEN_SPIDERS[stage])
@@ -533,6 +560,7 @@ local function MakeSpiderDenFn(den_level)
         inst.OnEntitySleep = OnEntitySleep
         inst.OnEntityWake = OnEntityWake
 		inst.OnLoadPostPass = OnLoadPostPass
+        inst.OnPreLoad = OnPreLoad
 
 		if not POPULATING then
 			inst:DoTaskInTime(0, OnLoadPostPass)

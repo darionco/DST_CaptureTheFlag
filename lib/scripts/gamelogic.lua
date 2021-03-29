@@ -5,6 +5,7 @@ require "util/profanityfilter"
 require "saveindex"
 require "shardsaveindex"
 require "shardindex"
+require "custompresets"
 require "map/extents"
 require "perfutil"
 require "maputil"
@@ -20,6 +21,7 @@ require "map/ocean_gen" -- for retrofitting the ocean tiles
 local EquipSlot = require("equipslotutil")
 local GroundTiles = require("worldtiledefs")
 local Stats = require("stats")
+local WorldSettings_Overrides = require("worldsettings_overrides")
 
 if PLATFORM == "WIN32_RAIL" then
 	TheSim:SetMemInfoTrackingInterval(5*60)
@@ -259,6 +261,24 @@ local function LoadAssets(asset_set, savedata)
                 LoadPrefabFile("prefabs/audio_test_prefab")
             end
 
+            if Settings.last_world_specialevent ~= Settings.current_world_specialevent then
+				if Settings.current_world_specialevent then
+					TheSim:LoadPrefabs({ Settings.current_world_specialevent })
+				end
+				if Settings.last_world_specialevent then
+					TheSim:UnloadPrefabs({ Settings.last_world_specialevent })
+				end
+            end
+
+            if Settings.last_world_asset ~= Settings.current_world_asset then
+				if Settings.current_world_asset then
+					TheSim:LoadPrefabs({ Settings.current_world_asset })
+				end
+				if Settings.last_world_asset then
+					TheSim:UnloadPrefabs({ Settings.last_world_asset })
+				end
+            end
+
 			ModManager:RegisterPrefabs()
 		else
 			print("\tUnload FE")
@@ -332,6 +352,21 @@ local function PopulateWorld(savedata, profile)
     Print(VERBOSITY.DEBUG, "[Instantiating objects...]")
     if savedata ~= nil then
 		ApplySpecialEvent(savedata.map.topology.overrides and savedata.map.topology.overrides.specialevent or nil)
+
+		if savedata.map.topology.overrides and not IsTableEmpty(savedata.map.topology.overrides) then
+			for name, override in pairs(WorldSettings_Overrides.Pre) do
+				local difficulty = savedata.map.topology.overrides[name]
+				if difficulty and difficulty ~= "default" then
+					print("OVERRIDE: setting", name, "to", difficulty)
+				end
+				override(difficulty or "default")
+			end
+		else
+			--if we lack overrides, all values are defaulted, to guarantee everything is on default values.
+			for name, override in pairs(WorldSettings_Overrides.Pre) do
+				override("default")
+			end
+		end
 
         local world = SpawnPrefab(savedata.map.prefab)
         if DEBUG_MODE then
@@ -523,30 +558,23 @@ local function PopulateWorld(savedata, profile)
             --V2C: forward to MOD game mode server configuration HERE
         end
 
-        -- Force overrides for ambient
-        local tuning_override = require("tuning_override")
-        tuning_override.areaambientdefault(savedata.map.prefab)
+		WorldSettings_Overrides.areaambientdefault(savedata.map.prefab)
 
         -- Check for map overrides
 		if world.topology.overrides ~= nil and GetTableSize(world.topology.overrides) > 0 then
-            -- Clear out one time overrides
-            if TheNet:GetCurrentSnapshot() > 2 then
-				local onetime = {"season_start", "autumn", "winter", "spring", "summer", "frograin", "wildfires", "prefabswaps_start", "rock_ice"}
-				for i,override in ipairs(onetime) do
-					if world.topology.overrides[override] ~= nil then
-						print("removing onetime override",override)
-						world.topology.overrides[override] = nil
-					end
+			for name, override in pairs(WorldSettings_Overrides.Post) do
+				local difficulty = world.topology.overrides[name]
+				if difficulty and difficulty ~= "default" then
+					print("OVERRIDE: setting", name, "to", difficulty)
 				end
+				override(difficulty or "default")
 			end
-
-            for override,value in pairs(world.topology.overrides) do
-                if tuning_override[override] ~= nil then
-                    print("OVERRIDE: setting",override,"to",value)
-                    tuning_override[override](value)
-                end
+		else
+			--if we lack overrides, all values are defaulted, to guarantee everything is on default values.
+			for name, override in pairs(WorldSettings_Overrides.Post) do
+				override("default")
 			end
-        end
+		end
 
         --instantiate all the dudes
         local newents = {}
@@ -713,6 +741,14 @@ local function DoInitGame(savedata, profile)
 	--assert(savedata.map.generated.densities, "Generated prefab densities missing from savedata on load")
 
 	assert(savedata.ents, "Entities missing from savedata on load")
+
+	local options = ShardGameIndex:GetGenOptions()
+	if options and options.overrides then
+		for k, v in pairs(options.overrides) do
+			savedata.map.topology.overrides[k] = v
+		end
+	end
+	savedata.map.topology.overrides.original = nil
 
 	if savedata.map.roads then
 		Roads = savedata.map.roads
@@ -1130,6 +1166,8 @@ Morgue = PlayerDeaths()
 PlayerHistory = PlayerHistory()
 ServerPreferences = ServerPreferences()
 ProfanityFilter = ProfanityFilter()
+CustomPresetManager = CustomPresets()
+CustomPresetManager:Load()
 
 Print(VERBOSITY.DEBUG, "[Loading Morgue]")
 Morgue:Load( function(did_it_load) 

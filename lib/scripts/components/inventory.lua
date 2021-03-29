@@ -6,6 +6,20 @@ local function OnDeath(inst)
     end
 end
 
+local function OnOwnerDespawned(inst)
+    if inst.components.inventory ~= nil then
+        for slot, item in pairs(inst.components.inventory.itemslots) do
+            item:PushEvent("player_despawn")
+        end
+        for slot, equip in pairs(inst.components.inventory.equipslots) do
+            equip:PushEvent("player_despawn")
+        end
+        if inst.components.inventory.activeitem ~= nil then
+            inst.components.inventory.activeitem:PushEvent("player_despawn")
+        end
+    end
+end
+
 local function onheavylifting(self, heavylifting)
     self.inst.replica.inventory:SetHeavyLifting(heavylifting)
 end
@@ -35,6 +49,8 @@ local Inventory = Class(function(self, inst)
 
     self.dropondeath = true
     inst:ListenForEvent("death", OnDeath)
+
+    inst:ListenForEvent("player_despawn", OnOwnerDespawned)
 
     if inst.replica.inventory.classified ~= nil then
         makereadonly(self, "maxslots")
@@ -147,6 +163,14 @@ local function CheckMigrationPets(inst, item)
                 table.insert(inst.migrationpets, v)
             end
         end
+
+        if item.components.migrationpetowner ~= nil then
+            local pet = item.components.migrationpetowner:GetPet()
+            if pet ~= nil then
+                table.insert(inst.migrationpets, pet)
+            end
+        end
+
         if item.components.container ~= nil then
             for k, v in pairs(item.components.container.slots) do
                 if v ~= nil then
@@ -938,6 +962,7 @@ function Inventory:RemoveItem(item, wholestack)
 
     if not wholestack and item.components.stackable ~= nil and item.components.stackable:IsStack() then
         local dec = item.components.stackable:Get()
+        dec.components.inventoryitem:OnRemoved()
         dec.prevslot = prevslot
         dec.prevcontainer = nil
         return dec
@@ -1467,10 +1492,9 @@ function Inventory:CanAccessItem(item)
         return false
     end
     local owner = item.components.inventoryitem.owner
-    return owner == self.inst
-        or (owner ~= nil and
+    return owner == self.inst or (owner ~= nil and
             owner.components.container ~= nil and
-            owner.components.container.opener == self.inst)
+            owner.components.container:IsOpenedBy(self.inst))
 end
 
 function Inventory:UseItemFromInvTile(item, actioncode, mod_name)
@@ -1676,6 +1700,9 @@ function Inventory:MoveItemFromAllOfSlot(slot, container)
     if item ~= nil and container ~= nil then
         container = container.components.container
         if container ~= nil and container:IsOpenedBy(self.inst) then
+
+            container.currentuser = self.inst
+
             local targetslot =
                 self.inst.components.constructionbuilderuidata ~= nil and
                 self.inst.components.constructionbuilderuidata:GetContainer() == container.inst and
@@ -1692,6 +1719,8 @@ function Inventory:MoveItemFromAllOfSlot(slot, container)
                     self.ignoresound = false
                 end
             end
+
+            container.currentuser = nil
         end
     end
 end
@@ -1704,6 +1733,8 @@ function Inventory:MoveItemFromHalfOfSlot(slot, container)
             container:IsOpenedBy(self.inst) and
             item.components.stackable ~= nil and
             item.components.stackable:IsStack() then
+
+            container.currentuser = self.inst
 
             local targetslot =
                 self.inst.components.constructionbuilderuidata ~= nil and
@@ -1721,6 +1752,8 @@ function Inventory:MoveItemFromHalfOfSlot(slot, container)
                     self.ignoresound = false
                 end
             end
+
+            container.currentuser = nil
         end
     end
 end

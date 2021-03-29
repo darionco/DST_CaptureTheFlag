@@ -1,4 +1,7 @@
-package.path = package.path .. ";scripts/?.lua"
+-- Override the package.path in luaconf.h because it is impossible to find
+package.path = "scripts\\?.lua;scriptlibs\\?.lua"
+package.assetpath = {}
+table.insert(package.assetpath, {path = ""})
 
 function SetWorldGenSeed(seed)
 	if seed == nil then
@@ -22,19 +25,28 @@ WORLDGEN_MAIN = 1
 POT_GENERATION = false
 
 --install our crazy loader! MUST BE HERE FOR NACL
+local manifest_paths = {}
 local loadfn = function(modulename)
     local errmsg = ""
-    local modulepath = string.gsub(modulename, "%.", "/")
+    local modulepath = string.gsub(modulename, "[%.\\]", "/")
     for path in string.gmatch(package.path, "([^;]+)") do
-        local filename = string.gsub(path, "%?", modulepath)
-        filename = string.gsub(filename, "\\", "/")
-        local result = kleiloadlua(filename)
-        if result then
-            return result
-        end
+		local pathdata = manifest_paths[path]
+		if not pathdata then
+			pathdata = {}
+			local manifest, matches = string.gsub(path, MODS_ROOT.."([^\\]+)\\scripts\\%?%.lua", "%1", 1)
+			if matches == 1 then
+				pathdata.manifest = manifest
+			end
+			manifest_paths[path] = pathdata
+		end
+        local filename = string.gsub(string.gsub(path, "%?", modulepath), "\\", "/")
+		local result = kleiloadlua(filename, pathdata.manifest, "scripts/"..modulepath..".lua")
+		if result then
+			return result
+		end
         errmsg = errmsg.."\n\tno file '"..filename.."' (checked with custom loader)"
     end
-  return errmsg    
+  	return errmsg
 end
 table.insert(package.loaders, 2, loadfn)
 
@@ -323,28 +335,20 @@ local function AddSetPeices(level)
         AddSingleSetPeice(level, "map/protected_resources")
     end
 
-	local multiply = {
-		["rare"] = 0.5,
-		["default"] = 1,
-		["often"] = 1.5,
-		["mostly"] = 2.2,
-		["always"] = 3,		
-	}
-
 	if touchstone_override ~= "default" and level.set_pieces ~= nil and 
 								level.set_pieces["ResurrectionStone"] ~= nil then
 
 		if touchstone_override == "never" then
 			level.set_pieces["ResurrectionStone"] = nil
 		else
-			level.set_pieces["ResurrectionStone"].count = math.ceil(level.set_pieces["ResurrectionStone"].count*multiply[touchstone_override])
+			level.set_pieces["ResurrectionStone"].count = math.ceil(level.set_pieces["ResurrectionStone"].count*forest_map.MULTIPLY[touchstone_override])
 		end
 	end
 
 	if boons_override ~= "never" then
 
 		-- Quick hack to get the boons in
-		for idx=1, math.random(math.floor(3*multiply[boons_override]), math.ceil(8*multiply[boons_override])) do
+		for idx=1, math.random(math.floor(3*forest_map.MULTIPLY[boons_override]), math.ceil(8*forest_map.MULTIPLY[boons_override])) do
 			AddSingleSetPeice(level, "map/boons")
 		end
 	end

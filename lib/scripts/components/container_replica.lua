@@ -14,10 +14,13 @@ local Container = Class(function(self, inst)
     self.itemtestfn = nil
     self.priorityfn = nil
     self.opentask = nil
+    self.openers = {}
+    self.opener = nil
 
     if TheWorld.ismastersim then
         self.classified = SpawnPrefab("container_classified")
         self.classified.entity:SetParent(inst.entity)
+        self.classified.Network:SetClassifiedTarget(self.inst)
 
         --Server intercepts messages and forwards to clients via classified net vars
         self._onitemget = function(inst, data)
@@ -47,8 +50,26 @@ local Container = Class(function(self, inst)
             inst.container_classified = nil
             self:AttachClassified(self.classified)
         end
+        if self.opener == nil and inst.container_opener ~= nil then
+            self.opener = self.inst.container_opener
+            inst.container_opener.OnRemoveEntity = nil
+            inst.container_opener = nil
+            self:AttachOpener(self.opener)
+        end
     end
 end)
+
+local function SetOpener(self, opener)
+    self.classified.Network:SetClassifiedTarget(opener or self.inst)
+    if self.inst.components.container ~= nil then
+        for k, v in pairs(self.inst.components.container.slots) do
+            v.replica.inventoryitem:SetOwner(self.inst)
+        end
+    else
+        --Shouldn't be reachable.
+        assert(false)
+    end
+end
 
 --------------------------------------------------------------------------
 
@@ -70,6 +91,16 @@ function Container:OnRemoveFromEntity()
             self.classified._parent = nil
             self.inst:RemoveEventCallback("onremove", self.ondetachclassified, self.classified)
             self:DetachClassified()
+        end
+    end
+    if self.opener and not TheWorld.ismastersim then
+        self.opener._parent = nil
+        self.inst:RemoveEventCallback("onremove", self.ondetachopener, self.opener)
+        self:DetachOpener()
+    elseif TheWorld.ismastersim then
+        for player, opener in pairs(self.openers) do
+            opener:Remove()
+            self.openers[player] = nil
         end
     end
 end
@@ -109,6 +140,19 @@ function Container:AttachClassified(classified)
     self.inst:ListenForEvent("onremove", self.ondetachclassified, classified)
 
     classified:InitializeSlots(self:GetNumSlots())
+end
+
+function Container:DetachClassified()
+    self.inst:RemoveEventCallback("onremove", self.ondetachclassified, self.classified)
+    self.classified = nil
+    self.ondetachclassified = nil
+end
+
+function Container:AttachOpener(opener)
+    self.opener = opener
+
+    self.ondetachopener = function() self:DetachOpener() end
+    self.inst:ListenForEvent("onremove", self.ondetachopener, opener)
 
     local inv = self.issidewidget and ThePlayer ~= nil and ThePlayer.HUD ~= nil and ThePlayer.HUD.controls.inv or nil
     self.opentask = self.inst:DoTaskInTime(0, OpenContainer, self, inv ~= nil and (not inv.shown or inv.rebuild_snapping))
@@ -119,15 +163,53 @@ function Container:AttachClassified(classified)
     end
 end
 
-function Container:DetachClassified()
-    self.classified = nil
-    self.ondetachclassified = nil
+function Container:DetachOpener()
+    self.inst:RemoveEventCallback("onremove", self.ondetachopener, self.opener)
+    self.opener = nil
+    self.ondetachopener = nil
     if self.issidewidget then
         self.inst:RemoveEventCallback("itemget", OnRefreshCrafting)
         self.inst:RemoveEventCallback("itemlose", OnRefreshCrafting)
         OnRefreshCrafting(self.inst)
     end
     self:Close()
+end
+
+function Container:AddOpener(opener)
+    local opencount = self.inst.components.container.opencount
+    if opencount == 1 then
+        --standard logic.
+        SetOpener(self, opener)
+    elseif opencount > 1 then
+        self.classified.Network:SetClassifiedTarget(nil)
+        if self.inst.components.container ~= nil then
+            for k, v in pairs(self.inst.components.container.slots) do
+                v.replica.inventoryitem:SetOwner(self.inst)
+            end
+        end
+    end
+    self.openers[opener] = self.inst:SpawnChild("container_opener")
+    self.openers[opener].Network:SetClassifiedTarget(opener)
+end
+
+function Container:RemoveOpener(opener)
+    local opencount = self.inst.components.container.opencount
+    if opencount == 0 then
+        SetOpener(self, nil)
+    elseif opencount == 1 then
+        SetOpener(self, table.getkeys(self.inst.components.container.openlist)[1])
+    elseif opencount > 1 then
+        self.classified.Network:SetClassifiedTarget(nil)
+        if self.inst.components.container ~= nil then
+            for k, v in pairs(self.inst.components.container.slots) do
+                v.replica.inventoryitem:SetOwner(self.inst)
+            end
+        end
+    end
+    if self.openers[opener] then
+        self.openers[opener]:Remove()
+        self.openers[opener] = nil
+    end
 end
 
 --------------------------------------------------------------------------
@@ -227,23 +309,13 @@ function Container:IsSideWidget()
     return self.issidewidget
 end
 
-function Container:SetOpener(opener)
-    self.classified.Network:SetClassifiedTarget(opener or self.inst)
-    if self.inst.components.container ~= nil then
-        for k, v in pairs(self.inst.components.container.slots) do
-            v.replica.inventoryitem:SetOwner(self.inst)
-        end
-    else
-        --Should only reach here during container construction
-        assert(opener == nil)
-    end
-end
+Container.SetOpener = function() end --depreciated, kept in case a mod calls this function.
 
 function Container:IsOpenedBy(guy)
     if self.inst.components.container ~= nil then
         return self.inst.components.container:IsOpenedBy(guy)
     else
-        return self._isopen and self.classified ~= nil and guy ~= nil and guy == ThePlayer
+        return self.opener ~= nil and self._isopen and self.classified ~= nil and guy ~= nil and guy == ThePlayer
     end
 end
 
@@ -251,7 +323,7 @@ function Container:IsHolding(item, checkcontainer)
     if self.inst.components.container ~= nil then
         return self.inst.components.container:IsHolding(item, checkcontainer)
     else
-        return self.classified ~= nil and self.classified:IsHolding(item, checkcontainer)
+        return self.opener ~= nil and self.classified ~= nil and self.classified:IsHolding(item, checkcontainer)
     end
 end
 
@@ -259,7 +331,7 @@ function Container:GetItemInSlot(slot)
     if self.inst.components.container ~= nil then
         return self.inst.components.container:GetItemInSlot(slot)
     else
-        return self.classified ~= nil and self.classified:GetItemInSlot(slot) or nil
+        return self.opener ~= nil and self.classified ~= nil and self.classified:GetItemInSlot(slot) or nil
     end
 end
 
@@ -267,7 +339,7 @@ function Container:GetItems()
     if self.inst.components.container ~= nil then
         return self.inst.components.container.slots
     else
-        return self.classified ~= nil and self.classified:GetItems() or {}
+        return self.opener ~= nil and self.classified ~= nil and self.classified:GetItems() or {}
     end
 end
 
@@ -275,7 +347,7 @@ function Container:IsEmpty()
     if self.inst.components.container ~= nil then
         return self.inst.components.container:IsEmpty()
     else
-        return self.classified ~= nil and self.classified:IsEmpty()
+        return self.opener ~= nil and self.classified ~= nil and self.classified:IsEmpty()
     end
 end
 
@@ -283,14 +355,14 @@ function Container:IsFull()
     if self.inst.components.container ~= nil then
         return self.inst.components.container:IsFull()
     else
-        return self.classified ~= nil and self.classified:IsFull()
+        return self.opener ~= nil and self.classified ~= nil and self.classified:IsFull()
     end
 end
 
 function Container:Has(prefab, amount)
     if self.inst.components.container ~= nil then
         return self.inst.components.container:Has(prefab, amount)
-    elseif self.classified ~= nil then
+    elseif self.classified ~= nil and self.opener ~= nil then
         return self.classified:Has(prefab, amount)
     else
         return amount <= 0, 0
@@ -299,8 +371,8 @@ end
 
 function Container:HasItemWithTag(tag, amount)
     if self.inst.components.container ~= nil then
-        return self.inst.components.container:HasItemWithTag(tag, amount)
-    elseif self.classified ~= nil then
+        return self.inst.components.container:HasTag(tag, amount)
+    elseif self.classified ~= nil and self.opener ~= nil then
         return self.classified:HasItemWithTag(tag, amount)
     else
         return amount <= 0, 0
@@ -349,16 +421,18 @@ function Container:Close()
 end
 
 function Container:IsBusy()
-    return self.inst.components.container == nil and (self.classified == nil or self.classified:IsBusy())
+    return self.inst.components.container == nil and ((self.classified == nil or self.opener == nil) or self.classified:IsBusy())
 end
 
 --------------------------------------------------------------------------
 --InvSlot click action handlers
 --------------------------------------------------------------------------
 
+--only the "client" should be calling these functions, even in cases where the client turns out to be the server, so using ThePlayer as opener should probably work out.
+
 function Container:PutOneOfActiveItemInSlot(slot)
     if self.inst.components.container ~= nil then
-        self.inst.components.container:PutOneOfActiveItemInSlot(slot)
+        self.inst.components.container:PutOneOfActiveItemInSlot(slot, ThePlayer)
     elseif self.classified ~= nil then
         self.classified:PutOneOfActiveItemInSlot(slot)
     end
@@ -366,7 +440,7 @@ end
 
 function Container:PutAllOfActiveItemInSlot(slot)
     if self.inst.components.container ~= nil then
-        self.inst.components.container:PutAllOfActiveItemInSlot(slot)
+        self.inst.components.container:PutAllOfActiveItemInSlot(slot, ThePlayer)
     elseif self.classified ~= nil then
         self.classified:PutAllOfActiveItemInSlot(slot)
     end
@@ -374,7 +448,7 @@ end
 
 function Container:TakeActiveItemFromHalfOfSlot(slot)
     if self.inst.components.container ~= nil then
-        self.inst.components.container:TakeActiveItemFromHalfOfSlot(slot)
+        self.inst.components.container:TakeActiveItemFromHalfOfSlot(slot, ThePlayer)
     elseif self.classified ~= nil then
         self.classified:TakeActiveItemFromHalfOfSlot(slot)
     end
@@ -382,7 +456,7 @@ end
 
 function Container:TakeActiveItemFromAllOfSlot(slot)
     if self.inst.components.container ~= nil then
-        self.inst.components.container:TakeActiveItemFromAllOfSlot(slot)
+        self.inst.components.container:TakeActiveItemFromAllOfSlot(slot, ThePlayer)
     elseif self.classified ~= nil then
         self.classified:TakeActiveItemFromAllOfSlot(slot)
     end
@@ -390,7 +464,7 @@ end
 
 function Container:AddOneOfActiveItemToSlot(slot)
     if self.inst.components.container ~= nil then
-        self.inst.components.container:AddOneOfActiveItemToSlot(slot)
+        self.inst.components.container:AddOneOfActiveItemToSlot(slot, ThePlayer)
     elseif self.classified ~= nil then
         self.classified:AddOneOfActiveItemToSlot(slot)
     end
@@ -398,7 +472,7 @@ end
 
 function Container:AddAllOfActiveItemToSlot(slot)
     if self.inst.components.container ~= nil then
-        self.inst.components.container:AddAllOfActiveItemToSlot(slot)
+        self.inst.components.container:AddAllOfActiveItemToSlot(slot, ThePlayer)
     elseif self.classified ~= nil then
         self.classified:AddAllOfActiveItemToSlot(slot)
     end
@@ -406,7 +480,7 @@ end
 
 function Container:SwapActiveItemWithSlot(slot)
     if self.inst.components.container ~= nil then
-        self.inst.components.container:SwapActiveItemWithSlot(slot)
+        self.inst.components.container:SwapActiveItemWithSlot(slot, ThePlayer)
     elseif self.classified ~= nil then
         self.classified:SwapActiveItemWithSlot(slot)
     end
@@ -414,7 +488,7 @@ end
 
 function Container:SwapOneOfActiveItemWithSlot(slot)
     if self.inst.components.container ~= nil then
-        self.inst.components.container:SwapOneOfActiveItemWithSlot(slot)
+        self.inst.components.container:SwapOneOfActiveItemWithSlot(slot, ThePlayer)
     elseif self.classified ~= nil then
         self.classified:SwapOneOfActiveItemWithSlot(slot)
     end
@@ -422,7 +496,7 @@ end
 
 function Container:MoveItemFromAllOfSlot(slot, container)
     if self.inst.components.container ~= nil then
-        self.inst.components.container:MoveItemFromAllOfSlot(slot, container)
+        self.inst.components.container:MoveItemFromAllOfSlot(slot, container, ThePlayer)
     elseif self.classified ~= nil then
         self.classified:MoveItemFromAllOfSlot(slot, container)
     end
@@ -430,7 +504,7 @@ end
 
 function Container:MoveItemFromHalfOfSlot(slot, container)
     if self.inst.components.container ~= nil then
-        self.inst.components.container:MoveItemFromHalfOfSlot(slot, container)
+        self.inst.components.container:MoveItemFromHalfOfSlot(slot, container, ThePlayer)
     elseif self.classified ~= nil then
         self.classified:MoveItemFromHalfOfSlot(slot, container)
     end

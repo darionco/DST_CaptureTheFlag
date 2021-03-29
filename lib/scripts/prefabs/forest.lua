@@ -325,7 +325,7 @@ local prefabs =
 	"bullkelp_plant",
 	"cookiecutter",
 	"cookiecutter_spawner",
-    "crabking",
+    "crabking_spawner",
     "driftwood_log",
     "driftwood_small1",
     "driftwood_small2",
@@ -516,7 +516,10 @@ local function master_postinit(inst)
     end
     
     inst:AddComponent("feasts")
+    
     inst:AddComponent("yotc_raceprizemanager")
+    inst:AddComponent("yotb_stagemanager")
+
     inst:AddComponent("sharklistener")
 
     if METRICS_ENABLED then

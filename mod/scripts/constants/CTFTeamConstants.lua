@@ -8,7 +8,7 @@ local CTF_TEAM_CONSTANTS = {
     EXCLUDE_PREFIX_TAG = 'CTF_EXCLUDE_',
 
     MINION_PREFABS = { 'deerclops', 'deerclops', 'deerclops', 'spider_warrior' },
-    MINION_SPAWN_PERIOD = 25,
+    MINION_SPAWN_PERIOD = 30,
 
     ITEM_LOCKED_TAG = 'CTF_ITEM_LOCKED',
 

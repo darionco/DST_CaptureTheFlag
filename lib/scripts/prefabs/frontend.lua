@@ -26,6 +26,11 @@ local assets =
     Asset("IMAGE", "images/customisation.tex"),
     Asset("ATLAS", "images/customisation.xml"),
 
+    Asset("IMAGE", "images/worldgen_customization.tex"),
+    Asset("ATLAS", "images/worldgen_customization.xml"),
+    Asset("IMAGE", "images/worldsettings_customization.tex"),
+    Asset("ATLAS", "images/worldsettings_customization.xml"),
+
     --BETA
     Asset("DYNAMIC_ATLAS", "images/anr_silhouettes.xml"),
     Asset("PKGREF", "images/anr_silhouettes.tex"),
@@ -160,6 +165,8 @@ local assets =
     Asset("ANIM", "anim/shoppe_frames.zip"),
     Asset("ANIM", "anim/skin_collector.zip"),
     Asset("ANIM", "anim/textbox.zip"),
+
+    Asset("ANIM", "anim/kleipoints.zip"),
 
     Asset("ANIM", "anim/chest_bg.zip"),
 

@@ -72,22 +72,18 @@ local function FindDeciduousTreeMonster(inst)
 end
 
 local function KeepChoppingAction(inst)
-    local keep_chopping = inst.tree_target ~= nil
+    return inst.tree_target ~= nil
         or (inst.components.follower.leader ~= nil and
             inst:IsNear(inst.components.follower.leader, KEEP_CHOPPING_DIST))
         or FindDeciduousTreeMonster(inst) ~= nil
-    
-    return keep_chopping
 end
 
 local function StartChoppingCondition(inst)
-    local chop_condition = inst.tree_target ~= nil
+    return inst.tree_target ~= nil
         or (inst.components.follower.leader ~= nil and
             inst.components.follower.leader.sg ~= nil and
             inst.components.follower.leader.sg:HasStateTag("chopping"))
         or FindDeciduousTreeMonster(inst) ~= nil
-
-    return chop_condition
 end
 
 local function FindTreeToChopAction(inst)
@@ -269,7 +265,46 @@ local function GetNoLeaderHomePos(inst)
     return inst.components.knownlocations:GetLocation("home")
 end
 
+local function CurrentContestTarget(inst)
+    local stage = inst.npc_stage 
+    if stage.current_contest_target then
+        return stage.current_contest_target
+    else
+        return stage
+    end
+end
+
+local function MarkPost(inst)
+    if inst.yotb_post_to_mark ~= nil then
+        return BufferedAction(inst, inst.yotb_post_to_mark, ACTIONS.MARK)
+    end
+end
+
+
+local function CollctPrize(inst)
+    if inst.yotb_prize_to_collect ~= nil then
+        local x,y,z = inst.yotb_prize_to_collect.Transform:GetWorldPosition()
+        if y < 0.1 and y > -0.1 and not inst.yotb_prize_to_collect:HasTag("INLIMBO") then
+            return BufferedAction(inst, inst.yotb_prize_to_collect, ACTIONS.PICKUP)
+        end
+    end
+end
+
 function MermBrain:OnStart()
+
+    local in_contest = WhileNode( function() return self.inst:HasTag("NPC_contestant") end, "In contest",
+        PriorityNode({
+--            IfNode(function() return self.inst.yotb_post_to_mark end, "mark post",
+                DoAction(self.inst, CollctPrize, "collect prize", true ),
+                DoAction(self.inst, MarkPost, "mark post", true ),   --)
+            WhileNode( function() return self.inst.components.timer and self.inst.components.timer:TimerExists("contest_panic") end, "Panic Contest",
+                ChattyNode(self.inst, "MERM_TALK_CONTEST_PANIC",
+                    Panic(self.inst))),            
+            ChattyNode(self.inst, "MERM_TALK_CONTEST_OOOH",
+                FaceEntity(self.inst, CurrentContestTarget, CurrentContestTarget ), 5, 15),
+        }, 0.1))
+
+
     local root = PriorityNode(
     {
         IfNode(function() return TheWorld.components.mermkingmanager and TheWorld.components.mermkingmanager.king end,"panic with king",
@@ -283,6 +318,8 @@ function MermBrain:OnStart()
         WhileNode(function() return self.inst.components.combat.target ~= nil and self.inst.components.combat:InCooldown() end, "Dodge",
             RunAway(self.inst, function() return self.inst.components.combat.target end, RUN_AWAY_DIST, STOP_RUN_AWAY_DIST)),
 
+        in_contest,
+
         ChattyNode(self.inst, "MERM_TALK_FIND_FOOD",
             DoAction(self.inst, EatFoodAction, "Eat Food")),
 
@@ -294,17 +331,15 @@ function MermBrain:OnStart()
                 ),
             }, .25)),
 
-        IfNode(function() return StartChoppingCondition(self.inst) end, "chop", 
-                WhileNode(function() return KeepChoppingAction(self.inst) end, "keep chopping",
-                    LoopNode{
-                        ChattyNode(self.inst, "MERM_TALK_HELP_CHOP_WOOD",
-                            DoAction(self.inst, FindTreeToChopAction ))})),
+        IfThenDoWhileNode(function() return StartChoppingCondition(self.inst) end, function() return KeepChoppingAction(self.inst) end, "chop",
+	        LoopNode{
+	            ChattyNode(self.inst, "MERM_TALK_HELP_CHOP_WOOD",
+	                DoAction(self.inst, FindTreeToChopAction ))}),
 
-        IfNode(function() return StartMiningCondition(self.inst) end, "mine", 
-                WhileNode(function() return KeepMiningAction(self.inst) end, "keep mining", 
-                    LoopNode{
-                        ChattyNode(self.inst, "MERM_TALK_HELP_MINE_ROCK",
-                            DoAction(self.inst, FindRockToMineAction ))})),
+        IfThenDoWhileNode(function() return StartMiningCondition(self.inst) end, function() return KeepMiningAction(self.inst) end, "mine",
+            LoopNode{
+                ChattyNode(self.inst, "MERM_TALK_HELP_MINE_ROCK",
+                    DoAction(self.inst, FindRockToMineAction ))}),
 
         ChattyNode(self.inst, "MERM_TALK_FOLLOWWILSON",
 		  Follow(self.inst, function() return self.inst.components.follower.leader end, MIN_FOLLOW_DIST, TARGET_FOLLOW_DIST, MAX_FOLLOW_DIST)),

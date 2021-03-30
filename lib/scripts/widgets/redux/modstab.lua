@@ -963,8 +963,7 @@ function ModsTab:OnConfirmEnable(restart, modname)
     local modinfo = KnownModIndex:GetModInfo(modname)
     if KnownModIndex:IsLocalModWarningEnabled() and self.settings.is_configuring_server and
         KnownModIndex:IsModEnabled(modname) and modinfo.all_clients_require_mod then
-        local workshop_prefix = "workshop-"
-        if string.sub( modname, 0, string.len(workshop_prefix) ) ~= workshop_prefix then
+        if not IsWorkshopMod(modname) then
             local warn_txt = STRINGS.UI.MODSSCREEN.MOD_WARNING
 			if IsRail() then
 				warn_txt = STRINGS.UI.MODSSCREEN.MOD_WARNING_RAIL
@@ -1103,17 +1102,17 @@ function ModsTab:ShowModDetails(widget_idx, client_mod)
     local align = self.detailtitle._align
     self.detailtitle:SetMultilineTruncatedString(modinfo.name or modname or "", align.maxlines, align.width, align.maxchars, true)
     local w,h = self.detailtitle:GetRegionSize()
-    self.detailtitle:SetPosition(w/2 - align.x, align.y)
+    self.detailtitle:SetPosition((w or 0)/2 - align.x, align.y)
 
     align = self.detailauthor._align
     self.detailauthor:SetTruncatedString(modname and string.format(STRINGS.UI.MODSSCREEN.AUTHORBY, modinfo.author or "unknown") or "", align.width, align.maxchars, true)
     w, h = self.detailauthor:GetRegionSize()
-    self.detailauthor:SetPosition(w/2 - align.x, align.y)
+    self.detailauthor:SetPosition((w or 0)/2 - align.x, align.y)
 
     align = self.detaildesc._align
     self.detaildesc:SetMultilineTruncatedString(modinfo.description or "", align.maxlines, align.width, align.maxchars, true)
     w, h = self.detaildesc:GetRegionSize()
-    self.detaildesc:SetPosition(w/2 - 190, 90 - .5 * h)
+    self.detaildesc:SetPosition((w or 0)/2 - 190, 90 - .5 * (h or 0))
 
     if modinfo.dst_compatible then
         if modinfo.dst_compatibility_specified == false then
@@ -1349,7 +1348,7 @@ function ModsTab:ReloadModInfoPrefabs()
             Asset("IMAGE", info.iconpath),
         }
         local prefab = Prefab("MODSCREEN_"..modname, nil, modinfoassets, nil)
-        RegisterPrefabs(prefab)
+        RegisterSinglePrefab(prefab)
         table.insert(prefabs_to_load, prefab.name)
         self.infoprefabs[modname] = info
     end

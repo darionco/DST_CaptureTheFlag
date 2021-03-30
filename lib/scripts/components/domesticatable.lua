@@ -172,6 +172,13 @@ end
 function Domesticatable:SetDomesticated(domesticated)
     self.domesticated = domesticated
     self:Validate()
+    if domesticated then
+        self.inst:AddTag("domesticated") 
+    else
+        if self.inst:HasTag("domesticated") then
+            self.inst:RemoveTag("domesticated")
+        end
+    end
 end
 
 function Domesticatable:IsDomesticated()
@@ -202,7 +209,7 @@ function Domesticatable:OnSave()
     }
 end
 
-function Domesticatable:OnLoad(data)
+function Domesticatable:OnLoad(data, newents)
     if data ~= nil then
         self.domestication = data.domestication or self.domestication
         self.tendencies = data.tendencies or self.tendencies
@@ -214,7 +221,7 @@ function Domesticatable:OnLoad(data)
         self:SetMinObedience(data.minobedience or 0)
         --V2C: see above comment in OnSave
         if self.inst.components.rideable ~= nil then
-            self.inst.components.rideable:OnLoadDomesticatable(data.rideable)
+            self.inst.components.rideable:OnLoadDomesticatable(data.rideable, newents)
         end
     end
     self:CheckAndStartTask()

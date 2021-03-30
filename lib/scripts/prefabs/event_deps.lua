@@ -158,14 +158,27 @@ local SPECIAL_EVENT_DEPS =
         },
     },
 
+    [SPECIAL_EVENTS.YOTB] =
+    {
+        frontend =
+        {
+            assets =
+            {
+                Asset("ANIM", "anim/dst_menu_beefalo.zip"),
+                Asset("ANIM", "anim/dst_menu_beefalo_bg.zip"),
+                Asset("SOUND", "sound/music_frontend_yotb.fsb"),
+            },
+        },
+    },    
+
     [SPECIAL_EVENTS.NONE] =
     {
         frontend =
         {
             assets =
             {
-                Asset("PKGREF", "anim/dst_menu_v2.zip"),
-                Asset("PKGREF", "anim/dst_menu_v2_bg.zip"),
+                Asset("ANIM", "anim/dst_menu_v2.zip"),
+                Asset("ANIM", "anim/dst_menu_v2_bg.zip"),
 
                 Asset("PKGREF", "anim/dst_menu.zip"),
                 Asset("PKGREF", "anim/dst_menu_winona.zip"),
@@ -183,12 +196,8 @@ local SPECIAL_EVENT_DEPS =
                 Asset("PKGREF", "anim/dst_menu_walter.zip"),
                 Asset("PKGREF", "anim/dst_menu_wathgrithr.zip"),
                 Asset("PKGREF", "anim/dst_menu_dangerous_sea.zip"),
-                
                 Asset("PKGREF", "anim/dst_menu_grotto.zip"),
-
-                Asset("ANIM", "anim/dst_menu_farming.zip"),
-
-                
+                Asset("PKGREF", "anim/dst_menu_farming.zip"),
             },
         },
     },

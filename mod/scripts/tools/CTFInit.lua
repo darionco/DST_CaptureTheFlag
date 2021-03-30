@@ -4,8 +4,20 @@
 --- DateTime: 2021-03-25 7:55 p.m.
 ---
 
+-- make sure this is initialized only once since it can be imported using `require` or `use`
+local status, imp = pcall(function() return _G._ctf_init_imp end);
+if status then
+    return imp;
+end
+
+local MakePlayerCharacter = require('prefabs/player_common');
+local CTFClassPatcher = require('tools/CTFClassPatcher');
+
 local CTFInit = {
-    _prefabQueue = {};
+    characterPostInitAll = { common = {}, master ={} },
+    characterPostInit = {},
+    prefabPostInitAll = { common = {}, master = {} },
+    prefabPostInit = {},
 }
 
 -- this could be optimized, bleh
@@ -25,124 +37,184 @@ function CTFInit:RetrieveUpvalues(fn)
     return variables
 end
 
-function CTFInit:AddEntryToQueue(fn, file_or_name, name_or_common_fn, common_or_master_fn, master_fn)
-    local entry = {
-        fn = fn,
-        file = file_or_name,
-    }
-
-    if type(name_or_common_fn) == 'string' then
-        entry.name = name_or_common_fn;
-        entry.common_postinit = common_or_master_fn;
-        entry.master_postinit = master_fn;
-    else
-        entry.name = file_or_name;
-        entry.common_postinit = name_or_common_fn;
-        entry.master_postinit = common_or_master_fn;
-    end
-
-    table.insert(self._prefabQueue, entry);
-end
-
-function CTFInit:Character(file_or_name, name_or_common_fn, common_or_master_fn, master_fn)
-    self:AddEntryToQueue(CTFInit._doCharacterInit, file_or_name, name_or_common_fn, common_or_master_fn, master_fn);
-end
-
-function CTFInit:_doCharacterInit(prefab, entry)
-    local upvalues = self:RetrieveUpvalues(prefab.fn);
-    local common_postinit = entry.common_postinit;
-    local master_postinit = entry.master_postinit;
-
-    if common_postinit and upvalues['common_postinit'] then
-        local up = upvalues['common_postinit'];
-        debug.setupvalue(prefab.fn, up.i, function(inst)
-            if up.v ~= nil then
-                up.v(inst);
-            end
-            common_postinit(inst);
-        end);
-    end
-
-    if master_postinit and upvalues['master_postinit'] then
-        local up = upvalues['master_postinit'];
-        debug.setupvalue(prefab.fn, up.i, function(inst)
-            if up.v ~= nil then
-                up.v(inst);
-            end
-            master_postinit(inst);
-        end);
-    end
-end
-
-function CTFInit:Prefab(file_or_name, name_or_common_fn, common_or_master_fn, master_fn)
-    self:AddEntryToQueue(CTFInit._doPrefabInit, file_or_name, name_or_common_fn, common_or_master_fn, master_fn);
-end
-
-function CTFInit:_doPrefabInit(prefab, entry)
-    local common_postinit = entry.common_postinit;
-    local master_postinit = entry.master_postinit;
-
-    if common_postinit then
-        local OldCreateEntity = _G.CreateEntity;
-        local fenv = {
-            CreateEntity = function(name)
-                local inst = OldCreateEntity(name);
-                -- temporarily replace the entity, it will be restored once SetPristine is called
-                local entity = inst.entity;
-                local fauxEntity = {
-                    SetPristine = function(self)
-                        common_postinit(inst);
-                        entity:SetPristine(self);
-                        inst.entity = entity;
-                    end
-                }
-
-                setmetatable(fauxEntity, {
-                    __index = function(_, key)
-                        if type(entity[key]) == 'function' then
-                            return function(_, ...)
-                                return entity[key](entity, ...);
-                            end
-                        end
-                        return entity[key];
-                    end
-                })
-
-                inst.entity = fauxEntity;
-
-                return inst;
-            end
+function CTFInit:AddEntryToQueue(target, name, common_fn, master_fn)
+    if name and not target[name] then
+        target[name] = {
+            common = {},
+            master = {},
         }
-        setmetatable(fenv, { __index = _G });
-        setfenv(prefab.fn, fenv);
     end
 
-    if master_postinit then
-        local prefabFn = prefab.fn;
-        prefab.fn = function()
+    if common_fn then
+        if name then
+            table.insert(target[name].common, common_fn);
+        else
+            table.insert(target.common, common_fn);
+        end
+    end
+
+    if master_fn then
+        if name then
+            table.insert(target[name].master, master_fn);
+        else
+            table.insert(target.master, master_fn);
+        end
+    end
+end
+
+function CTFInit:Character(name, common_fn, master_fn)
+    if name == nil then
+        self:AddEntryToQueue(CTFInit.characterPostInitAll, name, common_fn, master_fn);
+    else
+        self:AddEntryToQueue(CTFInit.characterPostInit, name, common_fn, master_fn);
+    end
+end
+
+function CTFInit:AllCharacters(common_fn, master_fn)
+    self:Character(nil, common_fn, master_fn);
+end
+
+function CTFInit:Prefab(name, common_fn, master_fn)
+    if name == nil then
+        self:AddEntryToQueue(CTFInit.prefabPostInitAll, name, common_fn, master_fn);
+    else
+        self:AddEntryToQueue(CTFInit.prefabPostInit, name, common_fn, master_fn);
+    end
+end
+
+-- WARNING: this includes characters
+function CTFInit:AllPrefabs(common_fn, master_fn)
+    self:Prefab(nil, common_fn, master_fn);
+end
+
+-- patch MakePlayerCharacter
+package.loaded['prefabs/player_common'] = function(name, customprefabs, customassets, common_postinit, master_postinit, starting_inventory)
+    local oldCommonPostInit = common_postinit;
+    local oldMasterPostInit = master_postinit;
+
+    common_postinit = function(inst)
+        if oldCommonPostInit then
+            oldCommonPostInit(inst);
+        end
+
+        for _, v in ipairs(CTFInit.characterPostInitAll.common) do
+            v(inst);
+        end
+
+        if CTFInit.characterPostInit[name] then
+            for _, v in ipairs(CTFInit.characterPostInit[name].common) do
+                v(inst);
+            end
+        end
+    end
+
+    master_postinit = function(inst)
+        if oldMasterPostInit then
+            oldMasterPostInit(inst);
+        end
+
+        for _, v in ipairs(CTFInit.characterPostInitAll.master) do
+            v(inst);
+        end
+
+        if CTFInit.characterPostInit[name] then
+            for _, v in ipairs(CTFInit.characterPostInit[name].master) do
+                v(inst);
+            end
+        end
+    end
+
+    return MakePlayerCharacter(name, customprefabs, customassets, common_postinit, master_postinit, starting_inventory);
+end;
+
+local function patchEntityMethods()
+    local inst = CreateEntity('ctf_entity_patcher');
+    local meta = getmetatable(inst.entity);
+
+    local OldSetParent = meta.__index.SetParent;
+    meta.__index.SetParent = function(self, parent)
+        if type(parent) == 'table' then
+            parent = parent.__ctf_entity;
+        end
+        OldSetParent(self, parent);
+    end
+
+    inst:Remove();
+end
+patchEntityMethods();
+
+-- patch prefab class
+local function patchPrefabFn(fn, prefab)
+    local OldCreateEntity = _G.CreateEntity;
+    local prefab_fn_env = {
+        CreateEntity = function(name)
+            local inst = OldCreateEntity(name);
+            -- temporarily replace the entity, it will be restored once SetPristine is called
+            local entity = inst.entity;
+            local fauxEntity = {
+                __ctf_entity = entity,
+                SetPristine = function()
+                    for _, v in ipairs(CTFInit.prefabPostInitAll.common) do
+                        v(inst);
+                    end
+                    if CTFInit.prefabPostInit[prefab] then
+                        for _, v in ipairs(CTFInit.prefabPostInit[prefab].common) do
+                            v(inst);
+                        end
+                    end
+
+                    entity:SetPristine();
+                    inst.entity = entity;
+                end,
+            }
+
+            setmetatable(fauxEntity, {
+                __index = function(_, key)
+                    if type(entity[key]) == 'function' then
+                        return function(_, ...)
+                            return entity[key](entity, ...);
+                        end
+                    end
+                    return entity[key];
+                end
+            })
+
+            inst.entity = fauxEntity;
+
+            return inst;
+        end
+    }
+    setmetatable(prefab_fn_env, { __index = _G, __newindex = _G });
+    setfenv(fn, prefab_fn_env);
+end
+
+_G.forestCount = 0;
+CTFClassPatcher(Prefab, function(self, ctor, name, fn, assets, deps, force_path_search)
+    if fn then
+        local prefabFn = fn;
+        fn = function()
+            _G.forestCount = _G.forestCount + 1;
+            if name == 'forest' then
+                --assert(_G.forestCount < 1, 'first forest');
+            end
+            patchPrefabFn(prefabFn, name);
             local inst = prefabFn();
             if TheWorld.ismastersim then
-                master_postinit(inst);
+                for _, v in ipairs(CTFInit.prefabPostInitAll.master) do
+                    v(inst);
+                end
+                if CTFInit.prefabPostInit[name] then
+                    for _, v in ipairs(CTFInit.prefabPostInit[name].master) do
+                        v(inst);
+                    end
+                end
             end
+
             return inst;
         end
     end
-end
+    ctor(self, name, fn, assets, deps, force_path_search);
+end);
 
-local OldRegisterPrefabs = ModManager.RegisterPrefabs;
-ModManager.RegisterPrefabs = function(self)
-    OldRegisterPrefabs(self);
-    for _, v in ipairs(CTFInit._prefabQueue) do
-        local prefabs = LoadPrefabFile('prefabs/' .. v.file);
-        if prefabs then
-            for _, prefab in ipairs(prefabs) do
-                if prefab and prefab.name == v.name then
-                    v.fn(CTFInit, prefab, v);
-                    break;
-                end
-            end
-        end
-    end
-end
-
+_G._ctf_init_imp = CTFInit;
 return CTFInit;

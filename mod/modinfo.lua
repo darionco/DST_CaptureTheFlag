@@ -87,7 +87,11 @@ game_modes =
         description = CTF_STRINGS.gameModeDescription,
         settings =
         {
+            resource_renewal = false,
             ghost_sanity_drain = false,
+            --ghost_enabled = false,
+            no_avatar_popup = true,
+            no_morgue_record = true,
             drop_everything_on_despawn = true,
         }
     },
@@ -97,7 +101,11 @@ game_modes =
         description = CTF_STRINGS.gameModeDescription,
         settings =
         {
+            resource_renewal = false,
             ghost_sanity_drain = false,
+            ghost_enabled = false,
+            no_avatar_popup = true,
+            no_morgue_record = true,
             drop_everything_on_despawn = true,
             level_type = "WARSAK_BOSS_RUSH",
         }

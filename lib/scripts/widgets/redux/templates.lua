@@ -10,6 +10,7 @@ local Text = require "widgets/text"
 local TextEdit = require "widgets/textedit"
 local TrueScrollList = require "widgets/truescrolllist"
 local UIAnim = require "widgets/uianim"
+local Button = require "widgets/button"
 local Widget = require "widgets/widget"
 
 require("constants")
@@ -799,7 +800,7 @@ function TEMPLATES.ModListItem(onclick_btn, onclick_checkbox, onclick_setfavorit
             opt.status:SetString(STRINGS.UI.MODSSCREEN.STATUS.DISABLED_MANUAL)
         else
             -- We should probably never hit this line.
-            opt.status:SetString(modname)
+            --opt.status:SetString(modname)
         end
     end
 
@@ -951,6 +952,38 @@ function TEMPLATES.DoodadCounter(number_of_doodads)
     doodad:SetCount(number_of_doodads)
 
     return doodad
+end
+
+function TEMPLATES.KleiPointsCounter(number_of_points)
+    local points = Button("KleiPointsCounter")
+    points.image = points:AddChild(UIAnim())
+    points.image:GetAnimState():SetBank("kleipoints")
+    points.image:GetAnimState():SetBuild("kleipoints")
+    points.image:GetAnimState():PlayAnimation("idle", true)
+
+	points.points_count = points:AddChild(Text(CHATFONT_OUTLINE, 35, nil, UICOLOURS.WHITE))
+    points.points_count:SetPosition(0, -60)
+    points.points_count:SetRegionSize(120, 43)
+    points.points_count:SetHAlign(ANCHOR_MIDDLE)
+
+    points.SetCount = function(self, new_count)
+        self.points_count:SetString("x"..new_count)
+        if new_count == 0 then
+            self:Hide()
+        else
+            self:Show()
+        end
+    end
+
+    points:SetCount(number_of_points)
+
+    points:SetOnClick(
+        function()
+            TheFrontEnd:GetAccountManager():VisitAccountPage("rewards")
+        end
+    )
+
+    return points
 end
 
 function TEMPLATES.BoltCounter(number_of_bolts)
@@ -1746,7 +1779,7 @@ function TEMPLATES.ControllerFunctionsFromButtons(buttons)
 end
 
 function TEMPLATES.ScrollingGrid(items, opts)
-    local peek_height = opts.widget_height * 0.25 -- how much of row to see at the bottom.
+    local peek_height = opts.peek_height or (opts.widget_height * 0.25) -- how much of row to see at the bottom.
     if opts.peek_percent then
         -- Caller can force a peek height if they will add items to the list or
         -- have hidden empty widgets.

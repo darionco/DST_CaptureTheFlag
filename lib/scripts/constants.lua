@@ -2,7 +2,7 @@ require "util"
 local TechTree = require("techtree")
 
 PI = 3.14159
-PI2 = 3.14159
+PI2 = PI*2
 DEGREES = PI/180
 RADIANS = 180/PI
 FRAMES = 1/30
@@ -364,6 +364,7 @@ CHARACTER_VIDEOS =
 
 require("prefabskins")
 require("clothing")
+require("beefalo_clothing")
 require("misc_items")
 require("emote_items")
 require("item_blacklist")
@@ -399,6 +400,44 @@ CLOTHING.feet_default1 =
 MISC_ITEMS.beard_default1 =
 {
     type = "beard",
+    skin_tags = {},
+    is_default = true,
+    release_group = 999,
+}
+
+
+
+BEEFALO_CLOTHING.beef_body_default1 =
+{
+    type = "beef_body",
+    skin_tags = {},
+    is_default = true,
+    release_group = 999,
+}
+BEEFALO_CLOTHING.beef_horn_default1 =
+{
+    type = "beef_horn",
+    skin_tags = {},
+    is_default = true,
+    release_group = 999,
+}
+BEEFALO_CLOTHING.beef_head_default1 =
+{
+    type = "beef_head",
+    skin_tags = {},
+    is_default = true,
+    release_group = 999,
+}
+BEEFALO_CLOTHING.beef_feet_default1 =
+{
+    type = "beef_feet",
+    skin_tags = {},
+    is_default = true,
+    release_group = 999,
+}
+BEEFALO_CLOTHING.beef_tail_default1 =
+{
+    type = "beef_tail",
     skin_tags = {},
     is_default = true,
     release_group = 999,
@@ -625,6 +664,7 @@ SPECIAL_EVENTS =
     YOTV = "year_of_the_varg",
     YOTP = "year_of_the_pig",
     YOTC = "year_of_the_carrat",
+    YOTB = "year_of_the_beefalo",
 }
 WORLD_SPECIAL_EVENT = SPECIAL_EVENTS.NONE
 
@@ -696,6 +736,13 @@ SPECIAL_EVENT_MUSIC =
         bank = "music_frontend_yotc.fsb",
         sound = "dontstarve/music/music_FE_yotc",
     },
+
+    --year of the beefalo
+    [SPECIAL_EVENTS.YOTB] =
+    {
+        bank = "music_frontend_yotb.fsb",
+        sound = "yotb_2021/music/FE",
+    },   
 }
 
 FESTIVAL_EVENT_MUSIC =
@@ -761,13 +808,12 @@ end
 ---------------------------------------------------------
 -- Checks if any of the "Year of the <creature>" events are active
 function IsAny_YearOfThe_EventActive()
-	return WORLD_SPECIAL_EVENT == SPECIAL_EVENTS.YOTG or WORLD_SPECIAL_EVENT == SPECIAL_EVENTS.YOTV or WORLD_SPECIAL_EVENT == SPECIAL_EVENTS.YOTP or WORLD_SPECIAL_EVENT == SPECIAL_EVENTS.YOTC
+	return WORLD_SPECIAL_EVENT == SPECIAL_EVENTS.YOTG or WORLD_SPECIAL_EVENT == SPECIAL_EVENTS.YOTV or WORLD_SPECIAL_EVENT == SPECIAL_EVENTS.YOTP or WORLD_SPECIAL_EVENT == SPECIAL_EVENTS.YOTC or WORLD_SPECIAL_EVENT == SPECIAL_EVENTS.YOTB
 end
 
 function GetSpecialEventSkinTag()
     return SPECIAL_EVENT_SKIN_TAGS[WORLD_SPECIAL_EVENT]
 end
-
 
 ---------------------------------------------------------
 -- Refers to intermittent scheduled events.
@@ -897,6 +943,7 @@ TECH =
     WARGOFFERING_THREE = { WARGOFFERING = 3 },
     PIGOFFERING_THREE = { PIGOFFERING = 3 },
     CARRATOFFERING_THREE = { CARRATOFFERING = 3 },
+    BEEFOFFERING_THREE = { BEEFOFFERING = 3 },    
     MADSCIENCE_ONE = { MADSCIENCE = 1 },
     FOODPROCESSING_ONE = { FOODPROCESSING = 1 },
 	FISHING_ONE = { FISHING = 1 },
@@ -916,6 +963,7 @@ TECH =
     YOTV = { SCIENCE = 10 }, -- ApplySpecialEvent() will change this from lost to 0
     YOTP = { SCIENCE = 10 }, -- ApplySpecialEvent() will change this from lost to 0
     YOTC = { SCIENCE = 10 }, -- ApplySpecialEvent() will change this from lost to 0
+    YOTB = { SCIENCE = 10 }, -- ApplySpecialEvent() will change this from lost to 0
 
     LOST = { MAGIC = 10, SCIENCE = 10, ANCIENT = 10 },
 }
@@ -1179,6 +1227,13 @@ SEASONS =
 	SPRING = "spring",
 	SUMMER = "summer",
 	CAVES = "caves",
+}
+
+LEVELCATEGORY = {
+    LEVEL = "LEVEL",
+    SETTINGS = "SETTINGS",
+    COMBINED = "COMBINED",
+    WORLDGEN = "WORLDGEN",
 }
 
 RENDER_QUALITY =
@@ -1895,6 +1950,7 @@ LEVELTYPE = {
     TEST = "TEST",
     UNKNOWN = "UNKNOWN",
     CUSTOM = "CUSTOM",
+    CUSTOMPRESET = "CUSTOMPRESET",
 }
 
 if BRANCH == "dev" then
@@ -1916,6 +1972,14 @@ EVENTSERVER_LEVEL_LOCATIONS =
 {
 	[LEVELTYPE.LAVAARENA] = { "lavaarena" },
 	[LEVELTYPE.QUAGMIRE] = { "quagmire" },
+}
+
+DEFAULT_LOCATION = "forest"
+
+SERVER_LEVEL_SHARDS =
+{
+    "Master",
+    "Caves",
 }
 
 SERVER_LEVEL_CONFIGS =
@@ -2071,3 +2135,56 @@ TEMP_ITEM_ID = "0"
 --matches enum eIAPType
 IAP_TYPE_REAL = 0
 IAP_TYPE_VIRTUAL = 1
+
+--matches enum ETextFilteringContext
+TEXT_FILTER_CTX_UNKNOWN = 0
+TEXT_FILTER_CTX_GAME = 1
+TEXT_FILTER_CTX_CHAT = 2
+TEXT_FILTER_CTX_NAME = 3
+
+
+CHARACTER_BUTTON_OFFSET =
+{
+    wilson = -51,
+    wendy = -45,
+    waxwell = -45,
+    wortox = -53,
+    wormwood = -53,
+    winona = -49,
+    wurt = -45,
+    webber = -45,
+    
+    default = -47,
+}
+
+CHARACTER_BUTTON_SCALE =
+{
+    wurt = 0.24,
+
+    default = 0.23,
+}
+
+YOTB_COSTUMES =
+{
+    WAR         = 1,
+    DOLL        = 2,
+    ROBOT       = 4,
+    NATURE      = 8,
+    FORMAL      = 16,
+    VICTORIAN   = 32,
+    ICE         = 64,
+    FESTIVE     = 128,
+    BEAST       = 256,
+}
+
+SKIN_TYPES_THAT_RECEIVE_CLOTHING =
+{
+    "normal_skin",
+	"wimpy_skin",
+    "mighty_skin",
+	"stage_2",
+    "stage_3",
+    "stage_4",
+	"powerup",
+	"NO_BASE",
+}

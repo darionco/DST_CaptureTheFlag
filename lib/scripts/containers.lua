@@ -3,6 +3,8 @@ local cooking = require("cooking")
 local params = {}
 local containers = { MAXITEMSLOTS = 0 }
 
+containers.params = params
+
 function containers.widgetsetup(container, prefab, data)
     local t = data or params[prefab or container.inst.prefab]
     if t ~= nil then
@@ -28,6 +30,7 @@ params.backpack =
     },
     issidewidget = true,
     type = "pack",
+    openlimit = 1,
 }
 
 for y = 0, 3 do
@@ -52,6 +55,7 @@ params.spicepack =
     },
     issidewidget = true,
     type = "pack",
+    openlimit = 1,
 }
 
 for y = 0, 2 do
@@ -138,6 +142,63 @@ end
 params.wobybig = params.wobysmall
 
 --------------------------------------------------------------------------
+--[[ sewingmachine ]]
+--------------------------------------------------------------------------
+
+params.yotb_sewingmachine =
+{
+
+    widget =
+    {
+        slotpos =
+        {
+            Vector3(-(64 + 12), 0, 0), 
+            Vector3(0, 0, 0),
+            Vector3(64 + 12, 0, 0), 
+        },
+
+        slotbg =
+        {
+            { image = "yotb_sewing_slot.tex", atlas = "images/hud2.xml" },
+            { image = "yotb_sewing_slot.tex", atlas = "images/hud2.xml" },
+            { image = "yotb_sewing_slot.tex", atlas = "images/hud2.xml" },
+        },
+
+        animbank = "ui_chest_3x1",
+        animbuild = "ui_chest_3x1",
+        pos = Vector3(0, 200, 0),
+        side_align_tip = 100,
+
+        buttoninfo =
+        {
+            text = STRINGS.ACTIONS.YOTB_SEW,
+            position = Vector3(0, -65, 0),
+        }
+    },
+    acceptsstacks = false,
+    type = "cooker",
+}
+
+function params.yotb_sewingmachine.itemtestfn(container, item, slot)
+    --TODO: check if we actually accept the item
+    return item:HasTag("yotb_pattern_fragment")
+end
+
+function params.yotb_sewingmachine.widget.buttoninfo.fn(inst, doer)
+    if inst.components.container ~= nil then
+        BufferedAction(doer, inst, ACTIONS.YOTB_SEW):Do()
+    elseif inst.replica.container ~= nil and not inst.replica.container:IsBusy() then
+        SendRPCToServer(RPC.DoWidgetButtonAction, ACTIONS.YOTB_SEW.code, inst, ACTIONS.YOTB_SEW.mod_name)
+    end
+end
+
+function params.yotb_sewingmachine.widget.buttoninfo.validfn(inst)
+    return inst.replica.container ~= nil and inst.replica.container:IsFull()
+end
+
+
+
+--------------------------------------------------------------------------
 --[[ cookpot ]]
 --------------------------------------------------------------------------
 
@@ -170,9 +231,9 @@ function params.cookpot.itemtestfn(container, item, slot)
     return cooking.IsCookingIngredient(item.prefab) and not container.inst:HasTag("burnt")
 end
 
-function params.cookpot.widget.buttoninfo.fn(inst)
+function params.cookpot.widget.buttoninfo.fn(inst, doer)
     if inst.components.container ~= nil then
-        BufferedAction(inst.components.container.opener, inst, ACTIONS.COOK):Do()
+        BufferedAction(doer, inst, ACTIONS.COOK):Do()
     elseif inst.replica.container ~= nil and not inst.replica.container:IsBusy() then
         SendRPCToServer(RPC.DoWidgetButtonAction, ACTIONS.COOK.code, inst, ACTIONS.COOK.mod_name)
     end
@@ -227,9 +288,9 @@ function params.portablespicer.itemtestfn(container, item, slot)
         and not container.inst:HasTag("burnt")
 end
 
-function params.portablespicer.widget.buttoninfo.fn(inst)
+function params.portablespicer.widget.buttoninfo.fn(inst, doer)
     if inst.components.container ~= nil then
-        BufferedAction(inst.components.container.opener, inst, ACTIONS.COOK):Do()
+        BufferedAction(doer, inst, ACTIONS.COOK):Do()
     elseif inst.replica.container ~= nil and not inst.replica.container:IsBusy() then
         SendRPCToServer(RPC.DoWidgetButtonAction, ACTIONS.COOK.code, inst, ACTIONS.COOK.mod_name)
     end
@@ -268,12 +329,12 @@ params.bundle_container =
 }
 
 function params.bundle_container.itemtestfn(container, item, slot)
-    return not (item:HasTag("irreplaceable") or item:HasTag("_container") or item:HasTag("bundle"))
+    return not (item:HasTag("irreplaceable") or item:HasTag("_container") or item:HasTag("bundle") or item:HasTag("nobundling"))
 end
 
-function params.bundle_container.widget.buttoninfo.fn(inst)
+function params.bundle_container.widget.buttoninfo.fn(inst, doer)
     if inst.components.container ~= nil then
-        BufferedAction(inst.components.container.opener, inst, ACTIONS.WRAPBUNDLE):Do()
+        BufferedAction(doer, inst, ACTIONS.WRAPBUNDLE):Do()
     elseif inst.replica.container ~= nil and not inst.replica.container:IsBusy() then
         SendRPCToServer(RPC.DoWidgetButtonAction, ACTIONS.WRAPBUNDLE.code, inst, ACTIONS.WRAPBUNDLE.mod_name)
     end
@@ -318,9 +379,9 @@ function params.construction_container.itemtestfn(container, item, slot)
         and doer.components.constructionbuilderuidata:GetIngredientForSlot(slot) == item.prefab
 end
 
-function params.construction_container.widget.buttoninfo.fn(inst)
+function params.construction_container.widget.buttoninfo.fn(inst, doer)
     if inst.components.container ~= nil then
-        BufferedAction(inst.components.container.opener, inst, ACTIONS.APPLYCONSTRUCTION):Do()
+        BufferedAction(doer, inst, ACTIONS.APPLYCONSTRUCTION):Do()
     elseif inst.replica.container ~= nil and not inst.replica.container:IsBusy() then
         SendRPCToServer(RPC.DoWidgetButtonAction, ACTIONS.APPLYCONSTRUCTION.code, inst, ACTIONS.APPLYCONSTRUCTION.mod_name)
     end
@@ -537,6 +598,7 @@ params.krampus_sack =
     },
     issidewidget = true,
     type = "pack",
+    openlimit = 1,
 }
 
 for y = 0, 6 do
@@ -559,6 +621,7 @@ params.piggyback =
     },
     issidewidget = true,
     type = "pack",
+    openlimit = 1,
 }
 
 for y = 0, 5 do
@@ -819,6 +882,7 @@ params.seedpouch =
     },
     issidewidget = true,
     type = "pack",
+    openlimit = 1,
 }
 
 for y = 0, 6 do
@@ -847,6 +911,7 @@ params.candybag =
     },
     issidewidget = true,
     type = "pack",
+    openlimit = 1,
 }
 
 for y = 0, 6 do

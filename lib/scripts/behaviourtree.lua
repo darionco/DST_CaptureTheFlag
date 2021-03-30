@@ -204,6 +204,29 @@ function ConditionNode:Visit()
     end
 end
 
+---------------------------------------------------------------------------------------
+
+
+MultiConditionNode = Class(BehaviourNode, function(self, start, continue, name)
+    BehaviourNode._ctor(self, name or "Condition")
+    self.start = start
+    self.continue = continue
+end)
+
+function MultiConditionNode:Visit()
+    if not self.running then
+        self.running = self.start()
+    else
+        self.running = self.continue()
+    end
+
+    if self.running then
+        self.status = SUCCESS
+    else
+        self.status = FAILED
+    end
+end
+
 
 ---------------------------------------------------------------------------------------
 
@@ -253,7 +276,7 @@ function WaitNode:Visit()
     local current_time = GetTime() 
     
     if self.status ~= RUNNING then
-        self.wake_time = current_time + (type(self.wait_time) == "function" and self.wait_time() or self.wait_time)
+        self.wake_time = current_time + FunctionOrValue(self.wait_time)
         self.status = RUNNING
     end
     
@@ -759,6 +782,15 @@ function IfNode(cond, name, node)
 end
 ---------------------------------------------------------------
 
+function IfThenDoWhileNode(ifcond, whilecond, name, node)
+    return ParallelNode
+        {
+            MultiConditionNode(ifcond, whilecond, name),
+            node
+        }
+end
+
+---------------------------------------------------------------
 LatchNode = Class(BehaviourNode, function(self, inst, latchduration, child)
     BehaviourNode._ctor(self, "Latch ("..tostring(latchduration)..")", {child})
     self.inst = inst
@@ -772,7 +804,7 @@ function LatchNode:Visit()
         if GetTime() > self.currentlatchduration + self.lastlatchtime then
             print("GONNA GO!", GetTime(), self.currentlatchduration, "----", GetTime()+self.currentlatchduration, ">", self.lastlatchtime)
             self.lastlatchtime = GetTime()
-            self.currentlatchduration = type(self.latchduration) == "function" and self.latchduration(self.inst) or self.latchduration
+            self.currentlatchduration = FunctionOrValue(self.latchduration, self.inst)
             print("New vals:", self.currentlatchduration , self.lastlatchtime)
 
             self.status = RUNNING

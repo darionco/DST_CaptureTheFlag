@@ -9,12 +9,12 @@ local LoadingWidget = require "widgets/redux/loadingwidget"
 -- No need to patch the loading screen on dedicated servers
 if not TheNet:IsDedicated() then
     _G.GetLoaderAtlasAndTex = function(_)
-        return 'images/ctf_loading_screen_01.xml', 'loading_screen_01.tex';
+        return 'images/ctf_loading_screen_02.xml', 'loading_screen_02.tex';
     end
 
     local LoadingScreenAssets = {
-        Asset('ATLAS', 'images/ctf_loading_screen_01.xml'),
-        Asset('IMAGE', 'images/ctf_loading_screen_01.tex'),
+        Asset('ATLAS', 'images/ctf_loading_screen_02.xml'),
+        Asset('IMAGE', 'images/ctf_loading_screen_02.tex'),
     };
     RegisterPrefabs(Prefab('MOD_CTF_LOADING_SCREEN', function() end, LoadingScreenAssets, nil));
     TheSim:LoadPrefabs({ 'MOD_CTF_LOADING_SCREEN' });

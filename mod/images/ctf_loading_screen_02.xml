@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Atlas>
+	<Texture filename="ctf_loading_screen_02.tex" />
+	<Elements>
+		<Element name="loading_screen_02.tex" u1="0.001" u2="0.887671875" v2="0.999" v1="0.49953515625" variant="" />
+	</Elements>
+</Atlas>

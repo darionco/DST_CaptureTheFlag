@@ -26,6 +26,7 @@ modimport('scripts/prefabs/patcher/armor_skeleton');
 modimport('scripts/prefabs/patcher/moose_nesting_ground');
 modimport('scripts/prefabs/patcher/archive_portal');
 modimport('scripts/prefabs/patcher/lighter');
+modimport('scripts/prefabs/patcher/deerclops');
 
 --modimport('scripts/teams/CTFTeamManager');
 --

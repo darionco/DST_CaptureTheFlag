@@ -72,10 +72,10 @@ local function SpawnMinions(inst, team)
                         z = targetVector.z / targetDistance,
                     };
 
-                    minion.Transform:SetPosition(instPosition.x + targetNormal.x * 3, instPosition.y + targetNormal.y * 3, instPosition.z + targetNormal.z * 3);
+                    minion.Transform:SetPosition(instPosition.x + targetNormal.x * 5, instPosition.y + targetNormal.y * 5, instPosition.z + targetNormal.z * 5);
 
                     if minion.components.knownlocations then
-                        minion.components.knownlocations:RememberLocation('investigate', target);
+                        minion.components.knownlocations:RememberLocation('targetbase', target);
                     end
 
                     if minion.components.sleeper then

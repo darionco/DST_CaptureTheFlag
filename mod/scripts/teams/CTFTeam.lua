@@ -135,7 +135,7 @@ function CTFTeam:makeMinionSpawner(obj)
         obj:AddComponent('childspawner');
         TheWorld:ListenForEvent(CTF_TEAM_CONSTANTS.GAME_STARTED, function()
             SpawnMinions(obj, self);
-            obj:DoPeriodicTask(10, SpawnMinions, nil, self);
+            obj:DoPeriodicTask(CTF_TEAM_CONSTANTS.MINION_SPAWN_PERIOD, SpawnMinions, nil, self);
         end);
 
         obj:AddTag(CTF_TEAM_CONSTANTS.TEAM_MINION_SPAWNER_TAG);

@@ -13,7 +13,7 @@ local WES_UNARMED_DAMAGE = 25;
 local WES_DAMAGE_MULTIPLIER = 1.55;
 local WES_ARMOR_MULTIPLIER = 0.5;
 local WES_MAX_DAMAGE_TAKEN_PERCENT = 0.6;
-local WES_MIN_DAMAGE_TAKEN = 10;
+local WES_HEALTH_THRESHOLD = 10;
 
 local OldArmorGetAbsorption = Armor.GetAbsorption;
 Armor.GetAbsorption = function(self, attacker, weapon)
@@ -52,8 +52,9 @@ AddPrefabPostInit('wes', function(inst)
         if inst.components.health then
             local OldDoDelta = inst.components.health.DoDelta;
             inst.components.health.DoDelta = function (self, amount, overtime, cause, ignore_invincible, afflicter, ignore_absorb)
-                if amount < 0 then
-                    amount = math.min(math.max(amount, -(self.currenthealth * WES_MAX_DAMAGE_TAKEN_PERCENT)), -WES_MIN_DAMAGE_TAKEN);
+                if amount < 0 and self.currenthealth > WES_HEALTH_THRESHOLD then
+
+                    amount = math.max(amount, -(self.currenthealth * WES_MAX_DAMAGE_TAKEN_PERCENT));
                 end
                 return OldDoDelta(self, amount, overtime, cause, ignore_invincible, afflicter, ignore_absorb);
             end

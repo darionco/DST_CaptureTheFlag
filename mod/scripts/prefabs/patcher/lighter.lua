@@ -6,7 +6,6 @@
 
 local Propagator = require('components/propagator');
 
-local CTFClassPatcher = use('scripts/tools/CTFClassPatcher');
 local CTF_CHARACTER_CONSTANTS = use('scripts/constants/CTFCharacterConstants');
 local CTF_TEAM_CONSTANTS = use('scripts/constants/CTFTeamConstants');
 local CTFInit = use('scripts/tools/CTFInit');
@@ -15,20 +14,6 @@ local WILLOW = CTF_CHARACTER_CONSTANTS.WILLOW;
 
 -- disable fire propagation
 Propagator.StartSpreading = function() --[[ no op ]]  end
-
--- temporary method to not stunlock with the lighter
-CTFClassPatcher(_G.EventHandler, function(self, ctor, name, fn)
-    if name == 'attacked' then
-        local new_fn = function(inst, data)
-            if not data or not data.weapon or data.weapon.prefab ~= 'lighter' then
-                fn(inst, data);
-            end
-        end
-        ctor(self, name, new_fn);
-    else
-        ctor(self, name, fn);
-    end
-end);
 
 local function onattack(inst, attacker, target)
     attacker.SoundEmitter:PlaySound('dontstarve/wilson/fireball_explo');
@@ -213,6 +198,11 @@ local master_post_init = function(inst)
     inst:RemoveComponent('fueled');
     inst:RemoveComponent('lighter');
     inst:RemoveComponent('cooker');
+
+    inst:AddComponent('pvp_weapon');
+    inst.components.pvp_weapon.canStunFn = function(_, target)
+        return not target:HasTag('player');
+    end;
 
     inst:AddComponent('rechargeable');
     inst.components.rechargeable:SetRechargeTime(WILLOW.LIGHTER_FIRE_BLAST_COOLDOWN);

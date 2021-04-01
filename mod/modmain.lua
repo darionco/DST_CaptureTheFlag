@@ -7,6 +7,7 @@ modimport('scripts/teams/CTFPlayer');
 modimport('scripts/init/widgets');
 modimport('scripts/init/screens');
 modimport('scripts/init/assets');
+modimport('scripts/init/pvp');
 modimport('scripts/init/components');
 modimport('scripts/init/brains');
 modimport('scripts/init/prefab_on_load');

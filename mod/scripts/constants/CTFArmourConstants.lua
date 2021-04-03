@@ -45,6 +45,7 @@ local CTF_ARMOUR = {
     armordragonfly = {
         durability = 800,
         absorption = 0.6,
+        raw_damage_multiplier = 0.0,
     },
 
     armormarble = {

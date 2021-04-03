@@ -39,6 +39,7 @@ local CTF_ARMOUR = {
     armorruins = {
         durability = 600,
         absorption = 0.57,
+        tentacle_chance = 0.1,
     },
 
     armordragonfly = {

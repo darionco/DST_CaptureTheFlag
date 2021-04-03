@@ -99,6 +99,7 @@ local CTF_ARMOUR = {
     cookiecutterhat = {
         durability = 200,
         absorption = 0.32,
+        return_damage = 5.0,
     },
 
     wathgrithrhat = {

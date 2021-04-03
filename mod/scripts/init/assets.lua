@@ -10,6 +10,8 @@ Assets = {
 
     Asset('ANIM', 'anim/ctf_spider_team1.zip'),
     Asset('ANIM', 'anim/ctf_spider_team2.zip'),
+    Asset('ANIM', 'anim/ctf_spider_warrior_team1.zip'),
+    Asset('ANIM', 'anim/ctf_spider_warrior_team2.zip'),
 }
 
 PrefabFiles = {

@@ -9,7 +9,7 @@ local CTF_ARMOUR = {
     armorgrass = {
         durability = 120,
         absorption = 0.25,
-        walkspeedmult = 0.05,
+        walk_speed_bonus = 0.05,
     },
 
     armorwood = {
@@ -93,7 +93,7 @@ local CTF_ARMOUR = {
     footballhat = {
         durability = 150,
         absorption = 0.3,
-        durability_speed_mult = 0.07,
+        durability_speed_bonus = 0.07,
     },
 
     cookiecutterhat = {

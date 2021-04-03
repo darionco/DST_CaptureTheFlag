@@ -120,7 +120,6 @@ local function castAOE(act)
 end
 
 local function patchWeapon(weapon)
-    weapon:AddTag('rangedweapon');
     weapon:SetDamage(WILLOW.LIGHTER_HIT_DAMAGE);
     weapon:SetRange(WILLOW.LIGHTER_ATTACK_RANGE_MIN, WILLOW.LIGHTER_ATTACK_RANGE_MAX);
     weapon:SetOnAttack(onattack);
@@ -213,6 +212,7 @@ local master_post_init = function(inst)
     inst.components.finiteuses:SetOnFinished(inst.Remove);
 
     inst:AddTag('lighter');
+    inst:AddTag('rangedweapon');
 
     if inst.components.weapon then
         patchWeapon(inst.components.weapon);

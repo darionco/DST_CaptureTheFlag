@@ -9,7 +9,7 @@ local CTF_ARMOUR = {
     armorgrass = {
         durability = 120,
         absorption = 0.25,
-        walkspeedmult = 1.05,
+        walk_speed_bonus = 0.05,
     },
 
     armorwood = {
@@ -81,6 +81,8 @@ local CTF_ARMOUR = {
     skeletonhat = {
         durability = 250,
         absorption = 0.5,
+        costume_aoe_damage_mult = 2.0,
+        costume_aoe_damage_radius = 3.0,
     },
 
     ruinshat = {
@@ -91,16 +93,19 @@ local CTF_ARMOUR = {
     footballhat = {
         durability = 150,
         absorption = 0.3,
+        durability_speed_bonus = 0.07,
     },
 
     cookiecutterhat = {
         durability = 200,
         absorption = 0.32,
+        return_damage = 5.0,
     },
 
     wathgrithrhat = {
         durability = 400,
         absorption = 0.52,
+        walk_speed_bonus = 0.07,
     },
 }
 

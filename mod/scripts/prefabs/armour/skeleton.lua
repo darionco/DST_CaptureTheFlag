@@ -21,12 +21,20 @@ local function master_post_init(inst)
                 OldOnResistDamage(f_inst);
                 local owner = f_inst.components.inventoryitem:GetGrandOwner();
                 if owner and owner:HasTag(CTF_TEAM_CONSTANTS.TEAM_PLAYER_TAG) and owner.data and owner.data.ctf_team_tag then
+                    local damage = CTF_ARMOUR.armorskeleton.aoe_damage;
+                    local radius = CTF_ARMOUR.armorskeleton.aoe_damage_radius;
+                    local hat = owner.components.inventory and owner.components.inventory:GetEquippedItem(EQUIPSLOTS.HEAD) or nil;
+                    if hat and hat.prefab == 'skeletonhat' then
+                        damage = damage * CTF_ARMOUR.skeletonhat.costume_aoe_damage_mult;
+                        radius = CTF_ARMOUR.skeletonhat.costume_aoe_damage_radius;
+                    end
+
                     local teamTag = owner.data.ctf_team_tag;
                     local x, y, z = owner.Transform:GetWorldPosition();
-                    local ents = TheSim:FindEntities(x, y, z, CTF_ARMOUR.armorskeleton.aoe_damage_radius, { '_combat', '_health' }, { teamTag });
+                    local ents = TheSim:FindEntities(x, y, z, radius, { '_combat', '_health' }, { teamTag });
                     for _, v in ipairs(ents) do
                         if v:IsValid() and not v:IsInLimbo() and not v.components.health:IsDead() then
-                            v.components.health:DoRawDamage(CTF_ARMOUR.armorskeleton.aoe_damage, f_inst.prefab, owner, false);
+                            v.components.health:DoRawDamage(damage, f_inst.prefab, owner, false);
                         end
                     end
                 end

@@ -20,6 +20,9 @@ local CTF_ARMOUR = {
     armor_sanity = {
         durability = 200,
         absorption = 0.5,
+        aoe_damage = 2,
+        aoe_damage_radius = 1.5,
+        aoe_damage_period = 2,
     },
 
     -- skeleton armour doesn't have standard durability or absorption

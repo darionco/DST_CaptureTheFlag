@@ -88,7 +88,7 @@ local CTF_STRINGS = {
 
 
         --ARMOR
-        ARMOGRASS = makeArmourDescription(CTF_ARMOUR.armorgrass),
+        ARMORGRASS = makeArmourDescription(CTF_ARMOUR.armorgrass),
         ARMORWOOD = makeArmourDescription(CTF_ARMOUR.armorwood),
 
         ARMOR_SANITY = makeArmourDescription(CTF_ARMOUR.armor_sanity),

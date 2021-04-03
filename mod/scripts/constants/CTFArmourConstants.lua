@@ -9,7 +9,7 @@ local CTF_ARMOUR = {
     armorgrass = {
         durability = 120,
         absorption = 0.25,
-        walkspeedmult = 1.05,
+        walkspeedmult = 0.05,
     },
 
     armorwood = {

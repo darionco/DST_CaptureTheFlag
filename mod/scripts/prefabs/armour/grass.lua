@@ -8,7 +8,7 @@ local CTFInit = use('scripts/tools/CTFInit');
 local CTF_ARMOUR = use('scripts/constants/CTFArmourConstants');
 
 local function master_post_init(inst)
-    inst.components.equippable.walkspeedmult = CTF_ARMOUR.armorgrass.walkspeedmult;
+    inst.components.equippable.walkspeedmult = 1.0 + CTF_ARMOUR.armorgrass.walkspeedmult;
 end
 
 CTFInit:Prefab('armorgrass', nil, master_post_init);

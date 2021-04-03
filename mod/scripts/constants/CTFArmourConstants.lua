@@ -26,10 +26,10 @@ local CTF_ARMOUR = {
     },
 
     -- skeleton armour doesn't have standard durability or absorption
-    --armorskeleton = {
-    --    durability = 100,
-    --    absorption = 0.1
-    --},
+    armorskeleton = {
+        aoe_damage = 5,
+        aoe_damage_radius = 2,
+    },
 
     armorsnurtleshell = {
         durability = 400,
@@ -39,11 +39,13 @@ local CTF_ARMOUR = {
     armorruins = {
         durability = 600,
         absorption = 0.57,
+        tentacle_chance = 0.1,
     },
 
     armordragonfly = {
         durability = 800,
         absorption = 0.6,
+        raw_damage_multiplier = 0.0,
     },
 
     armormarble = {
@@ -61,6 +63,7 @@ local CTF_ARMOUR = {
     beehat = {
         durability = 80,
         absorption = 0.1,
+        bee_absorption_mult = 6.0,
     },
 
     hivehat = {

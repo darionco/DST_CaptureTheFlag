@@ -4,8 +4,16 @@
 --- DateTime: 2021-04-02 11:54 a.m.
 ---
 
-modimport('scripts/prefabs/armour/armorgrass');
-modimport('scripts/prefabs/armour/armor_sanity');
+-- SUITS
+modimport('scripts/prefabs/armour/grass');
+modimport('scripts/prefabs/armour/sanity');
+modimport('scripts/prefabs/armour/skeleton');
+modimport('scripts/prefabs/armour/ruins');
+modimport('scripts/prefabs/armour/dragonfly');
+
+-- HATS
+modimport('scripts/prefabs/armour/beehat');
+modimport('scripts/prefabs/armour/hivehat');
 
 local CTF_ARMOUR = use('scripts/constants/CTFArmourConstants');
 

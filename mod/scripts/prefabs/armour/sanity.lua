@@ -8,10 +8,6 @@ local CTFInit = use('scripts/tools/CTFInit');
 local CTF_ARMOUR = use('scripts/constants/CTFArmourConstants');
 local CTF_TEAM_CONSTANTS = use('scripts/constants/CTFTeamConstants');
 
-local function common_post_init(inst)
-
-end
-
 local function master_post_init(inst)
     --shadow_teleport_out
     local OldOnEquip = inst.components.equippable.onequipfn;

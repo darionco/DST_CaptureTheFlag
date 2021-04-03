@@ -148,15 +148,16 @@ function CTFTeam:patchPlayerProx(obj)
         local teamTag = self.teamTag;
 
         obj.components.playerprox:SetTargetMode(function(inst, comp)
+
             if not comp.isclose then
-                local target = CTFTeamCombat.findEnemy(inst, comp.near, teamTag);
+                local target = CTFTeamCombat.findEnemy(inst, comp.near, teamTag, obj.components.playerprox.friendlyTag);
                 if target ~= nil then
                     comp.isclose = true
                     if comp.onnear ~= nil then
                         comp.onnear(inst, target)
                     end
                 end
-            elseif not CTFTeamCombat.findEnemy(inst, comp.far, teamTag) then
+            elseif not CTFTeamCombat.findEnemy(inst, comp.far, teamTag, obj.components.playerprox.friendlyTag) then
                 comp.isclose = false
                 if comp.onfar ~= nil then
                     comp.onfar(inst)

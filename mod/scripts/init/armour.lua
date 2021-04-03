@@ -13,6 +13,7 @@ modimport('scripts/prefabs/armour/dragonfly');
 
 -- HATS
 modimport('scripts/prefabs/armour/beehat');
+modimport('scripts/prefabs/armour/hivehat');
 
 local CTF_ARMOUR = use('scripts/constants/CTFArmourConstants');
 

@@ -63,6 +63,7 @@ local CTF_ARMOUR = {
     beehat = {
         durability = 80,
         absorption = 0.1,
+        bee_absorption_mult = 6.0,
     },
 
     hivehat = {

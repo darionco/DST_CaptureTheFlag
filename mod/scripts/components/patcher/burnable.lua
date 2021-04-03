@@ -122,7 +122,7 @@ function Burnable:StartBurningDamage(ticks, tickTime, tickDamage, cause, afflict
             self.ctf_burning_tick = self.ctf_burning_tick + 1;
             if inst.components and inst.components.health then
                 if not inst.components.health:IsDead() then
-                    inst.components.health:DoDelta(-tickDamage, true, cause, true, afflicter, true);
+                    v.components.health:DoRawDamage(tickDamage, cause, afflicter, true);
                 end
 
                 if inst.components.health:IsDead() then

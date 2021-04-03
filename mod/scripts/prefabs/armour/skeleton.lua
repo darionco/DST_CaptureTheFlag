@@ -26,7 +26,7 @@ local function master_post_init(inst)
                     local ents = TheSim:FindEntities(x, y, z, CTF_ARMOUR.armorskeleton.aoe_damage_radius, { '_combat', '_health' }, { teamTag });
                     for _, v in ipairs(ents) do
                         if v:IsValid() and not v:IsInLimbo() and not v.components.health:IsDead() then
-                            v.components.health:DoDelta(-CTF_ARMOUR.armorskeleton.aoe_damage, true, f_inst.prefab, true, owner, true);
+                            v.components.health:DoRawDamage(CTF_ARMOUR.armorskeleton.aoe_damage, f_inst.prefab, owner, false);
                         end
                     end
                 end

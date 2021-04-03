@@ -4,18 +4,18 @@
 --- DateTime: 2021-01-17 12:42 p.m.
 ---
 
-local require = GLOBAL.require;
-local CTF_TEAM_CONSTANTS = require('constants/CTFTeamConstants');
-local CTFTeamCombat = require('teams/CTFTeamCombat');
+local CTF_TEAM_CONSTANTS = use('scripts/constants/CTFTeamConstants');
+local CTFTeamCombat = use('scripts/teams/CTFTeamCombat');
+local CTFInit = use('scripts/tools/CTFInit');
 
-AddPrefabPostInit('killerbee', function(inst)
-    if TheWorld.ismastersim then
-        local OldRetargetFunction = inst.components.combat.targetfn;
-        inst.components.combat:SetRetargetFunction(0.5, function(self)
-            if self:HasTag(CTF_TEAM_CONSTANTS.TEAM_MINION_TAG) then
-                return CTFTeamCombat.findEnemy(self, SpringCombatMod(8), self.data.ctf_team_tag);
-            end
-            return OldRetargetFunction(self);
-        end)
-    end
-end);
+local function master_post_init(inst)
+    local OldRetargetFunction = inst.components.combat.targetfn;
+    inst.components.combat:SetRetargetFunction(0.5, function(self)
+        if self:HasTag(CTF_TEAM_CONSTANTS.TEAM_MINION_TAG) then
+            return CTFTeamCombat.findEnemy(self, SpringCombatMod(8), self.data.ctf_team_tag, 'beefriend');
+        end
+        return OldRetargetFunction(self);
+    end)
+end
+
+CTFInit:Prefab('killerbee', nil, master_post_init);

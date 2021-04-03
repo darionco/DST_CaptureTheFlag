@@ -135,37 +135,49 @@ local function buildNewCrafting()
             icon_atlas = 'images/ctf_crafting_tabs.xml',
             recipes = {
 				{
-                    prefab = 'armorwood',
+                    prefab = 'armorgrass',
                     ingredients = { Ingredient('goldnugget', 20), },
                     level = TECH.SCIENCE_ONE,
                     count = 1
                 },
-				{
-                    prefab = 'armormarble',
-                    ingredients = { Ingredient('goldnugget', 20), Ingredient('armorwood', 1) },
+                {
+                    prefab = 'armorwood',
+                    ingredients = { Ingredient('goldnugget', 20), Ingredient('armorgrass', 1) },
                     level = TECH.SCIENCE_ONE,
                     count = 1
                 },
-				{
+                {
                     prefab = 'armor_sanity',
                     ingredients = { Ingredient('goldnugget', 20), Ingredient('armorwood', 1) },
                     level = TECH.SCIENCE_ONE,
                     count = 1
                 },
-				{
+                {
                     prefab = 'armorsnurtleshell',
+                    ingredients = { Ingredient('goldnugget', 20), Ingredient('armorwood', 1) },
+                    level = TECH.SCIENCE_ONE,
+                    count = 1
+                },
+				{
+                    prefab = 'armorskeleton',
                     ingredients = { Ingredient('goldnugget', 20), Ingredient('armor_sanity', 1) },
                     level = TECH.SCIENCE_ONE,
                     count = 1
                 },
 				{
                     prefab = 'armorruins',
-                    ingredients = { Ingredient('goldnugget', 20), Ingredient('armormarble', 1) },
+                    ingredients = { Ingredient('goldnugget', 20), Ingredient('armorsnurtleshell', 1) },
                     level = TECH.SCIENCE_ONE,
                     count = 1
                 },
 				{
-                    prefab = 'armorskeleton',
+                    prefab = 'armormarble',
+                    ingredients = { Ingredient('goldnugget', 20), Ingredient('armorruins', 1) },
+                    level = TECH.SCIENCE_ONE,
+                    count = 1
+                },
+				{
+                    prefab = 'armordragonfly',
                     ingredients = { Ingredient('goldnugget', 20), Ingredient('armorruins', 1) },
                     level = TECH.SCIENCE_ONE,
                     count = 1
@@ -179,8 +191,38 @@ local function buildNewCrafting()
             icon_atlas = 'images/ctf_crafting_tabs.xml',
             recipes = {
 				{
+                    prefab = 'beehat',
+                    ingredients = { Ingredient('goldnugget', 10) },
+                    level = TECH.SCIENCE_ONE,
+                    count = 1
+                },
+                {
+                    prefab = 'hivehat',
+                    ingredients = { Ingredient('goldnugget', 20), Ingredient('beehat', 1) },
+                    level = TECH.SCIENCE_ONE,
+                    count = 1
+                },
+                {
+                    prefab = 'footballhat',
+                    ingredients = { Ingredient('goldnugget', 20), Ingredient('beehat', 1) },
+                    level = TECH.SCIENCE_ONE,
+                    count = 1
+                },
+                {
+                    prefab = 'slurtlehat',
+                    ingredients = { Ingredient('goldnugget', 20), Ingredient('hivehat', 1) },
+                    level = TECH.SCIENCE_ONE,
+                    count = 1
+                },
+                {
                     prefab = 'cookiecutterhat',
-                    ingredients = { Ingredient('goldnugget', 20) },
+                    ingredients = { Ingredient('goldnugget', 20), Ingredient('footballhat', 1) },
+                    level = TECH.SCIENCE_ONE,
+                    count = 1
+                },
+				{
+                    prefab = 'skeletonhat',
+                    ingredients = { Ingredient('goldnugget', 20), Ingredient('slurtlehat', 1) },
                     level = TECH.SCIENCE_ONE,
                     count = 1
                 },
@@ -191,14 +233,8 @@ local function buildNewCrafting()
                     count = 1
                 },
 				{
-                    prefab = 'slurtlehat',
-                    ingredients = { Ingredient('goldnugget', 20), Ingredient('wathgrithrhat', 1) },
-                    level = TECH.SCIENCE_ONE,
-                    count = 1
-                },
-				{
                     prefab = 'ruinshat',
-                    ingredients = { Ingredient('goldnugget', 20), Ingredient('slurtlehat', 1) },
+                    ingredients = { Ingredient('goldnugget', 20), Ingredient('skeletonhat', 1) },
                     level = TECH.SCIENCE_ONE,
                     count = 1
                 },

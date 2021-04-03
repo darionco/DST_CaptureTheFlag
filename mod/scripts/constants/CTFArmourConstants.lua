@@ -93,6 +93,7 @@ local CTF_ARMOUR = {
     footballhat = {
         durability = 150,
         absorption = 0.3,
+        durability_speed_mult = 0.07,
     },
 
     cookiecutterhat = {

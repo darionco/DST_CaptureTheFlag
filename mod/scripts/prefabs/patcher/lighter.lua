@@ -199,8 +199,7 @@ local master_post_init = function(inst)
     inst:RemoveComponent('lighter');
     inst:RemoveComponent('cooker');
 
-    inst:AddComponent('pvp_weapon');
-    inst.components.pvp_weapon.canStunFn = function(_, target)
+    inst.components.weapon.canStunFn = function(_, target)
         return not target:HasTag('player');
     end;
 

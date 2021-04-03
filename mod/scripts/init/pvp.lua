@@ -18,7 +18,7 @@ end
 CTFInit:AllCharacters(common_post_init, master_post_init);
 
 local function canWeaponStun(inst, weapon)
-    return not weapon or not weapon.components or not weapon.components.pvp_weapon or weapon.components.pvp_weapon:canStun(inst);
+    return not weapon or not weapon.components or not weapon.components.weapon or weapon.components.weapon:CanStun(inst);
 end
 
 local function canInstBeStunned(inst)
@@ -29,17 +29,15 @@ end
 CTFClassPatcher(_G.EventHandler, function(self, ctor, name, fn)
     if name == 'attacked' then
         local new_fn = function(inst, data)
-            -- if this is a player and the attacker has a combat component
+            -- check if the target should be stunned
+            local stun = canWeaponStun(inst, data.weapon) and canInstBeStunned(inst);
+            -- if the target is a player and the attacker has a combat component, use the system to handle the stunlock
             if inst:HasTag('player') and data.attacker.components and data.attacker.components.combat then
-                if not canWeaponStun(inst, data.weapon) or not canInstBeStunned(inst) then
-                    data.attacker.components.combat.playerstunlock = PLAYERSTUNLOCK.NEVER;
-                else
-                    data.attacker.components.combat.playerstunlock = PLAYERSTUNLOCK.ALWAYS;
-                end
-            elseif not canWeaponStun(inst, data.weapon) then
-                return; -- if the weapon can't stun then do nothing
+                data.attacker.components.combat.playerstunlock =  stun and PLAYERSTUNLOCK.ALWAYS or PLAYERSTUNLOCK.NEVER;
+                fn(inst, data);
+            elseif stun then
+                fn(inst, data);
             end
-            fn(inst, data);
         end
         ctor(self, name, new_fn);
     else

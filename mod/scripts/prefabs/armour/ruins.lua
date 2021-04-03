@@ -46,7 +46,7 @@ local function master_post_init(inst)
 
     inst.components.equippable:SetOnUnequip(function(f_inst, owner)
         OldOnUnequip(f_inst, owner);
-        f_inst:RemoveEventListener('attacked', spawnTentacleChance, owner);
+        f_inst:RemoveEventCallback('attacked', spawnTentacleChance, owner);
     end);
     
 end

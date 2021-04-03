@@ -6,6 +6,7 @@
 
 modimport('scripts/prefabs/armour/armorgrass');
 modimport('scripts/prefabs/armour/armor_sanity');
+modimport('scripts/prefabs/armour/armor_skeleton');
 
 local CTF_ARMOUR = use('scripts/constants/CTFArmourConstants');
 

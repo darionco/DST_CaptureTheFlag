@@ -4,6 +4,9 @@
 --- DateTime: 2021-04-02 11:54 a.m.
 ---
 
+modimport('scripts/prefabs/armour/armorgrass');
+modimport('scripts/prefabs/armour/armor_sanity');
+
 local CTF_ARMOUR = use('scripts/constants/CTFArmourConstants');
 
 for k, v in pairs(CTF_ARMOUR) do

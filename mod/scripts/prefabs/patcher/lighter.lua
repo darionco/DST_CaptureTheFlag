@@ -120,6 +120,7 @@ local function castAOE(act)
 end
 
 local function patchWeapon(weapon)
+    weapon:AddTag('rangedweapon');
     weapon:SetDamage(WILLOW.LIGHTER_HIT_DAMAGE);
     weapon:SetRange(WILLOW.LIGHTER_ATTACK_RANGE_MIN, WILLOW.LIGHTER_ATTACK_RANGE_MAX);
     weapon:SetOnAttack(onattack);

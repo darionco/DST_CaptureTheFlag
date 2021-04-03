@@ -4,9 +4,9 @@
 --- DateTime: 2021-04-02 11:54 a.m.
 ---
 
-modimport('scripts/prefabs/armour/armorgrass');
-modimport('scripts/prefabs/armour/armor_sanity');
-modimport('scripts/prefabs/armour/armor_skeleton');
+modimport('scripts/prefabs/armour/grass');
+modimport('scripts/prefabs/armour/sanity');
+modimport('scripts/prefabs/armour/skeleton');
 
 local CTF_ARMOUR = use('scripts/constants/CTFArmourConstants');
 

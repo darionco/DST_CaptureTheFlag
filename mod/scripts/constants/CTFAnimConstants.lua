@@ -9,6 +9,10 @@ local CTF_ANIM_CONSTANTS = {
         [1] = 'ctf_spider_team1',
         [2] = 'ctf_spider_team2',
     },
+    spider_warrior = {
+        [1] = 'ctf_spider_warrior_team1',
+        [2] = 'ctf_spider_warrior_team2',
+    },
 }
 
 return CTF_ANIM_CONSTANTS;

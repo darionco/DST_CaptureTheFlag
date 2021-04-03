@@ -15,6 +15,7 @@ modimport('scripts/prefabs/armour/dragonfly');
 modimport('scripts/prefabs/armour/beehat');
 modimport('scripts/prefabs/armour/hivehat');
 modimport('scripts/prefabs/armour/slurtlehat');
+modimport('scripts/prefabs/armour/skeletonhat');
 
 local CTF_ARMOUR = use('scripts/constants/CTFArmourConstants');
 

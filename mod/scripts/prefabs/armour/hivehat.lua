@@ -5,7 +5,6 @@
 ---
 
 local CTFInit = use('scripts/tools/CTFInit');
-local CTF_ARMOUR = use('scripts/constants/CTFArmourConstants');
 
 local function master_post_init(inst)
     local OldOnEquip = inst.components.equippable.onequipfn;

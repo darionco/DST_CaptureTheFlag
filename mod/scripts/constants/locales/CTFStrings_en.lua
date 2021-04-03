@@ -4,6 +4,12 @@
 --- DateTime: 2021-03-22 10:20 a.m.
 ---
 
+local CTF_ARMOUR = use('scripts/constants/CTFArmourConstants');
+
+function makeArmourDescription(armour)
+    return string.format('Absorption: %d%%\n Durability: %d', armour.absorption * 100, armour.durability);
+end
+
 local CTF_STRINGS = {
     WELCOME = {
         TITLE = 'Welcome to Warsak! (BETA)',
@@ -80,19 +86,30 @@ local CTF_STRINGS = {
 
 
         --ARMOR
-        ARMORWOOD = 'Absorbtion: 80%\n Durability: 315',
-        ARMORMARBLE = 'Absorbtion: 95%\n Durability: 735',
-        ARMOR_SANITY = 'Absorbtion: 95%\n Durability: 525',
-        ARMORSNURTLESHELL = 'Absorbtion: 60-100%\n Durability: 735',
-        ARMORRUINS = 'Absorbtion: 90%\n Durability: 1260',
+        ARMOGRASS = makeArmourDescription(CTF_ARMOUR.armorgrass),
+        ARMORWOOD = makeArmourDescription(CTF_ARMOUR.armorwood),
+
+        ARMOR_SANITY = makeArmourDescription(CTF_ARMOUR.armor_sanity),
         ARMORSKELETON = 'Blocks all damage every 5 seconds',
+
+        ARMORSNURTLESHELL = makeArmourDescription(CTF_ARMOUR.armorsnurtleshell),
+        ARMORRUINS = makeArmourDescription(CTF_ARMOUR.armorruins),
+        ARMORDRAGONFLY = makeArmourDescription(CTF_ARMOUR.armordragonfly),
+        ARMORMARBLE = makeArmourDescription(CTF_ARMOUR.armormarble),
 
 
         --HATS
-        COOKIECUTTERHAT = 'Absorbtion: 70%\n Durability: 525',
-        WATHGRITHRHAT = 'Absorbtion: 80%\n Durability: 525',
-        SLURTLEHAT = 'Absorbtion: 90%\n Durability: 525',
-        RUINSHAT = 'Absorbtion: 90-100%\n Durability: 840',
+        BEEHAT = makeArmourDescription(CTF_ARMOUR.beehat),
+
+        HIVEHAT = makeArmourDescription(CTF_ARMOUR.hivehat),
+        SLURTLEHAT = makeArmourDescription(CTF_ARMOUR.slurtlehat),
+        SKELETONHAT = makeArmourDescription(CTF_ARMOUR.skeletonhat),
+        RUINSHAT = makeArmourDescription(CTF_ARMOUR.ruinshat),
+
+        FOOTBALLHAT = makeArmourDescription(CTF_ARMOUR.footballhat),
+        COOKIECUTTERHAT = makeArmourDescription(CTF_ARMOUR.cookiecutterhat),
+        WATHGRITHRHAT = makeArmourDescription(CTF_ARMOUR.wathgrithrhat),
+
 
 
         --WALTER

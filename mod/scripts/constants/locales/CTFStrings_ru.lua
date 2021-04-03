@@ -7,6 +7,12 @@
 --- TRANSLATED BY: JesterOK
 --- DISCORD: https://discord.gg/E9D8bTp
 
+local CTF_ARMOUR = use('scripts/constants/CTFArmourConstants');
+
+function makeArmourDescription(armour)
+    return string.format('Поглощение: %d%%\n Прочность: %d', armour.absorption * 100, armour.durability);
+end
+
 local CTF_STRINGS = {
     WELCOME = {
         TITLE = 'Добро пожаловать в Захват флага!',
@@ -82,19 +88,29 @@ local CTF_STRINGS = {
 
 
         --ARMOR
-        ARMORWOOD = 'Поглощение: 80%\n Прочность: 315',
-        ARMORMARBLE = 'Поглощение: 95%\n Прочность: 735',
-        ARMOR_SANITY = 'Поглощение: 95%\n Прочность: 525',
-        ARMORSNURTLESHELL = 'Поглощение: 60-100%\n Прочность: 735',
-        ARMORRUINS = 'Поглощение: 90%\n Прочность: 1260',
+        ARMOGRASS = makeArmourDescription(CTF_ARMOUR.armorgrass),
+        ARMORWOOD = makeArmourDescription(CTF_ARMOUR.armorwood),
+
+        ARMOR_SANITY = makeArmourDescription(CTF_ARMOUR.armor_sanity),
         ARMORSKELETON = 'Блокирует весь урон каждые 5 секунд.',
+
+        ARMORSNURTLESHELL = makeArmourDescription(CTF_ARMOUR.armorsnurtleshell),
+        ARMORRUINS = makeArmourDescription(CTF_ARMOUR.armorruins),
+        ARMORDRAGONFLY = makeArmourDescription(CTF_ARMOUR.armordragonfly),
+        ARMORMARBLE = makeArmourDescription(CTF_ARMOUR.armormarble),
 
 
         --HATS
-        COOKIECUTTERHAT = 'Поглощение: 70%\n Прочность: 525',
-        WATHGRITHRHAT = 'Поглощение: 80%\n Прочность: 525',
-        SLURTLEHAT = 'Поглощение: 90%\n Прочность: 525',
-        RUINSHAT = 'Поглощение: 90-100%\n Прочность: 840',
+        BEEHAT = makeArmourDescription(CTF_ARMOUR.beehat),
+
+        HIVEHAT = makeArmourDescription(CTF_ARMOUR.hivehat),
+        SLURTLEHAT = makeArmourDescription(CTF_ARMOUR.slurtlehat),
+        SKELETONHAT = makeArmourDescription(CTF_ARMOUR.skeletonhat),
+        RUINSHAT = makeArmourDescription(CTF_ARMOUR.ruinshat),
+
+        FOOTBALLHAT = makeArmourDescription(CTF_ARMOUR.footballhat),
+        COOKIECUTTERHAT = makeArmourDescription(CTF_ARMOUR.cookiecutterhat),
+        WATHGRITHRHAT = makeArmourDescription(CTF_ARMOUR.wathgrithrhat),
 
 
         --WALTER

@@ -17,6 +17,7 @@ modimport('scripts/prefabs/armour/hivehat');
 modimport('scripts/prefabs/armour/slurtlehat');
 modimport('scripts/prefabs/armour/skeletonhat');
 modimport('scripts/prefabs/armour/footballhat');
+modimport('scripts/prefabs/armour/wathgrithrhat');
 
 local CTF_ARMOUR = use('scripts/constants/CTFArmourConstants');
 

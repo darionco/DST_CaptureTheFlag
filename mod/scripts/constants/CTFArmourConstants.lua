@@ -104,6 +104,7 @@ local CTF_ARMOUR = {
     wathgrithrhat = {
         durability = 400,
         absorption = 0.52,
+        walk_speed_bonus = 0.07,
     },
 }
 

@@ -82,7 +82,7 @@ local CTF_ARMOUR = {
         durability = 250,
         absorption = 0.5,
         costume_aoe_damage_mult = 2.0,
-        costume_aoe_damage_radius = 3.0,
+        costume_aoe_damage_radius = 3.5,
     },
 
     ruinshat = {

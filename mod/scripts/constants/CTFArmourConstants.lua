@@ -74,8 +74,8 @@ local CTF_ARMOUR = {
     slurtlehat = {
         durability = 200,
         absorption = 0.4,
-        costume_slow_duration = 1.0,
-        costume_slow_percent = 0.2,
+        costume_slow_duration = 5.0,
+        costume_slow_percent = 0.25,
     },
 
     skeletonhat = {

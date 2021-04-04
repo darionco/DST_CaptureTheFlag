@@ -27,7 +27,7 @@ local CTF_ARMOUR = {
 
     -- skeleton armour doesn't have standard durability or absorption
     armorskeleton = {
-        aoe_damage = 5,
+        aoe_damage = 15,
         aoe_damage_radius = 2,
     },
 

@@ -10,7 +10,7 @@ local CTF_ARMOUR = use('scripts/constants/CTFArmourConstants');
 local function master_post_init(inst)
     inst.components.armor:SetTags(nil);
     inst.components.armor.GetAbsorption = function(self, attacker)
-        if attacker:HasTag('bee') then
+        if attacker and attacker:HasTag('bee') then
             return self.absorb_percent * CTF_ARMOUR.beehat.bee_absorption_mult;
         end
         return self.absorb_percent;

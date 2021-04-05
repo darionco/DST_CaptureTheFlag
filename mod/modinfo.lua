@@ -7,7 +7,7 @@ else
 end
 
 author = 'fibonacci618, JayLil & aligura'
-version = '0.14.4'
+version = '0.14.5'
 forumthread = ''
 
 dst_compatible = true

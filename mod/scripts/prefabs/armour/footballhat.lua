@@ -10,7 +10,8 @@ local CTF_ARMOUR = use('scripts/constants/CTFArmourConstants');
 local function master_post_init(inst)
     inst.components.equippable.walkspeedmult = 1.0;
     inst:ListenForEvent('percentusedchange', function(f_inst, data)
-        inst.components.equippable.walkspeedmult = 1.0 + CTF_ARMOUR.footballhat.durability_speed_bonus * (1.0 - data.percent);
+        local speedMult = 1.0 + CTF_ARMOUR.footballhat.durability_speed_bonus * (1.0 - data.percent);
+        inst.components.equippable.walkspeedmult = math.floor(speedMult * 100) / 100;
     end);
 end
 

@@ -3884,14 +3884,14 @@
    </properties>
    <point/>
   </object>
-  <object id="2275" name="Wormhole" type="wormhole" x="3808.67" y="1308">
+  <object id="2275" name="Wormhole" type="wormhole" x="3807.27" y="287.515">
    <properties>
     <property name="data.ctf_wormhole" value="ToBoss01"/>
     <property name="data.ctf_wormhole_target" value="FromBoss01"/>
    </properties>
    <point/>
   </object>
-  <object id="2276" name="Wormhole" type="wormhole" x="3806.67" y="2976">
+  <object id="2276" name="Wormhole" type="wormhole" x="3612.73" y="4521.45">
    <properties>
     <property name="data.ctf_wormhole" value="ToBoss02"/>
     <property name="data.ctf_wormhole_target" value="FromBoss02"/>

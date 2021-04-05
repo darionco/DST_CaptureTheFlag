@@ -3,17 +3,21 @@
 --- Created by darionco.
 --- DateTime: 2021-01-17 1:11 p.m.
 ---
-local require = _G.require;
-local CTF_TEAM_CONSTANTS = require('constants/CTFTeamConstants');
+
+local CTF_TEAM_CONSTANTS = use('scripts/constants/CTFTeamConstants');
 
 CTFPrefabPatcher:registerPrefabPatcher('wasphive', function(inst, data)
     if TheWorld.ismastersim then
         if data.ctf_team then
             CTFTeamManager:registerTeamObject(inst, data);
         end
-    end
 
-    if inst.components and inst.components.health then
-        inst.components.health:SetMaxHealth(CTF_TEAM_CONSTANTS.WASPHIVE_HEALTH);
+        if inst.components.health then
+            inst.components.health:SetMaxHealth(CTF_TEAM_CONSTANTS.WASPHIVE_HEALTH);
+        end
+
+        if inst.components.playerprox then
+            inst.components.playerprox.friendlyTag = 'beefriend';
+        end
     end
 end)

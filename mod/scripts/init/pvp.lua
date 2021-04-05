@@ -32,7 +32,7 @@ CTFClassPatcher(_G.EventHandler, function(self, ctor, name, fn)
             -- check if the target should be stunned
             local stun = canWeaponStun(inst, data.weapon) and canInstBeStunned(inst);
             -- if the target is a player and the attacker has a combat component, use the system to handle the stunlock
-            if inst:HasTag('player') and data.attacker.components and data.attacker.components.combat then
+            if inst:HasTag('player') and data.attacker and data.attacker.components and data.attacker.components.combat then
                 if stun then
                     data.attacker.components.combat.playerstunlock =  PLAYERSTUNLOCK.ALWAYS;
                 else

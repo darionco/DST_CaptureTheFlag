@@ -41,9 +41,9 @@ local CTF_STRINGS = {
         wickerbottom = '*Can craft Heart Tart Art\n*Can also craft Humpty Dumpty',
         wes = '*Armor effectiveness reduced\n*Does more damage\n*Can\'t be insta-killed',
         waxwell = '*Can spawn up to 5 shadow duelists',
-        woodie = '*Can transform into the weremoose',
-        woodie_us = '*Can transform into the weremoose\n*Will beat thisguyizgood at hockey',
-        woodie_canada = '*Can transform into the weremoose\n*Comes from the true north\n*Oh Ca.na.daaaa...',
+        woodie = '*Can transform into the weremoose\n*Can also transform into the werebeaver',
+        woodie_us = '*Can transform into the weremoose\n*Can also transform into the werebeaver\n*Will beat thisguyizgood at hockey',
+        woodie_canada = '*Can transform into the weremoose\n*Can also transform into the werebeaver\n*Comes from the true north\n*Oh Ca.na.daaaa...',
         wathgrithr = '*Same old, same old\n*Except no extra absorption',
         webber = '*Takes less damage from spiders\n*Can craft a spiderhat',
         winona = '*Can build catapults\n*And generators\n*And craft gems',
@@ -135,6 +135,7 @@ local CTF_STRINGS = {
 
         --WOODIE
         WEREITEM_MOOSE = 'Destroy anything as the weremoose!',
+        WEREITEM_BEAVER = 'Gnaw at anything as the weremoose!',
 
 
         --WINONA

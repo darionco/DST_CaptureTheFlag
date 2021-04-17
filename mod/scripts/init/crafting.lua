@@ -393,6 +393,11 @@ local function buildNewCrafting()
 			owner_tag = 'werehuman',
             recipes = {
                 {
+                    prefab = 'wereitem_beaver',
+                    ingredients = { Ingredient('goldnugget', 40), Ingredient('poop', 3) },
+                    count = 1
+                },
+                {
                     prefab = 'wereitem_moose',
                     ingredients = { Ingredient('goldnugget', 40), Ingredient('poop', 3) },
                     count = 1

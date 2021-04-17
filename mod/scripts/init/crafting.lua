@@ -38,7 +38,7 @@ local function buildNewCrafting()
     local content = {
 		{
             tab = 'Weapons',
-            order = 1,
+            order = 1.5,
             icon = 'ctf_tab_weapons.tex',
             icon_atlas = 'images/ctf_crafting_tabs.xml',
             recipes = {
@@ -112,13 +112,6 @@ local function buildNewCrafting()
                     ingredients = { Ingredient('goldnugget', 20), Ingredient('glasscutter', 1) },
                     level = TECH.SCIENCE_ONE,
                     count = 1
-                },
-                {
-                    prefab = 'townportal',
-                    ingredients = { Ingredient('goldnugget', 40), Ingredient('klaussackkey', 1) },
-                    level = TECH.SCIENCE_THREE,
-                    count = 1,
-                    placer = 'townportal_placer',
                 },
                 {
                     prefab = 'nightstick',
@@ -301,6 +294,19 @@ local function buildNewCrafting()
                 },
             }
         },
+        {
+            tab = 'Build',
+            order = 7.5,
+            icon = 'tab_build.tex',
+            recipes = {
+                {
+                    prefab = 'bedroll_furry',
+                    ingredients = { Ingredient('goldnugget', 15) },
+                    level = TECH.SCIENCE_ONE,
+                    count = 1
+                },
+			}
+		},
 		{
             tab = 'Slingshot',
             order = 10,

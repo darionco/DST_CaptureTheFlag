@@ -81,7 +81,6 @@ local CTF_STRINGS = {
         ICESTAFF = 'Damage: 0\n Durability: 20',
         NIGHTSWORD = 'Damage: 68\n Durability: 100',
         RUINS_BAT = 'Damage: 59.5\n Durability: 200',
-        TOWNPORTAL = 'Teleport using a desert stone!',
         NIGHTSTICK = 'Damage: 43.35 - 72.25\n Durability: 6 mins',
 
 
@@ -109,7 +108,10 @@ local CTF_STRINGS = {
         FOOTBALLHAT = makeArmourDescription(CTF_ARMOUR.footballhat),
         COOKIECUTTERHAT = makeArmourDescription(CTF_ARMOUR.cookiecutterhat),
         WATHGRITHRHAT = makeArmourDescription(CTF_ARMOUR.wathgrithrhat),
+        
 
+        --BUILD
+        BEDROLL_FURRY = 'Health a second: 3\nHunger a second: -2',
 
 
         --WALTER
@@ -147,14 +149,6 @@ local CTF_STRINGS = {
         SPICE_GARLIC = '33% absorbtion\n Duration: 4 minutes',
         SPICE_CHILI = '20% more damage\n Duration: 4 minutes',
         SPICE_SALT = '25% more healing to any food',
-        LIGHTNINGGOATHORN = 'Is the name is linked to the use?',
-        BONESHARD = 'Is the name is linked to the use?',
-        WORMLIGHT = 'Health: 11\n Hunger: 25',
-        FISH_COOKED = 'Health: 1\n Hunger: 12.5',
-        FROGLEGS_COOKED = 'Health: 1\n Hunger: 12.5',
-        BUTTER = 'Health: 40\n Hunger: 25',
-        ONION_COOKED = 'Health: 1\n Hunger: 9.375',
-        TOMATO_COOKED = 'Health: 20\n Hunger: 12.5',
 
 
         --MAXWELL

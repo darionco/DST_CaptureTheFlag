@@ -5,9 +5,14 @@
 ---
 
 local CTF_ARMOUR = use('scripts/constants/CTFArmourConstants');
+local CTF_CHARACTER_CONSTANTS = use('scripts/constants/CTFCharacterConstants');
 
 function makeArmourDescription(armour)
     return string.format('Absorption: %d%%\n Durability: %d', armour.absorption * 100, armour.durability);
+end
+
+function makeFoodDescription(food)
+    return string.format('Health: %d\n Hunger: %d', food.health, food.hunger);
 end
 
 local CTF_STRINGS = {
@@ -112,6 +117,11 @@ local CTF_STRINGS = {
 
         --BUILD
         BEDROLL_FURRY = 'Health a second: 3\nHunger a second: -2',
+        TOWNPORTAL = 'Hey! Stop cheating!',
+        SLEEPBOMB = 'An easter egg! Woah!',
+        BLOWDART_SLEEP = 'Don\'t tell fib!',
+        PANFLUTE = 'What if you used this..?',
+        PINECONE = 'Plant a tree!',
 
 
         --WALTER
@@ -150,6 +160,12 @@ local CTF_STRINGS = {
         SPICE_GARLIC = '33% absorbtion\n Duration: 4 minutes',
         SPICE_CHILI = '20% more damage\n Duration: 4 minutes',
         SPICE_SALT = '25% more healing to any food',
+        GLOWBERRYMOUSSE = makeFoodDescription(CTF_CHARACTER_CONSTANTS.WARLY.FOOD.glowberrymousse),
+        POTATOSOUFFLE = makeFoodDescription(CTF_CHARACTER_CONSTANTS.WARLY.FOOD.potatosouffle),
+        MONSTERTARTARE = makeFoodDescription(CTF_CHARACTER_CONSTANTS.WARLY.FOOD.monstertartare),
+        FRESHFRUITCREPES = makeFoodDescription(CTF_CHARACTER_CONSTANTS.WARLY.FOOD.freshfruitcrepes),
+        BONESOUP = makeFoodDescription(CTF_CHARACTER_CONSTANTS.WARLY.FOOD.bonesoup),
+        MOQUECA = makeFoodDescription(CTF_CHARACTER_CONSTANTS.WARLY.FOOD.moqueca),
 
 
         --MAXWELL

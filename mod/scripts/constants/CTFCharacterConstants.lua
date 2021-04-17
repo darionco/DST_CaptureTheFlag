@@ -29,6 +29,40 @@ local CTF_CHARACTER_CONSTANTS = {
         LIGHTER_FIRE_BLAST_FIRE_TICK_COUNT = 5,
         LIGHTER_FIRE_BLAST_FIRE_TICK_DAMAGE = 3,
         LIGHTER_FIRE_BLAST_FIRE_SMOLDER_STACK_DAMAGE = 1,
+    },
+
+    WARLY = {
+        FOOD = {
+            glowberrymousse = {
+                health = 5,
+                hunger = 20,
+            },
+        
+            potatosouffle = {
+                health = 35,
+                hunger = 60,
+            },
+        
+            monstertartare = {
+                health = -5,
+                hunger = 30,
+            },
+        
+            freshfruitcrepes = {
+                health = 80,
+                hunger = 125,
+            },
+        
+            moqueca = {
+                health = 60,
+                hunger = 70,
+            },
+        
+            bonesoup = {
+                health = 30,
+                hunger = 100,
+            },
+        }
     }
 }
 

@@ -38,7 +38,7 @@ local function buildNewCrafting()
     local content = {
 		{
             tab = 'Weapons',
-            order = 1,
+            order = 1.5,
             icon = 'ctf_tab_weapons.tex',
             icon_atlas = 'images/ctf_crafting_tabs.xml',
             recipes = {
@@ -112,13 +112,6 @@ local function buildNewCrafting()
                     ingredients = { Ingredient('goldnugget', 20), Ingredient('glasscutter', 1) },
                     level = TECH.SCIENCE_ONE,
                     count = 1
-                },
-                {
-                    prefab = 'townportal',
-                    ingredients = { Ingredient('goldnugget', 40), Ingredient('klaussackkey', 1) },
-                    level = TECH.SCIENCE_THREE,
-                    count = 1,
-                    placer = 'townportal_placer',
                 },
                 {
                     prefab = 'nightstick',
@@ -301,6 +294,50 @@ local function buildNewCrafting()
                 },
             }
         },
+        {
+            tab = 'Build',
+            order = 7.5,
+            icon = 'tab_build.tex',
+            recipes = {
+                {
+                    prefab = 'bedroll_furry',
+                    ingredients = { Ingredient('goldnugget', 15) },
+                    level = TECH.SCIENCE_ONE,
+                    count = 1
+                },
+                {
+                    prefab = 'townportal',
+                    ingredients = { Ingredient('tallbirdegg', 40) },
+                    level = TECH.SCIENCE_THREE,
+                    count = 1,
+                    placer = 'townportal_placer',
+                },
+                {
+                    prefab = 'sleepbomb',
+                    ingredients = { Ingredient('tallbirdegg', 15) },
+                    level = TECH.SCIENCE_THREE,
+                    count = 1
+                },
+                {
+                    prefab = 'blowdart_sleep',
+                    ingredients = { Ingredient('tallbirdegg', 15) },
+                    level = TECH.SCIENCE_THREE,
+                    count = 1
+                },
+                {
+                    prefab = 'panflute',
+                    ingredients = { Ingredient('tallbirdegg', 15) },
+                    level = TECH.SCIENCE_THREE,
+                    count = 1
+                },
+                {
+                    prefab = 'pinecone',
+                    ingredients = { Ingredient('tallbirdegg', 15) },
+                    level = TECH.SCIENCE_THREE,
+                    count = 1
+                },
+			}
+		},
 		{
             tab = 'Slingshot',
             order = 10,
@@ -387,6 +424,11 @@ local function buildNewCrafting()
 			owner_tag = 'werehuman',
             recipes = {
                 {
+                    prefab = 'wereitem_beaver',
+                    ingredients = { Ingredient('goldnugget', 40), Ingredient('poop', 3) },
+                    count = 1
+                },
+                {
                     prefab = 'wereitem_moose',
                     ingredients = { Ingredient('goldnugget', 40), Ingredient('poop', 3) },
                     count = 1
@@ -449,6 +491,36 @@ local function buildNewCrafting()
 				{
                     prefab = 'spice_salt',
                     ingredients = { Ingredient('goldnugget', 5) },
+                    count = 1
+                },
+                {
+                    prefab = 'monstertartare',
+                    ingredients = { Ingredient('goldnugget', 2) },
+                    count = 1
+                },
+                {
+                    prefab = 'glowberrymousse',
+                    ingredients = { Ingredient('goldnugget', 3) },
+                    count = 1
+                },
+                {
+                    prefab = 'potatosouffle',
+                    ingredients = { Ingredient('goldnugget', 5) },
+                    count = 1
+                },
+                {
+                    prefab = 'bonesoup',
+                    ingredients = { Ingredient('goldnugget', 7) },
+                    count = 1
+                },
+                {
+                    prefab = 'moqueca',
+                    ingredients = { Ingredient('goldnugget', 8) },
+                    count = 1
+                },
+                {
+                    prefab = 'freshfruitcrepes',
+                    ingredients = { Ingredient('goldnugget', 12) },
                     count = 1
                 },
 			}

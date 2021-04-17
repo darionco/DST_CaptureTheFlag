@@ -21,6 +21,7 @@ local LOOT_TABLE = {
     skeleton_player = { gold = 5 },
     molebat = { gold = 2 },
     koalefant_summer = { gold = 40 },
+    rock2 = { gold = 2 },
 };
 
 LootDropper.DropLoot = function(self, pt)

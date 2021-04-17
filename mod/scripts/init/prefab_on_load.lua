@@ -25,6 +25,8 @@ modimport('scripts/prefabs/patcher/poop');
 modimport('scripts/prefabs/patcher/moose_nesting_ground');
 modimport('scripts/prefabs/patcher/archive_portal');
 modimport('scripts/prefabs/patcher/lighter');
+modimport('scripts/prefabs/patcher/bedroll');
+modimport('scripts/prefabs/patcher/preparedfoods_warly');
 
 --modimport('scripts/teams/CTFTeamManager');
 --

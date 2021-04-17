@@ -22,7 +22,7 @@ local function master_post_init(inst)
                 -- delay the damage so it aligns better with the animation
                 f_inst:DoTaskInTime(0.4, function()
                     local x, y, z = owner.Transform:GetWorldPosition();
-                    local ents = TheSim:FindEntities(x, y, z, CTF_ARMOUR.armor_sanity.aoe_damage_radius, { '_combat', '_health' }, { teamTag });
+                    local ents = TheSim:FindEntities(x or 0, y or 0, z or 0, CTF_ARMOUR.armor_sanity.aoe_damage_radius, { '_combat', '_health' }, { teamTag });
                     for _, v in ipairs(ents) do
                         if v:IsValid() and not v:IsInLimbo() and not v.components.health:IsDead() then
                             v.components.combat:GetAttacked(owner, CTF_ARMOUR.armor_sanity.aoe_damage, f_inst);

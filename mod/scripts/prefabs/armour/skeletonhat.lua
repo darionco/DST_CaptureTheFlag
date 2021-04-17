@@ -10,7 +10,9 @@ local function master_post_init(inst)
     local OldOnEquip = inst.components.equippable.onequipfn;
     inst.components.equippable:SetOnEquip(function(f_inst, owner)
         OldOnEquip(f_inst, owner);
-        owner.components.sanity:SetInducedInsanity(f_inst, false);
+        if owner.components.sanity then
+            owner.components.sanity:SetInducedInsanity(f_inst, false);
+        end
     end);
 end
 

@@ -7,7 +7,10 @@
 local CTF_MISC_CONSTANTS = {
     DISABLED_CHARACTERS = {
         'wurt',
-    }
+    },
+
+    SLEEP_HUNGER_PER_TICK = -2,
+    SLEEP_HEALTH_PER_TICK = 3,
 }
 
 return CTF_MISC_CONSTANTS;

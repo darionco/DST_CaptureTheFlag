@@ -5,9 +5,14 @@
 ---
 
 local CTF_ARMOUR = use('scripts/constants/CTFArmourConstants');
+local CTF_CHARACTER_CONSTANTS = use('scripts/constants/CTFCharacterConstants');
 
 function makeArmourDescription(armour)
     return string.format('Absorption: %d%%\n Durability: %d', armour.absorption * 100, armour.durability);
+end
+
+function makeFoodDescription(food)
+    return string.format('Health: %d\n Hunger: %d', food.health, food.hunger);
 end
 
 local CTF_STRINGS = {
@@ -41,9 +46,9 @@ local CTF_STRINGS = {
         wickerbottom = '*Can craft Heart Tart Art\n*Can also craft Humpty Dumpty',
         wes = '*Armor effectiveness reduced\n*Does more damage\n*Can\'t be insta-killed',
         waxwell = '*Can spawn up to 5 shadow duelists',
-        woodie = '*Can transform into the weremoose',
-        woodie_us = '*Can transform into the weremoose\n*Will beat thisguyizgood at hockey',
-        woodie_canada = '*Can transform into the weremoose\n*Comes from the true north\n*Oh Ca.na.daaaa...',
+        woodie = '*Can transform into the weremoose\n*Can also transform into the werebeaver',
+        woodie_us = '*Can transform into the weremoose\n*Can also transform into the werebeaver\n*Will beat thisguyizgood at hockey',
+        woodie_canada = '*Can transform into the weremoose\n*Can also transform into the werebeaver\n*Comes from the true north\n*Oh Ca.na.daaaa...',
         wathgrithr = '*Same old, same old\n*Except no extra absorption',
         webber = '*Takes less damage from spiders\n*Can craft a spiderhat',
         winona = '*Can build catapults\n*And generators\n*And craft gems',
@@ -81,7 +86,6 @@ local CTF_STRINGS = {
         ICESTAFF = 'Damage: 0\n Durability: 20',
         NIGHTSWORD = 'Damage: 68\n Durability: 100',
         RUINS_BAT = 'Damage: 59.5\n Durability: 200',
-        TOWNPORTAL = 'Teleport using a desert stone!',
         NIGHTSTICK = 'Damage: 43.35 - 72.25\n Durability: 6 mins',
 
 
@@ -109,7 +113,15 @@ local CTF_STRINGS = {
         FOOTBALLHAT = makeArmourDescription(CTF_ARMOUR.footballhat),
         COOKIECUTTERHAT = makeArmourDescription(CTF_ARMOUR.cookiecutterhat),
         WATHGRITHRHAT = makeArmourDescription(CTF_ARMOUR.wathgrithrhat),
+        
 
+        --BUILD
+        BEDROLL_FURRY = 'Health a second: 3\nHunger a second: -2',
+        TOWNPORTAL = 'Hey! Stop cheating!',
+        SLEEPBOMB = 'An easter egg! Woah!',
+        BLOWDART_SLEEP = 'Don\'t tell fib!',
+        PANFLUTE = 'What if you used this..?',
+        PINECONE = 'Plant a tree!',
 
 
         --WALTER
@@ -133,6 +145,7 @@ local CTF_STRINGS = {
 
         --WOODIE
         WEREITEM_MOOSE = 'Destroy anything as the weremoose!',
+        WEREITEM_BEAVER = 'Gnaw at anything as the weremoose!',
 
 
         --WINONA
@@ -147,14 +160,12 @@ local CTF_STRINGS = {
         SPICE_GARLIC = '33% absorbtion\n Duration: 4 minutes',
         SPICE_CHILI = '20% more damage\n Duration: 4 minutes',
         SPICE_SALT = '25% more healing to any food',
-        LIGHTNINGGOATHORN = 'Is the name is linked to the use?',
-        BONESHARD = 'Is the name is linked to the use?',
-        WORMLIGHT = 'Health: 11\n Hunger: 25',
-        FISH_COOKED = 'Health: 1\n Hunger: 12.5',
-        FROGLEGS_COOKED = 'Health: 1\n Hunger: 12.5',
-        BUTTER = 'Health: 40\n Hunger: 25',
-        ONION_COOKED = 'Health: 1\n Hunger: 9.375',
-        TOMATO_COOKED = 'Health: 20\n Hunger: 12.5',
+        GLOWBERRYMOUSSE = makeFoodDescription(CTF_CHARACTER_CONSTANTS.WARLY.FOOD.glowberrymousse),
+        POTATOSOUFFLE = makeFoodDescription(CTF_CHARACTER_CONSTANTS.WARLY.FOOD.potatosouffle),
+        MONSTERTARTARE = makeFoodDescription(CTF_CHARACTER_CONSTANTS.WARLY.FOOD.monstertartare),
+        FRESHFRUITCREPES = makeFoodDescription(CTF_CHARACTER_CONSTANTS.WARLY.FOOD.freshfruitcrepes),
+        BONESOUP = makeFoodDescription(CTF_CHARACTER_CONSTANTS.WARLY.FOOD.bonesoup),
+        MOQUECA = makeFoodDescription(CTF_CHARACTER_CONSTANTS.WARLY.FOOD.moqueca),
 
 
         --MAXWELL
